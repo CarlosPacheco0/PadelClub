@@ -1,0 +1,95 @@
+.container {
+    /* max-width: 900px; */
+    /* margin: 40px auto; */
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.date-box {
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.date-box input {
+    padding: 8px;
+    font-size: 16px;
+}
+
+.schedules {
+    max-width: 600px;
+    margin: auto;
+    display: grid;
+    gap: 15px;
+}
+
+.schedule {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.schedule span {
+    font-weight: bold;
+}
+
+.schedule button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.schedule.free button {
+    background: #1b5e20;
+    color: white;
+}
+
+.schedule .occupied {
+    opacity: 0.6;
+}
+
+.schedule.occupied button {
+    background: #aaa;
+    color: white;
+    cursor: not-allowed;
+}
+
+.text-muted {
+    color: #777;
+    margin-top: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+}
+.modal input {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 10px;
+}
+.modal-buttons {
+    text-align: right;
+}
+.modal-buttons button {
+    margin-left: 10px;
+}

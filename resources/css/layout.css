@@ -1,0 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 16px;
+}
+
+body {
+    background: #f5f6f7;
+    color: #333;
+}
+
+.content {
+    margin: 30px 40px;
+}
+
+.content-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #0a2e5c;
+    font-weight: 700;
+}
+
+
+/* HERO */
+.hero {
+    height: 60vh;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url('https://images.unsplash.com/photo-1603415526960-f7e0328a0e35');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #1b5e20;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+/* CONTENIDO */
+.section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.cards {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Tabla */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 24%);
+}
+
+th,
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #0b3c5d;
+    color: #fff;
+    font-weight: normal;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.actions-table {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+tbody {
+    text-align: center;
+}
+
+.empty-data {
+    text-align: center;
+}
+
+/* Botones */
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.3s;
+}
+
+.btn-edit,
+.btn-save {
+    background-color: #1e7f43;
+}
+
+.btn-edit:hover,
+.btn-save:hover {
+    background-color: #1c6101;
+}
+
+.btn-delete,
+.btn-cancel {
+    background-color: #dc2626;
+}
+
+.btn-delete:hover,
+.btn-cancel:hover {
+    background-color: #b71c1c;
+}
+
+/* Botones de acción general */
+.actions {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+/* Botoes principales */
+.actions .btn {
+    background-color: #0b3c5d;
+}
+
+.actions .btn:hover {
+    background-color: #0b3c91;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+}
+
+
+
+/* CONFIRMAR RESERVA */
+.resumen {
+    max-width: 600px;
+    margin: 30px auto;
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.resumen h3 {
+    margin-bottom: 10px;
+}
+
+.formulario {
+    max-width: 600px;
+    margin: auto;
+    display: grid;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.campo input,
+.campo textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+.btn-confirmar {
+    background: #1b5e20;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-confirmar:hover {
+    background: #2e7d32;
+}
+
+
+

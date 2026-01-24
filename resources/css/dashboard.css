@@ -1,0 +1,17 @@
+
+/* Main content */
+.content {
+    margin: 0;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Table */
+.table {
+    margin-bottom: 30px;
+}
+
+
