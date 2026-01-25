@@ -45,3 +45,4 @@ function setupDropdown(triggerId, dropdownId) {
 // Inicializar
 setupDropdown('userTrigger', 'userDropdown');
 setupDropdown('scheduleTrigger', 'scheduleDropdown');
+setupDropdown('reservationTrigger', 'reservationDropdown');

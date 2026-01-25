@@ -72,6 +72,7 @@ class ReservationsController extends Controller
             'schedule_id' => $validated['schedule_id'],
             'user_id' => $userID,
             'date' => $validated['date'],
+            'observation' => $request->observation,
             'status_reservation' => 'pendiente',
         ]);
 

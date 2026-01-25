@@ -2,8 +2,20 @@
     @auth
         @if (auth()->user()->isUser())
             <a href="{{ route('home') }}" class="active">Inicio</a>
-            <a href="{{ route('reservation') }}">Realizar reservas</a>
-            <a href="{{ route('reservations.list') }}">Mis reservas</a>
+            {{-- <a href="{{ route('reservation') }}">Realizar reservas</a>
+            <a href="{{ route('reservations.list') }}">Mis reservas</a> --}}
+
+            <div class="reservation-menu">
+                <button class="card-trigger" id="reservationTrigger">
+                    <span class="caret">Reservas</span>
+                </button>
+
+                <div class="card-dropdown dropdown" id="reservationDropdown">
+                    <a href="{{ route('reservation') }}">📅 Nueava reserva</a>
+                    <a href="{{ route('reservations.list') }}">📅 Mis reservas</a>
+                </div>
+            </div>
+
             <a href="{{ route('information') }}">Información</a>
             <a href="{{ route('contact') }}">Contacto</a>
         @endif

@@ -28,6 +28,8 @@ return new class extends Migration
             $table->enum('status_reservation', ['pendiente', 'confirmada', 'cancelada', 'completada'])
                 ->default('pendiente');
 
+            $table->text('observation');
+
             $table->timestamps();
 
             $table->unique(['field_id', 'schedule_id', 'date']);
