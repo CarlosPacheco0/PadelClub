@@ -53,6 +53,13 @@
                     <div class="calendar-modal">
                         <div class="calendar-card">
 
+                            <button class="close-calendar" aria-label="Cerrar calendario" onclick="closeCalendar()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                                    <path fill="#666666"
+                                        d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z" />
+                                </svg>
+                            </button>
+
                             <div class="calendar-header">
                                 <button id="prevBtn" onclick="prevMonth()" class="button-action">‹</button>
 
@@ -82,9 +89,9 @@
 
             <div id="container-schedules">
                 {{-- Horarios --}}
-                <div id="schedules" class="schedules-grid">
+                <div id="schedules" class="schedules-grid schedules-empty ">
                     <h2 class="content-title">Horarios disponibles</h2>
-                    <p>No hay canchas o fechas selecionadas</p>
+                    <div id="schedules-list">No hay canchas o fechas selecionadas</div>
                 </div>
             </div>
         </div>

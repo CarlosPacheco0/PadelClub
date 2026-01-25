@@ -10,10 +10,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-    @vite(['resources/css/layout.css', 'resources/css/navbar.css'])
+    @vite(['resources/css/layout.css', 'resources/css/navbar.css', 'resources/css/alerts.css', 'resources/js/app.js'])
+
     @stack('styles')
 
     @stack('scripts')
+
 
 </head>
 
@@ -31,43 +33,24 @@
 
     {{-- Contenido dinámico --}}
     <main class="content">
+
+        {{-- Alertas desde js  --}}
+        <div id="js-alert" class="alert alert-fixed d-none" role="alert"></div>
+
+
+        {{-- Alertas correspondientes desde el backend --}}
+        @if (session('success'))
+            <x-alert type="success" :message="session('success')" />
+        @endif
+
+        @if (session('error'))
+            <x-alert type="danger" :message="session('error')" />
+        @endif
+
+
         @yield('content')
     </main>
 
 </body>
-
-<script>
-    function setupDropdown(triggerId, dropdownId) {
-        const trigger = document.getElementById(triggerId);
-        const dropdown = document.getElementById(dropdownId);
-
-        if (trigger) {
-            trigger.addEventListener('click', function(e) {
-                e.stopPropagation();
-
-                // 1️⃣ Cerrar todos los dropdowns abiertos
-                document.querySelectorAll('.dropdown').forEach(d => {
-                    if (d !== dropdown) {
-                        d.style.display = 'none';
-                    }
-                });
-
-                // 2️⃣ Alternar el actual
-                dropdown.style.display =
-                    dropdown.style.display === 'flex' ? 'none' : 'flex';
-            });
-        }
-
-        // 3️⃣ Cerrar al hacer click fuera
-        document.addEventListener('click', function() {
-            dropdown.style.display = 'none';
-        });
-    }
-
-    // Inicializar
-    setupDropdown('userTrigger', 'userDropdown');
-    setupDropdown('scheduleTrigger', 'scheduleDropdown');
-</script>
-
 
 </html>

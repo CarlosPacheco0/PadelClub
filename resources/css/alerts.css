@@ -1,0 +1,126 @@
+/* ===== ALERTAS BASE ===== */
+.alert {
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #f9fafb;
+    color: #1f2937;
+    border: 1px solid transparent;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.alert-fixed {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    min-width: 320px;
+    max-width: 380px;
+
+    z-index: 9999;
+}
+
+.d-none {
+    display: none !important;
+}
+
+/* Animación */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.alert-fixed {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Texto */
+.alert strong {
+    font-weight: 600;
+}
+
+/* Botón cerrar (opcional) */
+.alert .close-alert {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.alert .close-alert:hover {
+    opacity: 1;
+}
+
+/* Alert Suuccess */
+.alert-success {
+    background: #ecfdf5;
+    color: #065f46;
+    border-color: #6ee7b7;
+}
+
+/* Alert Danger */
+.alert-danger {
+    background: #fef2f2;
+    color: #991b1b;
+    border-color: #fecaca;
+}
+
+/* Alert Warning */
+.alert-warning {
+    background: #fffbeb;
+    color: #92400e;
+    border-color: #fde68a;
+}
+
+/* Alert Info  */
+.alert-info {
+    background: #eff6ff;
+    color: #1e40af;
+    border-color: #bfdbfe;
+}
+
+/* Iconos de alertas */
+.alert::before {
+    content: '';
+    font-size: 18px;
+}
+
+.alert-success::before {
+    content: '✔️';
+}
+.alert-danger::before {
+    content: '❌';
+}
+.alert-warning::before {
+    content: '⚠️';
+}
+.alert-info::before {
+    content: 'ℹ️';
+}

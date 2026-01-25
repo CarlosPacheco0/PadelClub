@@ -54,7 +54,7 @@ body {
 
 /* CONTENIDO */
 .section {
-    padding: 60px 20px;
+    padding: 0 20px;
     text-align: center;
 }
 
@@ -225,6 +225,3 @@ tbody {
 .btn-confirmar:hover {
     background: #2e7d32;
 }
-
-
-

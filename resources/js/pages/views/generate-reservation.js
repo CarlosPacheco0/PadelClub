@@ -1,33 +1,25 @@
 /* =====================================================
    CONFIGURACIÓN DESDE BLADE
 ===================================================== */
-const {
-    schedulesUrl,
-    reservationUrl,
-    csrfToken
-} = window.RESERVATION_CONFIG;
-
+const { schedulesUrl, reservationUrl, csrfToken } = window.RESERVATION_CONFIG;
 
 /* =====================================================
    ESTADO GLOBAL
 ===================================================== */
 let fieldSelected = null;
+let dateSelected = null;
 
 const today = new Date();
 let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
-
 /* =====================================================
    ELEMENTOS DOM
 ===================================================== */
-const calendarDiv    = document.querySelector('.calendar-modal');
+const calendarDiv = document.querySelector('.calendar-modal');
 const datesContainer = document.querySelector('.date-container .dates');
-const schedulesDiv   = document.getElementById('schedules');
+const schedulesDiv = document.querySelector('#schedules div');
 
-
-/* =====================================================
-   FECHAS RÁPIDAS
-===================================================== */
+/* ==== FECHAS RÁPIDAS ==== */
 function generateDates(days = 3) {
     datesContainer.innerHTML = '';
 
@@ -36,7 +28,7 @@ function generateDates(days = 3) {
         date.setDate(today.getDate() + i);
 
         const isoDate = date.toISOString().split('T')[0];
-        const dayNum  = date.getDate();
+        const dayNum = date.getDate();
 
         let title = '';
         if (i === 0) title = 'Hoy';
@@ -45,7 +37,7 @@ function generateDates(days = 3) {
         else title = date.toLocaleDateString('es-ES', { weekday: 'long' });
 
         datesContainer.innerHTML += `
-            <div class="date-card" onclick="getSchedulesFree('${isoDate}')">
+            <div class="date-card" data-date="${isoDate}" onclick="selectDate(this)">
                 <div class="date-header">
                     <span class="icon">📅</span>
                     <span class="title">${title}</span>
@@ -61,10 +53,10 @@ function generateDates(days = 3) {
     }
 
     datesContainer.innerHTML += `
-        <div class="more-dates">
+        <div class="more-dates" onclick="renderCalendar()">
             <div class="date-card">
                 <div class="date-header">📅 Más fechas</div>
-                <button class="date-action" onclick="renderCalendar()">
+                <button class="date-action">
                     Ver fechas
                 </button>
             </div>
@@ -74,12 +66,8 @@ function generateDates(days = 3) {
 
 generateDates();
 
-
-/* =====================================================
-   CANCHAS
-===================================================== */
+/* ==== SELECCIONAR CANCHA ==== */
 function selectField(element) {
-
     // Si ya está seleccionada → deseleccionar
     if (element.classList.contains('field-active')) {
         element.classList.remove('field-active');
@@ -88,22 +76,52 @@ function selectField(element) {
     }
 
     // Quitar selección a las demás
-    document.querySelectorAll('.field-card')
-        .forEach(card => card.classList.remove('field-active'));
+    document
+        .querySelectorAll('.field-card')
+        .forEach((card) => card.classList.remove('field-active'));
 
     // Seleccionar la nueva
     element.classList.add('field-active');
     fieldSelected = element.dataset.id;
+
+    if (dateSelected) getSchedulesFree();;
 }
 
+/* ==== SELECCIONAR FECHA ==== */
+function selectDate(element) {
 
+    // Cerrar calendario al seleccionar fecha
+    closeCalendar();
+
+    // Si ya está seleccionada → deseleccionar
+    if (element.classList.contains('date-card-active')) {
+        element.classList.remove('date-card-active');
+        dateSelected = null;
+        return;
+    }
+
+    // Quitar selección a las demás
+    document
+        .querySelectorAll('.date-card-active')
+        .forEach((card) => card.classList.remove('date-card-active'));
+
+    // Seleccionar la nueva
+    element.classList.add('date-card-active');
+    dateSelected = element.dataset.date;
+
+    // Obtner los horarios disponibles
+    getSchedulesFree();
+}
 
 /* =====================================================
    HORARIOS DISPONIBLES
 ===================================================== */
-function getSchedulesFree(date) {
+function getSchedulesFree() {
 
-    if (!fieldSelected || !date) return;
+    if (!fieldSelected || !dateSelected) {
+        showAlert('danger', 'Debe seleccionar una cancha y fecha deseada');
+        return;
+    }
 
     calendarDiv.style.display = 'none';
     schedulesDiv.innerHTML = '';
@@ -112,32 +130,34 @@ function getSchedulesFree(date) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
         },
         body: JSON.stringify({
             field_id: fieldSelected,
-            date: date
-        })
+            date: dateSelected,
+        }),
     })
-    .then(res => res.json())
-    .then(response => {
+        .then((res) => res.json())
+        .then((response) => {
+            const schedules = response.data ?? response;
 
-        const schedules = response.data ?? response;
+            if (!schedules.length) {
+                schedulesDiv.classList.add('schedules-empty')
+                schedulesDiv.innerHTML = '<p>No hay horarios disponibles</p>';
+                return;
+            }
 
-        if (!schedules.length) {
-            schedulesDiv.innerHTML = '<p>No hay horarios disponibles</p>';
-            return;
-        }
+            schedules.forEach((schedule) => {
+                schedulesDiv.classList.remove('schedules-empty');
 
-        schedules.forEach(schedule => {
-            schedulesDiv.innerHTML += `
-                <div class="schedule-card free">
+                schedulesDiv.innerHTML += `
+                <div class="schedule-card">
                     <span class="schedule-hour">${schedule.hour}</span>
 
                     <form method="POST" action="${reservationUrl}">
                         <input type="hidden" name="_token" value="${csrfToken}">
                         <input type="hidden" name="field_id" value="${fieldSelected}">
-                        <input type="hidden" name="date" value="${date}">
+                        <input type="hidden" name="date" value="${dateSelected}">
                         <input type="hidden" name="schedule_id" value="${schedule.id}">
 
                         <button type="submit" class="btn-reservar">
@@ -146,30 +166,38 @@ function getSchedulesFree(date) {
                     </form>
                 </div>
             `;
+            });
+        })
+        .catch(() => {
+            schedulesDiv.innerHTML = '<p>Error al cargar horarios</p>';
         });
-    })
-    .catch(() => {
-        schedulesDiv.innerHTML = '<p>Error al cargar horarios</p>';
-    });
 }
-
 
 /* =====================================================
    CALENDARIO
 ===================================================== */
 function renderCalendar() {
+    calendarDiv.style.display = 'flex';
 
-    calendarDiv.style.display = 'block';
-
-    const year  = currentDate.getFullYear();
+    const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
     const calendarTitle = document.getElementById('calendarTitle');
-    const calendarDays  = document.getElementById('calendarDays');
+    const calendarDays = document.getElementById('calendarDays');
 
     const monthNames = [
-        'Enero','Febrero','Marzo','Abril','Mayo','Junio',
-        'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre',
     ];
 
     calendarTitle.textContent = `${monthNames[month]} ${year}`;
@@ -190,7 +218,7 @@ function renderCalendar() {
         const date = `${year}-${m}-${d}`;
 
         calendarDays.innerHTML += `
-            <div class="calendar-day" onclick="getSchedulesFree('${date}')">
+            <div class="calendar-day" data-date="${date}" onclick="selectDate(this)">
                 ${day}
             </div>
         `;
@@ -202,17 +230,22 @@ function renderCalendar() {
         currentDate.getMonth() === today.getMonth();
 }
 
-
 /* =====================================================
    NAVEGACIÓN CALENDARIO
 ===================================================== */
 function prevMonth() {
-    const prev = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+    const prev = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - 1,
+        1,
+    );
 
     if (
         prev.getFullYear() < today.getFullYear() ||
-        (prev.getFullYear() === today.getFullYear() && prev.getMonth() < today.getMonth())
-    ) return;
+        (prev.getFullYear() === today.getFullYear() &&
+            prev.getMonth() < today.getMonth())
+    )
+        return;
 
     currentDate = prev;
     renderCalendar();
@@ -228,13 +261,20 @@ function goToCurrentMonth() {
     renderCalendar();
 }
 
+/* ==== CERRAR CALENDARIO ==== */
+function closeCalendar() {
+    calendarDiv.style.display = 'none';
+}
 
 /* =====================================================
    EXPONER FUNCIONES (onclick)
 ===================================================== */
-window.selectField       = selectField;
-window.getSchedulesFree  = getSchedulesFree;
-window.renderCalendar    = renderCalendar;
-window.prevMonth         = prevMonth;
-window.nextMonth         = nextMonth;
-window.goToCurrentMonth  = goToCurrentMonth;
+window.selectField = selectField;
+window.selectDate = selectDate;
+window.getSchedulesFree = getSchedulesFree;
+window.renderCalendar = renderCalendar;
+window.prevMonth = prevMonth;
+window.nextMonth = nextMonth;
+window.goToCurrentMonth = goToCurrentMonth;
+
+window.closeCalendar = closeCalendar;
