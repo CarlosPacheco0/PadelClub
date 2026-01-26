@@ -24,6 +24,7 @@ class Reservation extends Model
         'schedule_id',
         'user_id',
         'date',
+        'observation',
         'status_reservation'
     ];
 

@@ -23,7 +23,6 @@ body {
     font-weight: 700;
 }
 
-
 /* HERO */
 .hero {
     height: 60vh;
@@ -149,6 +148,14 @@ tbody {
     background-color: #b71c1c;
 }
 
+.btn-disabled {
+    background-color: #e5e7eb; /* gris claro */
+    color: #9ca3af; /* texto gris */
+    border-color: #e5e7eb;
+    pointer-events: none;
+    opacity: 1;
+}
+
 /* Botones de acción general */
 .actions {
     margin: 20px 0;
@@ -172,4 +179,22 @@ tbody {
     color: #777;
 }
 
+/* SweetAlert  */
 
+.swal-popup {
+    border-radius: 14px;
+    font-family: inherit;
+}
+
+.swal-confirm {
+    background: #dc2626 !important;
+}
+
+.swal-cancel {
+    background: #e5e7eb !important;
+    color: #111827 !important;
+}
+
+.swal2-container {
+    z-index: 99999 !important;
+}

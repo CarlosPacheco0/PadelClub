@@ -84,12 +84,11 @@ function selectField(element) {
     element.classList.add('field-active');
     fieldSelected = element.dataset.id;
 
-    if (dateSelected) getSchedulesFree();;
+    if (dateSelected) getSchedulesFree();
 }
 
 /* ==== SELECCIONAR FECHA ==== */
 function selectDate(element) {
-
     // Cerrar calendario al seleccionar fecha
     closeCalendar();
 
@@ -117,9 +116,8 @@ function selectDate(element) {
    HORARIOS DISPONIBLES
 ===================================================== */
 function getSchedulesFree() {
-
     if (!fieldSelected || !dateSelected) {
-        showAlert('danger', 'Debe seleccionar una cancha y fecha deseada');
+        showAlert('error', 'Debe seleccionar una cancha y fecha deseada');
         return;
     }
 
@@ -141,8 +139,16 @@ function getSchedulesFree() {
         .then((response) => {
             const schedules = response.data ?? response;
 
+            // Realizar scroll automatico al final.
+            setTimeout(() => {
+                window.scrollTo({
+                    top: document.documentElement.scrollHeight,
+                    behavior: 'smooth',
+                });
+            }, 100);
+
             if (!schedules.length) {
-                schedulesDiv.classList.add('schedules-empty')
+                schedulesDiv.classList.add('schedules-empty');
                 schedulesDiv.innerHTML = '<p>No hay horarios disponibles</p>';
                 return;
             }

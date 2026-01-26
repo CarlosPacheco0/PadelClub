@@ -18,6 +18,7 @@
                     <th>Fecha de reserva</th>
                     <th>Hora</th>
                     <th>Estado</th>
+                    <th>Observación</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +32,7 @@
                             {{ $reservation->schedule->start_time->format('H:i') . ' - ' . $reservation->schedule->end_time->format('H:i') }}
                         </td>
                         <td>{{ $reservation->status_reservation }}</td>
+                        <td>{{ $reservation->observation }}</td>
                     </tr>
                 @empty
                     <tr>

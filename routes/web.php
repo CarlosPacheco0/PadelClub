@@ -63,7 +63,14 @@ Route::middleware(['auth', 'validate_role:user'])->group(function () {
     Route::get('/reservations-list', [ReservationsController::class, 'reservationsList'])
         ->name('reservations.list');
 
-    
+    // Edición de reserva desde el usuairo
+    Route::put('/reservations-list', [ReservationsController::class, 'updateReservation'])
+        ->name('reservation-list');
+
+    Route::put('/reservation-cancel', [ReservationsController::class, 'cancel'])
+        ->name('reservation.cancel');
+
+
 
     Route::post('/schedulesFree', [ReservationsController::class, 'schedulesFree'])
         ->name('schedulesFree');

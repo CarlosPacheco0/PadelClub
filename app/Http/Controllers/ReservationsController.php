@@ -56,7 +56,8 @@ class ReservationsController extends Controller
             'date'        => 'required|date',
             'field_id'    => 'required|exists:fields,id',
             'schedule_id' => 'required|exists:schedules,id',
-            'name'        => 'required|string'
+            'name'        => 'required|string',
+            'observation' => 'nullable|string'
         ]);
 
 
@@ -72,16 +73,18 @@ class ReservationsController extends Controller
             'schedule_id' => $validated['schedule_id'],
             'user_id' => $userID,
             'date' => $validated['date'],
-            'observation' => $request->observation,
+            'observation' => $validated['observation'],
             'status_reservation' => 'pendiente',
         ]);
 
 
         // Redireccionar a la pagina principal 
         // luego de la creación
-        return redirect(route('home'));
+        // return redirect(route('home'));
+        return redirect()
+            ->route('home')
+            ->with('success', 'Reserva creada correctamente');
     }
-
 
     // Ver reservas del clieten
     public function reservationsList()
@@ -97,6 +100,7 @@ class ReservationsController extends Controller
             'schedule_id',
             'user_id',
             'date',
+            'observation',
             'status_reservation'
         )->where('user_id', $user->id)
             ->with([
@@ -110,19 +114,64 @@ class ReservationsController extends Controller
         return view('pages.listReservations', compact('reservations'));
     }
 
+    // Actualizar reserva desde el usuario
+    public function updateReservation(Request $request)
+    {
+        $validated = $request->validate([
+            'reservation_id' => 'required|exists:reservations,id',
+            'date'           => 'required|date',
+            'field_id'       => 'required|exists:reservations,field_id',
+            'schedule_id'    => 'required|exists:schedules,id',
+            'observation'    => 'nullable|string'
+        ]);
+
+        // Buscar la reserva para actualizar
+        $reservation = Reservation::findOrFail($request->reservation_id);
+
+        $reservation->update([
+            'date'               => $validated['date'],
+            'field_id'           => $validated['field_id'],
+            'schedule_id'        => $validated['schedule_id'],
+            'observation'        => $validated['observation']
+        ]);
+
+        return redirect()
+            ->route('reservations.list')
+            ->with('success', 'Reserva actualizada correctamente');
+    }
+
+    // Cancelar reserva
+    public function cancel(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:reservations,id'
+        ]);
+
+        // Buscar la reserva para eliminar
+        $reservation = Reservation::findOrFail($validated['id']);
+
+        $reservation->update([
+            'status_reservation' => 'cancelada'
+        ]);
+
+        return redirect()
+            ->route('reservations.list')
+            ->with('success', 'Reserva cancelada correctamente');
+    }
+
     // Obtener los horarios disponibles por Cancha y Fecha
     public function schedulesFree(Request $request)
     {
 
         $validated = $request->validate([
-            'field_id' => 'required|exists:fields,id',
-            'date' => 'required|date'
+            'field_id'  => 'required|exists:fields,id',
+            'date'      => 'required|date'
         ]);
 
 
         $schedules = $this->getSchedulesFree(
-            (int) $request->field_id,
-            $request->date
+            (int) $validated['field_id'],
+            $validated['date']
         );
 
         return response()->json([
@@ -178,6 +227,7 @@ class ReservationsController extends Controller
             'schedule_id',
             'user_id',
             'date',
+            'observation',
             'status_reservation'
         )
             ->with([
@@ -194,22 +244,31 @@ class ReservationsController extends Controller
     // Obtener las canchas disponibles
     public function fieldsFree(Request $request)
     {
+        $validated = $request->validate([
+            'field_id'  => 'required|exists:fields,id',
+            'date'      => 'required|date'
+        ]);
+
+
         // Obtener las canchas disponibles ordenadas por nombre
         $fieldsFree = Field::select('id', 'name')
             ->where('status', 1)
             ->orderBy('name', 'desc')
             ->get();
 
-        // // Obtener los horarios disponibles para la cancha y fecha actual
-        // $schedules = $this->getSchedulesFree($request->field_id, $request->date);
+        // Obtener los horarios disponibles para la cancha y fecha actual
+        $schedules = $this->getSchedulesFree(
+            (int) $validated['field_id'],
+            $validated['date']
+        );
 
         return [
-            'fields' => $fieldsFree
-            // 'schedules' => $schedules
+            'fields' => $fieldsFree,
+            'schedules' => $schedules
         ];
     }
 
-    // Actualizar una reserva generada
+    // Actualizar una reserva generada desde Administrador
     public function update(Request $request)
     {
 
@@ -220,7 +279,6 @@ class ReservationsController extends Controller
             'schedule_id'    => 'required|exists:schedules,id',
             'status'         => 'required|in:pendiente,confirmada,cancelada,completada',
         ]);
-
 
         // Buscar la reserva para actualizar
         $reservation = Reservation::findOrFail($request->reservation_id);

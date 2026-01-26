@@ -86,7 +86,7 @@
 }
 
 /* Alert Danger */
-.alert-danger {
+.alert-error {
     background: #fef2f2;
     color: #991b1b;
     border-color: #fecaca;
@@ -115,7 +115,7 @@
 .alert-success::before {
     content: '✔️';
 }
-.alert-danger::before {
+.alert-error::before {
     content: '❌';
 }
 .alert-warning::before {

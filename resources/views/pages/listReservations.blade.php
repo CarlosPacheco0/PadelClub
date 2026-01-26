@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <h2 class="content-title">Mis reservas</h2>
 
     <table class="table">
@@ -16,6 +15,7 @@
                 <th>Fecha de reserva</th>
                 <th>Hora</th>
                 <th>Estado</th>
+                <th>Observación</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -29,20 +29,31 @@
                     <td>
                         {{ $reservation->schedule->start_time->format('H:i') . ' - ' . $reservation->schedule->end_time->format('H:i') }}
                     </td>
-                    <td>{{ $reservation->status_reservation }}</td>
-                    {{-- <td class="actions-table">
-                        <button class="btn btn-edit" onclick='openReservationModal({{ $reservation }})'>
-                            Editar
-                        </button>
-                        
-                        <form action="{{ route('reservation.delete') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
+                    <td>{{ mb_convert_case( $reservation->status_reservation,  MB_CASE_TITLE, "UTF-8" ) }}</td>
+                    <td>{{ $reservation->observation }}</td>
 
-                            <input type="hidden" name="id" value="{{ $reservation->id }}">
-                            <button class="btn btn-delete" type="submit">Eliminar</button>
-                        </form>
-                    </td> --}}
+
+                    <td class="actions-table">
+                        @if ($reservation->status_reservation != 'cancelada')
+                            <button class="btn btn-edit" onclick='openReservationModal({{ $reservation }})'>
+                                Editar
+                            </button>
+
+                            <button class="btn btn-delete" type="button"
+                                onclick="cancelReservation({{ $reservation->id }})">Cancelar</button>
+
+                            <form id="form-cancel-{{ $reservation->id }}" method="POST"
+                                action="{{ route('reservation.cancel') }}">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="id" value="{{ $reservation->id }}">
+                            </form>
+                        @else
+                            <button class="btn btn-edit btn-disabled">Editar</button>
+                            <button class="btn btn-delete btn-disabled">Cancelar</button>
+                        @endif
+
+                    </td>
                 </tr>
             @empty
                 <tr>
@@ -60,7 +71,7 @@
 
             <h2 id="modalTitle">Editar Reserva</h2>
 
-            <form action="{{ route('reservation.update') }}" method="POST">
+            <form action="{{ route('reservation-list') }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -87,18 +98,19 @@
                     <select name="schedule_id" id="res_schedule" required></select>
                 </div>
 
+                {{-- Input del estado de la reserva --}}
+                <input type="hidden" id="status" name="status">
+
                 <div>
-                    <label>Estado</label>
-                    <select name="status" id="res_status" required>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="confirmada">Confirmada</option>
-                        <option value="cancelada">Cancelada</option>
-                        <option value="completada">Completada</option>
-                    </select>
+                    <label>Observación</label>
+                    <textarea name="observation" id="observation" rows="3" maxlength="300"></textarea>
                 </div>
 
-                <button class="btn btn-cancel" onclick="closeReservationModal()">Cancelar</button>
-                <button type="submit" class="btn btn-save">Actualizar Reserva</button>
+
+                <button type="button" class="btn btn-cancel" onclick="closeReservationModal()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-save">Actualizar</button>
             </form>
         </div>
     </div>
@@ -111,14 +123,14 @@
         function openReservationModal(reservation) {
 
             // Obtener info de campos dinamicos
-            getInfo(reservation.field.id, reservation.date, reservation);
+            getInfo(reservation.field_id, reservation.date, reservation);
 
             // === Asignamiento de valores ===
             document.getElementById('editReservationModal').style.display = 'block';
 
             // ID de la reserva y nombre de usuario
             document.getElementById('res_id').value = reservation.id;
-            document.getElementById('res_user').value = reservation.client.name;
+            document.getElementById('res_user').value = reservation.user.name;
 
 
             // Fecha de la reserva
@@ -128,7 +140,10 @@
             inputDate.value = dateFormatted;
 
             // Estado de la reserva
-            document.getElementById('res_status').value = reservation.status_reservation;
+            document.getElementById('status').value = reservation.status_reservation;
+
+            // Observación
+            document.getElementById('observation').value = reservation.observation;
 
 
             // Evento al cambiar de cancha o fecha
@@ -144,14 +159,15 @@
         }
 
         function closeReservationModal() {
+
             document.getElementById('editReservationModal').style.display = 'none';
         }
 
-        function getInfo(field_id, date, reservation) {
+        function getInfo(fieldId, date, reservation) {
 
             const URL_INFO = "{{ route('fieldsFree') }}";
 
-            fetch(`${URL_INFO}?field_id=${field_id}&date=${date}`)
+            fetch(`${URL_INFO}?field_id=${fieldId}&date=${date}`)
                 .then(res => res.json())
                 .then(data => {
 
@@ -169,7 +185,7 @@
                     })
 
                     // Asignar valor inicial
-                    selectFields.value = field_id;
+                    selectFields.value = fieldId;
 
 
                     // Información de los horarios
@@ -177,8 +193,11 @@
                     selectSchedules.innerHTML = `<option value="">-- Seleccione un horario --</option>`;
 
                     // Validamos que el Horarios actual de la reserva
-                    // no exista para agregarlos manualmente
-                    if (!schedules.some(s => s.id === reservation.schedule_id)) {
+                    // no exista para agregarlo manualmente
+                    if (
+                        date == reservation.date &&
+                        !schedules.some(s => s.id === reservation.schedule_id)
+                    ) {
 
                         // Agregamos el horario actual al array
                         schedules = [
@@ -191,7 +210,6 @@
 
                         // Ordenarmos de manera ASC por el ID
                         schedules.sort((a, b) => a.id - b.id);
-
                     }
 
                     schedules.forEach(schedule => {
@@ -219,6 +237,29 @@
             if (!fieldId || !date) return;
 
             getInfo(fieldId, date, reservation);
+        }
+
+        function cancelReservation(reservationId) {
+            Swal.fire({
+                title: 'Cancelar reserva',
+                text: '¿Estás seguro de cancelar esta reserva?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cancelar',
+                cancelButtonText: 'No',
+                customClass: {
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document
+                        .getElementById(`form-cancel-${reservationId}`)
+                        .submit();
+                }
+            });
+
         }
     </script>
 @endsection

@@ -1,3 +1,8 @@
+import Swal from 'sweetalert2';
+
+window.Swal = Swal; // 👈 hacerlo global
+
+
 // Alertas desde el js
 window.showAlert = function (type, message) {
     const alert = document.getElementById('js-alert');
@@ -13,6 +18,8 @@ window.showAlert = function (type, message) {
     }, 3000);
 };
 
+
+// Funcionalidad el submenu
 function setupDropdown(triggerId, dropdownId) {
     const trigger = document.getElementById(triggerId);
     const dropdown = document.getElementById(dropdownId);

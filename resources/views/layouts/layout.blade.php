@@ -40,11 +40,20 @@
 
         {{-- Alertas correspondientes desde el backend --}}
         @if (session('success'))
-            <x-alert type="success" :message="session('success')" />
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    showAlert('success', @json(session('success')));
+                });
+            </script>
         @endif
 
+
         @if (session('error'))
-            <x-alert type="danger" :message="session('error')" />
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    showAlert('error', @json(session('error')));
+                });
+            </script>
         @endif
 
 

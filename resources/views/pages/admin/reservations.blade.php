@@ -16,6 +16,7 @@
                 <th>Fecha de reserva</th>
                 <th>Hora</th>
                 <th>Estado</th>
+                <th>Observación</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
                         {{ $reservation->schedule->start_time->format('H:i') . ' - ' . $reservation->schedule->end_time->format('H:i') }}
                     </td>
                     <td>{{ $reservation->status_reservation }}</td>
+                    <td>{{ $reservation->observation }}</td>
                     <td class="actions-table">
                         <button class="btn btn-edit" onclick='openReservationModal({{ $reservation }})'>
                             Editar
@@ -118,7 +120,7 @@
 
             // ID de la reserva y nombre de usuario
             document.getElementById('res_id').value = reservation.id;
-            document.getElementById('res_user').value = reservation.client.name;
+            document.getElementById('res_user').value = reservation.user.name;
 
 
             // Fecha de la reserva
