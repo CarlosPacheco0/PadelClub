@@ -119,6 +119,13 @@ Route::middleware(['auth', 'validate_role:admin'])->group(function () {
     Route::delete('/reservations', [ReservationsController::class, 'delete'])
         ->name('reservation.delete');
 
+    Route::get('/fields-free', [ReservationsController::class, 'fieldsFree'])
+        ->name('fields.free');
+
+    Route::put('/reservations-cancel', [ReservationsController::class, 'cancel'])
+        ->name('res.cancel');
+
+
 
 
     // Gestion de horarios

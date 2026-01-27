@@ -30,7 +30,9 @@ class FieldsController extends Controller
             ]);
         }
 
-        return redirect(route('fields'));
+        return redirect()
+            ->route('fields')
+            ->with('success', 'Cancha registrada correctamente');
     }
 
     // Eliminar registro
@@ -42,7 +44,9 @@ class FieldsController extends Controller
             $field->delete();
         }
 
-        return redirect(route('fields'));
+        return redirect()
+            ->route('fields')
+            ->with('success', 'Cancha eliminada correctamente');
     }
 
     // Actualización de registros.
@@ -63,6 +67,8 @@ class FieldsController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect(route('fields'));
+        return redirect()
+            ->route('fields')
+            ->with('success', 'Cancha actualizada correctamente');
     }
 }

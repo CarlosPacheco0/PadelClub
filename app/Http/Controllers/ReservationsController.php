@@ -155,7 +155,7 @@ class ReservationsController extends Controller
         ]);
 
         return redirect()
-            ->route('reservations.list')
+            ->route(($request->flag != 'admin') ? 'reservations.list' : 'reservations')
             ->with('success', 'Reserva cancelada correctamente');
     }
 

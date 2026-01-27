@@ -1,52 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite(['resources/css/auth.css'])
 </head>
+
 <body>
 
-<div class="auth-container">
-    <form class="auth-card" method="POST" action="{{ route('register.store') }}">
+    <div class="auth-container">
 
-        @csrf
+        <a href="{{ route('home') }}" class="btn-back">
+            ← Volver al inicio
+        </a>
 
-        <h2>Registro</h2>
 
-        <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" name="name" required>
-        </div>
+        <form class="auth-card card-register" method="POST" action="{{ route('register.store') }}">
+            @csrf
 
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required>
-        </div>
+            <h1>🎾 Crear cuenta</h1>
+            <p class="subtitle">Regístrate y reserva en segundos</p>
 
-        <div class="form-group">
-            <label>Teléfono</label>
-            <input type="number" name="phone" required>
-        </div>
+            <div class="form-grid">
 
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password" required>
-        </div>
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="name">Nombre completo</label>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                            placeholder="Juan Pérez">
+                    </div>
 
-        <div class="form-group">
-            <label>Confirmar contraseña</label>
-            <input type="password" name="password_confirmation" required>
-        </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                            placeholder="correo@email.com">
+                    </div>
 
-        <button type="submit" class="btn">Registrarse</button>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required
+                            placeholder="099 999 9999">
+                    </div>
+                </div>
 
-        <p class="auth-link">
-            ¿Ya tienes cuenta? <a href="{{ route('login') }}">Inicia sesión</a>
-        </p>
-    </form>
-</div>
+                <!-- COLUMNA DERECHA -->
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" required placeholder="••••••••">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirmar contraseña</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" required
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Registrarme
+            </button>
+
+            <p class="footer-text">
+                ¿Ya tienes cuenta?
+                <a href="{{ route('login') }}">Iniciar sesión</a>
+            </p>
+
+        </form>
+
+    </div>
+
 
 </body>
+
 </html>

@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <h2 class="content-title">Gestión de reservas</h2>
 
     <table class="table">
@@ -32,18 +31,28 @@
                     </td>
                     <td>{{ $reservation->status_reservation }}</td>
                     <td>{{ $reservation->observation }}</td>
-                    <td class="actions-table">
-                        <button class="btn btn-edit" onclick='openReservationModal({{ $reservation }})'>
-                            Editar
-                        </button>
-                        
-                        <form action="{{ route('reservation.delete') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
 
-                            <input type="hidden" name="id" value="{{ $reservation->id }}">
-                            <button class="btn btn-delete" type="submit">Eliminar</button>
-                        </form>
+                    <td class="actions-table">
+                        @if ($reservation->status_reservation != 'cancelada')
+                            <button class="btn btn-edit" onclick='openReservationModal({{ $reservation }})'>
+                                Editar
+                            </button>
+
+                            <button class="btn btn-delete" type="button"
+                                onclick="cancelReservation({{ $reservation->id }})">Cancelar</button>
+
+                            <form id="form-cancel-{{ $reservation->id }}" method="POST"
+                                action="{{ route('res.cancel') }}">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="id" value="{{ $reservation->id }}">
+                                <input type="hidden" name="flag" value="admin">
+                            </form>
+                        @else
+                            <button class="btn btn-edit btn-disabled">Editar</button>
+                            <button class="btn btn-delete btn-disabled">Cancelar</button>
+                        @endif
+
                     </td>
                 </tr>
             @empty
@@ -99,6 +108,12 @@
                     </select>
                 </div>
 
+                <div>
+                    <label>Observación</label>
+                    <textarea name="observation" id="observation" rows="3" maxlength="300" disabled></textarea>
+                </div>
+
+
                 <button class="btn btn-cancel" onclick="closeReservationModal()">Cancelar</button>
                 <button type="submit" class="btn btn-save">Actualizar Reserva</button>
             </form>
@@ -113,7 +128,7 @@
         function openReservationModal(reservation) {
 
             // Obtener info de campos dinamicos
-            getInfo(reservation.field.id, reservation.date, reservation);
+            getInfo(reservation.field_id, reservation.date, reservation);
 
             // === Asignamiento de valores ===
             document.getElementById('editReservationModal').style.display = 'block';
@@ -132,6 +147,9 @@
             // Estado de la reserva
             document.getElementById('res_status').value = reservation.status_reservation;
 
+            // Observación
+            document.getElementById('observation').value = reservation.observation;
+
 
             // Evento al cambiar de cancha o fecha
             inputDate.addEventListener('change', () => {
@@ -146,14 +164,15 @@
         }
 
         function closeReservationModal() {
+
             document.getElementById('editReservationModal').style.display = 'none';
         }
 
-        function getInfo(field_id, date, reservation) {
+        function getInfo(fieldId, date, reservation) {
 
-            const URL_INFO = "{{ route('fieldsFree') }}";
+            const URL_INFO = "{{ route('fields.free') }}";
 
-            fetch(`${URL_INFO}?field_id=${field_id}&date=${date}`)
+            fetch(`${URL_INFO}?field_id=${fieldId}&date=${date}`)
                 .then(res => res.json())
                 .then(data => {
 
@@ -171,7 +190,7 @@
                     })
 
                     // Asignar valor inicial
-                    selectFields.value = field_id;
+                    selectFields.value = fieldId;
 
 
                     // Información de los horarios
@@ -179,8 +198,11 @@
                     selectSchedules.innerHTML = `<option value="">-- Seleccione un horario --</option>`;
 
                     // Validamos que el Horarios actual de la reserva
-                    // no exista para agregarlos manualmente
-                    if (!schedules.some(s => s.id === reservation.schedule_id)) {
+                    // no exista para agregarlo manualmente
+                    if (
+                        date == reservation.date &&
+                        !schedules.some(s => s.id === reservation.schedule_id)
+                    ) {
 
                         // Agregamos el horario actual al array
                         schedules = [
@@ -193,7 +215,6 @@
 
                         // Ordenarmos de manera ASC por el ID
                         schedules.sort((a, b) => a.id - b.id);
-
                     }
 
                     schedules.forEach(schedule => {
@@ -221,6 +242,29 @@
             if (!fieldId || !date) return;
 
             getInfo(fieldId, date, reservation);
+        }
+
+        function cancelReservation(reservationId) {
+            Swal.fire({
+                title: 'Cancelar reserva',
+                text: '¿Estás seguro de cancelar esta reserva?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cancelar',
+                cancelButtonText: 'No',
+                customClass: {
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document
+                        .getElementById(`form-cancel-${reservationId}`)
+                        .submit();
+                }
+            });
+
         }
     </script>
 @endsection
