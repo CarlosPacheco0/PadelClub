@@ -9,12 +9,16 @@
     {{-- Codigo de verificación CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     @vite(['resources/css/layout.css', 'resources/css/navbar.css', 'resources/css/alerts.css', 'resources/js/app.js'])
 
     @stack('styles')
 
     @stack('scripts')
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
 </head>
