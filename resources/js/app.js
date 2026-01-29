@@ -2,7 +2,6 @@ import Swal from 'sweetalert2';
 
 window.Swal = Swal; // 👈 hacerlo global
 
-
 // Alertas desde el js
 window.showAlert = function (type, message) {
     const alert = document.getElementById('js-alert');
@@ -18,38 +17,34 @@ window.showAlert = function (type, message) {
     }, 3000);
 };
 
-
 // Funcionalidad el submenu
-function setupDropdown(triggerId, dropdownId) {
-    const trigger = document.getElementById(triggerId);
-    const dropdown = document.getElementById(dropdownId);
+document.addEventListener('click', e => {
+    document.querySelectorAll('.nav-dropdown').forEach(drop => {
+        const trigger = drop.querySelector('.nav-trigger');
 
-    if (trigger) {
-        trigger.addEventListener('click', function (e) {
-            e.stopPropagation();
-
-            // 1️⃣ Cerrar todos los dropdowns abiertos
-            document.querySelectorAll('.dropdown').forEach((d) => {
-                if (d !== dropdown) {
-                    d.style.display = 'none';
-                }
-            });
-
-            // 2️⃣ Alternar el actual
-            dropdown.style.display =
-                dropdown.style.display === 'flex' ? 'none' : 'flex';
-        });
-    }
-
-    // 3️⃣ Cerrar al hacer click fuera
-    document.addEventListener('click', function () {
-        if (dropdown) {
-            dropdown.style.display = 'none';
+        if (trigger.contains(e.target)) {
+            drop.classList.toggle('open');
+        } else {
+            drop.classList.remove('open');
         }
     });
+});
+
+// Selección de opciones del menu
+const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach((item) => {
+    item.onclick = () => menuSelected(item);
+});
+
+function menuSelected(item) {
+    menuItems.forEach((item) => {
+        item.classList.remove('active');
+    });
+
+    item.classList.add('active');
 }
 
 // Inicializar
-setupDropdown('userTrigger', 'userDropdown');
-setupDropdown('scheduleTrigger', 'scheduleDropdown');
-setupDropdown('reservationTrigger', 'reservationDropdown');
+// setupDropdown('userTrigger', 'userDropdown');
+// setupDropdown('scheduleTrigger', 'scheduleDropdown');
+// setupDropdown('reservationTrigger', 'reservationDropdown');

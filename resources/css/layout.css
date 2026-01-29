@@ -21,6 +21,10 @@ body {
     color: var(--text);
 }
 
+.content {
+    margin: 30px 40px;
+}
+
 .btn-login {
     padding: 8px 16px;
     border-radius: 8px;
