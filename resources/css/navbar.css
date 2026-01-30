@@ -1,104 +1,205 @@
-/* NAVBAR */
+/* =========================================
+   NAVBAR STYLES (Modern & Clean)
+   Nota: Asegúrate de que las variables :root estén cargadas 
+   (ya sea en este archivo o en el css principal)
+   ========================================= */
+
+/* Si este archivo se carga solo, descomenta este root. 
+   Si ya cargas reservations.css, no es necesario duplicarlo. */
+/*
+:root {
+    --primary: #4f46e5;
+    --primary-soft: #eef2ff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --bg-body: #f8fafc;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-float: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+*/
+
+/* NAVBAR CONTAINER */
 .navbar {
-    background: white;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: rgba(255, 255, 255, 0.95); /* Blanco translúcido */
+    backdrop-filter: blur(8px); /* Efecto vidrio */
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    position: sticky; /* Se pega al techo al bajar */
+    top: 0;
+    z-index: 1000;
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); /* Sombra muy sutil inicial */
 }
 
-.navbar nav {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.navbar a,
-.navbar button {
-    font-size: 16px;
+/* Estado al hacer scroll (puedes agregar esta clase con JS si quieres más sombra) */
+.navbar.scrolled {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
 .container {
-    /* max-width: calc(100% - 100px); */
     width: 100%;
-    margin: auto;
-    padding: 15px;
+    max-width: 1280px; /* Ancho máximo para pantallas grandes */
+    margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
 .nav-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
+/* LOGOTIPO */
 .logo {
-    font-weight: bold;
-    color: #1b5e20;
-    font-size: 20px;
-}
-
-nav a {
-    margin: 0 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main, #0f172a);
     text-decoration: none;
-    color: #333;
-}
-
-nav a.active, nav button.active,
-nav a:hover, nav button:hover {
-    color: #1b5e20;
-    border-bottom: 1px solid #1b5e20;
-}
-
-
-/* Configuración y cierre de sesion  */
- /* .card-trigger { */
- .nav-trigger {
-    border: none;
-    background: transparent;
+    letter-spacing: -0.03em;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.logo:hover {
+    transform: scale(1.02);
+}
+
+/* ENLACES DE NAVEGACIÓN */
+.navbar nav {
+    display: flex;
+    gap: 0.5rem; /* Espacio para los botones tipo píldora */
+    align-items: center;
+}
+
+.navbar a,
+.navbar button {
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+/* Estilo moderno para los links (Pill shape) */
+nav a {
+    text-decoration: none;
+    color: var(--text-muted, #64748b);
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px; /* Forma de píldora */
+    transition: all 0.2s ease;
+    border-bottom: none !important; /* Quitamos el borde antiguo */
+    margin: 0; /* Quitamos margin lateral antiguo */
+}
+
+/* Hover & Active State */
+nav a:hover, 
+nav a.active, 
+nav button:hover, 
+nav button.active {
+    color: var(--primary, #4f46e5);
+    background-color: var(--primary-soft, #eef2ff);
+    transform: translateY(-1px);
+}
+
+/* USER MENU / DROPDOWN */
+.nav-trigger {
+    background: transparent;
+    border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 50px; /* Redondeado completo */
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    color: var(--text-main, #0f172a);
+    font-weight: 600;
+}
+
+.nav-trigger:hover {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+/* Menú Desplegable (Estilo Tarjeta Flotante) */
+.nav-dropdown {
+    position: relative;
 }
 
 .nav-menu {
-    display: none; 
+    display: none; /* Se activa con JS agregando clase .open al padre */
     position: absolute;
+    top: 120%; /* Un poco separado del botón */
     right: 0;
+    width: 200px;
     background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    min-width: 180px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 16px; /* Bordes muy redondeados */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* Sombra flotante */
+    border: 1px solid rgba(0,0,0,0.04);
+    padding: 0.5rem;
     z-index: 100;
-
     flex-direction: column;
-    margin-right: 10px;
-    margin-top: 7px;
-    padding: 12px 0px;
+    /* Animación de entrada */
+    animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: top right;
 }
 
+.nav-dropdown.open .nav-menu {
+    display: flex;
+}
+
+/* Items del menú desplegable */
 .nav-menu a,
 .nav-menu button {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding: 10px 15px;
+    padding: 0.75rem 1rem;
     text-align: left;
-    background: none;
+    background: transparent;
     border: none;
+    border-radius: 10px; /* Items redondeados internamente */
     cursor: pointer;
     text-decoration: none;
-    color: #333;
-
-    border-bottom: 1px solid #ccc;
-    margin: 0 18px;
-    width: auto;
+    color: var(--text-muted, #64748b);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0; /* Reset margins */
+    border-bottom: none; /* Reset borders */
 }
 
 .nav-menu a:hover,
 .nav-menu button:hover {
-    background: #f5f5f5;
-} 
+    background: var(--primary-soft, #eef2ff);
+    color: var(--primary, #4f46e5);
+}
 
-.nav-dropdown.open .nav-menu {
-    display: block;
+/* Separador si lo necesitas */
+.nav-menu hr {
+    margin: 0.5rem 0;
+    border: none;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Animación Suave */
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* RESPONSIVE NAV (Básico) */
+@media (max-width: 768px) {
+    .navbar nav {
+        display: none; /* Aquí deberías implementar un menú hamburguesa si no existe */
+    }
+    
+    /* Mostrar solo logo y quizás botón de menú móvil */
 }

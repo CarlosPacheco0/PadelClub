@@ -1,28 +1,149 @@
-/* RESET */
+/* =========================================
+   1. VARIABLES & THEME CONFIGURATION
+   (Aquí se define toda la paleta de colores y efectos)
+   ========================================= */
+:root {
+    /* --- Paleta Principal (Brand) --- */
+    --primary: #4f46e5;       /* Indigo 600 */
+    --primary-dark: #3730a3;  /* Indigo 800 */
+    --primary-light: #818cf8; /* Indigo 400 */
+    --primary-soft: #eef2ff;  /* Indigo 50 */
+    --primary-glow: rgba(79, 70, 229, 0.4); 
+
+    /* --- Paleta Secundaria / Legacy --- */
+    --secondary: #1b6ca8;
+    --accent: #2ecc71;        /* Green Accent */
+    --bg-legacy: #e1e1e1;     /* Color de fondo original */
+    
+    /* --- Paleta de Acción / Estados --- */
+    --success: #10b981;       /* Emerald 500 */
+    --success-dark: #047857;  /* Emerald 700 */
+    --success-soft: #ecfdf5;  /* Emerald 50 */
+    
+    --danger: #ef4444;        /* Red 500 */
+    --danger-soft: #fef2f2;   /* Red 50 */
+    --danger-glow: rgba(239, 68, 68, 0.4);
+
+    /* --- Neutros & Fondos --- */
+    --bg-body: #f8fafc;       /* Slate 50 - Fondo moderno */
+    --bg-card: #ffffff;
+    --text-main: #0f172a;     /* Slate 900 - Texto principal */
+    --text-muted: #64748b;    /* Slate 500 - Texto secundario */
+    --text-light: #94a3b8;    /* Slate 400 */
+    --border: #c1c1c1;        /* Borde suave */
+    --text-legacy: #1f2937;   /* Variable antigua para compatibilidad */
+
+    /* --- Efectos Visuales (Radio, Sombras, Gradientes) --- */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-glow: 0 0 15px rgba(79, 70, 229, 0.3);
+
+    /* Gradientes */
+    --gradient-brand: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --gradient-header: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    --gradient-surface: linear-gradient(to bottom right, #ffffff, #f8fafc);
+}
+
+/* =========================================
+   2. RESET & GLOBAL STYLES
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* VARIABLES */
-:root {
-    --primary: #0d3b66;
-    --secondary: #1b6ca8;
-    --accent: #2ecc71;
-    --bg: #f4f6f9;
-    --text: #1f2937;
-}
-
-/* GENERAL */
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    background-color: var(--bg-legacy);
+    color: var(--text-main);
+    /* Patrón de fondo sutil */
+    background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height: 100vh;
 }
 
 .content {
     margin: 30px 40px;
+}
+
+/* Título Principal de Secciones */
+.content-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 2rem 0 1.5rem;
+    position: relative;
+    padding-left: 1rem;
+    letter-spacing: -0.025em;
+}
+
+.content-title::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%; 
+    transform: translateY(-50%);
+    width: 6px; height: 32px;
+    background: var(--primary);
+    border-radius: 4px;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+
+/* =========================================
+   4. SHARED COMPONENTS (Buttons, Cards)
+   ========================================= */
+/* Botones Generales */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    /* Actualizado al gradiente de la marca o color primary */
+    background: white;
+    color: var(--primary);
+    padding: 1rem 2rem;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.btn-secondary {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--primary-glow);
 }
 
 .btn-login {
@@ -32,122 +153,7 @@ body {
     color: #fff !important;
 }
 
-/* HERO */
-.hero {
-    height: 70vh;
-    background: linear-gradient(120deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
-}
-
-.hero h1 {
-    font-size: 42px;
-    margin-bottom: 12px;
-}
-
-.hero p {
-    font-size: 18px;
-    margin-bottom: 24px;
-    opacity: 0.9;
-}
-
-/* BUTTONS */
-.btn-primary,
-.btn-secondary {
-    padding: 14px 28px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.btn-primary {
-    background: var(--accent);
-    color: #fff;
-}
-
-.btn-primary:hover {
-    background: #27ae60;
-}
-
-.btn-secondary {
-    background: #fff;
-    color: var(--primary);
-}
-
-/* FEATURES */
-.features {
-    padding: 80px 10%;
-    text-align: center;
-}
-
-.features h2 {
-    font-size: 32px;
-    margin-bottom: 50px;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-}
-
-.feature-card {
-    background: #fff;
-    padding: 30px 20px;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease;
-}
-
-.feature-card:hover {
-    transform: translateY(-6px);
-}
-
-.feature-card .icon {
-    font-size: 40px;
-    margin-bottom: 14px;
-}
-
-.feature-card h3 {
-    margin-bottom: 10px;
-}
-
-/* CTA */
-.cta {
-    padding: 80px 10%;
-    background: linear-gradient(120deg, #1b6ca8, #4fa3d1);
-    text-align: center;
-    color: #fff;
-}
-
-.cta h2 {
-    font-size: 32px;
-    margin-bottom: 12px;
-}
-
-.cta p {
-    margin-bottom: 24px;
-}
-
-/* FOOTER */
-.footer {
-    text-align: center;
-    padding: 20px;
-    background: #fff;
-    color: #6b7280;
-    font-size: 14px;
-}
-
-/* CONTENIDO */
-.section {
-    padding: 0 20px;
-    text-align: center;
-}
-
+/* Tarjetas Genéricas */
 .cards {
     margin-top: 40px;
     display: grid;
@@ -160,7 +166,7 @@ body {
     padding: 30px;
     border-radius: 10px;
     text-decoration: none;
-    color: #333;
+    color: var(--text-legacy);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s;
 }
@@ -169,121 +175,281 @@ body {
     transform: translateY(-5px);
 }
 
-/* Tabla */
+/* =========================================
+   5. MÓDULO: RESERVAS (Tabla y Acciones)
+   ========================================= */
 
+/* --- Tabla Moderna --- */
 .table {
     width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 24%);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
-th,
-td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
+/* Encabezado Tabla */
+.table thead tr {
+    background: var(--gradient-header);
+    color: white;
 }
 
-th {
-    background-color: #0b3c5d;
-    color: #fff;
-    font-weight: normal;
+.table th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
+/* Cuerpo Tabla */
+.table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border);
 }
 
-.actions-table {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+.table tbody tr:last-child {
+    border-bottom: none;
 }
 
-tbody {
-    text-align: center;
+.table tbody tr:hover {
+    background-color: #f1f5f9;
+    transform: scale(1.002);
+}
+
+.table td {
+    padding: 1.25rem 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border);
+}
+
+.table td:nth-child(1), /* Usuario */
+.table td:nth-child(2) { /* Cancha */
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.table td:nth-child(5) { /* Estado */
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
 .empty-data {
     text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
 
-/* Botones */
-.btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-    transition: background 0.3s;
+/* --- Botones de Acción en Tabla --- */
+.actions-table {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
 }
 
-.btn-edit,
-.btn-save {
-    background-color: #1e7f43;
+/* Botón Editar (Estilo Outline Moderno) */
+.btn-edit {
+    background: white;
+    color: var(--primary);
+    border: 1px solid var(--primary-light);
 }
 
-.btn-edit:hover,
-.btn-save:hover {
-    background-color: #1c6101;
+.btn-edit:hover {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px var(--primary-glow);
+    transform: translateY(-2px);
 }
 
-.btn-delete,
+/* Botón Eliminar/Cancelar (Estilo Soft Red) */
+.btn-delete, 
 .btn-cancel {
-    background-color: #dc2626;
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .btn-delete:hover,
 .btn-cancel:hover {
-    background-color: #b71c1c;
+    background: var(--danger);
+    color: white;
+    box-shadow: 0 4px 12px var(--danger-glow);
+    transform: translateY(-2px);
+}
+
+/* Botón Guardar (Estilo Primary) */
+.btn-save {
+    background: var(--primary);
+    color: white;
+    border: none;
+}
+
+.btn-save:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 8px 20px var(--primary-glow);
+    transform: translateY(-2px);
 }
 
 .btn-disabled {
-    background-color: #e5e7eb; /* gris claro */
-    color: #9ca3af; /* texto gris */
-    border-color: #e5e7eb;
+    background: #f1f5f9;
+    color: #cbd5e1;
+    border-color: transparent;
+    cursor: not-allowed;
     pointer-events: none;
-    opacity: 1;
+    box-shadow: none !important;
 }
 
-/* Botones de acción general */
-.actions {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
+/* =========================================
+   6. MÓDULO: MODAL (Glass Effect)
+   ========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
 }
 
-/* Botoes principales */
-.actions .btn {
-    background-color: #0b3c5d;
+.modal-content {
+    background: var(--bg-card);
+    margin: 5vh auto;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-float);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.8);
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.actions .btn:hover {
-    background-color: #0b3c91;
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { 
+    from { opacity: 0; transform: translateY(40px) scale(0.95); } 
+    to { opacity: 1; transform: translateY(0) scale(1); } 
 }
 
-/* FOOTER */
-.footer {
-    text-align: center;
-    padding: 20px;
-    color: #777;
+#modalTitle {
+    margin-top: 0;
+    color: var(--text-main);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
 }
 
-/* SweetAlert  */
+.modal form div {
+    margin-bottom: 1.25rem;
+}
 
-.swal-popup {
-    border-radius: 14px;
+.modal label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+/* Inputs Modal */
+.modal input[type="text"],
+.modal input[type="date"],
+.modal select,
+.modal textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #f8fafc;
+    color: var(--text-main);
+    font-size: 0.95rem;
     font-family: inherit;
+    transition: all 0.2s;
+}
+
+.modal input:focus,
+.modal select:focus,
+.modal textarea:focus {
+    background: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+    outline: none;
+}
+
+.modal input:disabled {
+    background: #e2e8f0;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    border-color: transparent;
+}
+
+/* Botones específicos del modal */
+.modal .btn-save {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.modal .btn-cancel {
+    width: 100%;
+    margin-top: 0.5rem;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.modal .btn-cancel:hover {
+    color: var(--danger);
+    background: var(--danger-soft);
+    box-shadow: none;
+}
+
+/* =========================================
+   7. UTILIDADES & RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .content-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        margin: 10vh auto;
+    }
+}
+
+/* SweetAlert Overrides */
+.swal-popup {
+    border-radius: 14px !important;
+    font-family: inherit !important;
 }
 
 .swal-confirm {
-    background: #dc2626 !important;
+    background: var(--danger) !important;
 }
 
 .swal-cancel {
-    background: #e5e7eb !important;
-    color: #111827 !important;
+    background: var(--border) !important;
+    color: var(--text-main) !important;
 }
 
 .swal2-container {

@@ -1,36 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro - Pádel Club</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/auth.css'])
 </head>
+<body class="register-mode"> <!-- Clase extra para ajustar ancho -->
 
-<body>
+    <div class="split-screen">
+        
+        <!-- IZQUIERDA: Visual / Marca -->
+        <div class="visual-side">
+            <div class="visual-content">
+                <h2>Únete al Club</h2>
+                <p>Crea tu cuenta en segundos y empieza a reservar tus canchas favoritas hoy mismo.</p>
+            </div>
+        </div>
 
-    <div class="auth-container">
+        <!-- DERECHA: Formulario -->
+        <div class="form-side">
+            
+            <a href="{{ route('home') }}" class="btn-back">
+                ← Volver
+            </a>
 
-        <a href="{{ route('home') }}" class="btn-back">
-            ← Volver al inicio
-        </a>
+            <div class="form-container" style="max-width: 550px;"> <!-- Un poco más ancho para registro -->
+                <div class="header-text">
+                    <h1>Crear cuenta</h1>
+                    <p class="subtitle">Completa el formulario para registrarte.</p>
+                </div>
 
+                <form method="POST" action="{{ route('register.store') }}">
+                    @csrf
 
-        <form class="auth-card card-register" method="POST" action="{{ route('register.store') }}">
-            @csrf
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                                placeholder="Juan Pérez" autofocus>
+                        </div>
 
-            <h1>🎾 Crear cuenta</h1>
-            <p class="subtitle">Regístrate y reserva en segundos</p>
-
-            <div class="form-grid">
-
-                <!-- COLUMNA IZQUIERDA -->
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="name">Nombre completo</label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                            placeholder="Juan Pérez">
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required
+                                placeholder="099 999 9999">
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -39,43 +57,32 @@
                             placeholder="correo@email.com">
                     </div>
 
-                    <div class="form-group">
-                        <label for="phone">Teléfono</label>
-                        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required
-                            placeholder="099 999 9999">
-                    </div>
-                </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" name="password" required placeholder="••••••••">
+                        </div>
 
-                <!-- COLUMNA DERECHA -->
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" required placeholder="••••••••">
+                        <div class="form-group">
+                            <label for="password_confirmation">Confirmar</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" required
+                                placeholder="••••••••">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="password_confirmation">Confirmar contraseña</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required
-                            placeholder="••••••••">
-                    </div>
-                </div>
+                    <button type="submit" class="btn-primary">
+                        Registrarme
+                    </button>
 
+                    <p class="footer-text">
+                        ¿Ya tienes cuenta?
+                        <a href="{{ route('login') }}">Inicia sesión aquí</a>
+                    </p>
+                </form>
             </div>
-
-            <button type="submit" class="btn-primary">
-                Registrarme
-            </button>
-
-            <p class="footer-text">
-                ¿Ya tienes cuenta?
-                <a href="{{ route('login') }}">Iniciar sesión</a>
-            </p>
-
-        </form>
+        </div>
 
     </div>
 
-
 </body>
-
 </html>

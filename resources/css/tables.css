@@ -1,0 +1,132 @@
+/* =========================================
+   1. MÓDULO: (Tabla y Acciones)
+   ========================================= */
+
+/* --- Tabla Moderna --- */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Encabezado Tabla */
+.table thead tr {
+    background: var(--gradient-header);
+    color: white;
+}
+
+.table th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+}
+
+/* Cuerpo Tabla */
+.table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border);
+}
+
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5f9;
+    transform: scale(1.002);
+}
+
+.table td {
+    padding: 1.25rem 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border);
+}
+
+.table td:nth-child(1), /* Usuario */
+.table td:nth-child(2) { /* Cancha */
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.table td:nth-child(5) { /* Estado */
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.empty-data {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* --- Botones de Acción en Tabla --- */
+.actions-table {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+/* Botón Editar (Estilo Outline Moderno) */
+.btn-edit {
+    background: white;
+    color: var(--primary);
+    border: 1px solid var(--primary-light);
+}
+
+.btn-edit:hover {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px var(--primary-glow);
+    transform: translateY(-2px);
+}
+
+/* Botón Eliminar/Cancelar (Estilo Soft Red) */
+.btn-delete, 
+.btn-cancel {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-delete:hover,
+.btn-cancel:hover {
+    background: var(--danger);
+    color: white;
+    box-shadow: 0 4px 12px var(--danger-glow);
+    transform: translateY(-2px);
+}
+
+/* Botón Guardar (Estilo Primary) */
+.btn-save {
+    background: var(--primary);
+    color: white;
+    border: none;
+}
+
+.btn-save:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 8px 20px var(--primary-glow);
+    transform: translateY(-2px);
+}
+
+.btn-disabled {
+    background: #f1f5f9;
+    color: #cbd5e1;
+    border-color: transparent;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none !important;
+}

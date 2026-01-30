@@ -1,587 +1,281 @@
-:root {
-    /* Colores principales */
-    --primary: #2563eb;
-    --primary-dark: #1e40af;
-    --primary-light: #60a5fa;
-    --primary-soft: #eff6ff;
 
-    --success: #10b981;
-    --success-dark: #059669;
-    --success-light: #34d399;
-    --success-soft: #d1fae5;
-
-    --accent: #8b5cf6;
-    --accent-dark: #7c3aed;
-
-    /* Grises */
-    --bg: #f8fafc;
-    --bg-soft: #f1f5f9;
-    --card: #ffffff;
-    --border: #e2e8f0;
-    --border-soft: #f1f5f9;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --text-light: #94a3b8;
-
-    /* Sombras */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-    --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
-    --shadow-soft: 0 2px 12px rgba(37, 99, 235, 0.08);
-
-    /* Gradientes */
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    --gradient-hero: linear-gradient(
-        135deg,
-        #667eea 0%,
-        #764ba2 50%,
-        #f093fb 100%
-    );
-
-    /* Transiciones */
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Reset y Base */
+/* =========================================
+   RESET & BASE STYLES
+   ========================================= */
 * {
     box-sizing: border-box;
+    outline: none;
 }
 
 body {
-    font-family:
-        'Inter',
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        sans-serif;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-    color: var(--text);
-    line-height: 1.6;
-    min-height: 100vh;
+    /* background-color: var(--bg-body); */
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Contenedor principal */
+/* Títulos y Textos */
+.content-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Contenedor Principal */
 .section {
-    background: transparent;
-    min-height: 100vh;
-    padding: 2rem 0;
-}
-
-#container-section {
-    display: grid;
-    gap: 2rem;
-    max-width: 1400px;
+    padding: 2rem 1rem;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
+    min-height: 100vh;
 }
 
-/* Header mejorado con más elevación */
+/* =========================================
+   HEADER SECTION (HERO)
+   ========================================= */
 #container-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 24px;
-    box-shadow:
-        0 10px 40px rgba(102, 126, 234, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--gradient-brand);
+    border-radius: var(--radius-lg);
     padding: 3rem 2rem;
-    margin: 2rem 0;
     text-align: center;
+    color: white;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2.5rem;
     position: relative;
     overflow: hidden;
 }
 
+/* Patrón de fondo sutil para el header */
 #container-header::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(
-        circle,
-        rgba(255, 255, 255, 0.1) 0%,
-        transparent 70%
-    );
-    animation: pulse 8s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at 20% 150%, rgba(255,255,255,0.15) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 #container-header .content-title {
     color: white;
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 2.25rem;
     margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 #container-header .text-muted {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.125rem;
-    position: relative;
-    z-index: 1;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.1rem;
+    font-weight: 400;
 }
 
-/* Contenedor de fechas y horarios */
+/* =========================================
+   LAYOUT GRIDS
+   ========================================= */
+#container-section {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+}
+
+/* Contenedores Blancos (Cards Principales) */
 #container-dates,
 #container-schedules,
 #confirm-reservation {
-    background: #ffffff;
-    border-radius: 24px;
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.12),
-        0 8px 24px rgba(0, 0, 0, 0.08),
-        0 0 0 1px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    padding: 2.5rem 2rem;
-    transition: all var(--transition-base);
-    position: relative;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Canchas disponibles */
-.container-fields {
-    margin: 0 auto 2rem;
-    padding: 0;
-}
-
-.container-fields .content-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.container-fields .content-title::before {
-    content: '';
-    width: 4px;
-    height: 28px;
-    background: var(--gradient-primary);
-    border-radius: 2px;
-}
-
+/* =========================================
+   CANCHAS (FIELDS)
+   ========================================= */
 .fields-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.25rem;
-    max-width: 100%;
+    margin-top: 1.5rem;
 }
 
-/* Tarjetas de cancha mejoradas */
 .field-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    border: 2px solid var(--border);
-    border-radius: 16px;
-    background: var(--card);
     cursor: pointer;
-    transition: all var(--transition-base);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .field-card:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.field-selected {
     border-color: var(--primary);
-    transform: translateY(-6px);
-    box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.12),
-        0 4px 12px rgba(102, 126, 234, 0.2);
+    background-color: var(--primary-soft);
+    box-shadow: var(--shadow-glow);
 }
 
-.field-card.selected {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-color: var(--primary-dark);
-    box-shadow:
-        0 12px 40px rgba(102, 126, 234, 0.4),
-        0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-4px) scale(1.03);
-}
 
-.field-card.selected .field-icon {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-}
-
-.field-card.selected .field-icon svg path {
-    fill: white;
-}
-
-.field-card.selected p {
-    color: rgba(255, 255, 255, 0.9);
-}
-
+/* Icono de la cancha */
 .field-icon {
-    background: var(--primary-soft);
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
+    width: 56px;
+    height: 56px;
+    background: var(--bg-body);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
     flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-    transition: all var(--transition-base);
 }
 
-.field-info {
-    flex: 1;
-    position: relative;
-    z-index: 1;
+.field-card:hover .field-icon {
+    color: var(--primary);
+    background: white;
+}
+
+.field-selected .field-icon {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.05) rotate(-5deg);
 }
 
 .field-info h3 {
-    font-size: 1.125rem;
+    margin: 0;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 0.25rem;
+    color: var(--text-main);
 }
 
 .field-info p {
-    font-size: 0.875rem;
+    margin: 4px 0 0;
+    font-size: 0.85rem;
     color: var(--text-muted);
-    margin: 0;
 }
 
-/* Contenedor de fechas */
+/* =========================================
+   FECHAS (DATES)
+   ========================================= */
 .date-container {
-    display: grid;
-    gap: 1.5rem;
-    padding: 1.5rem 0;
-}
-
-.date-container .content-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.date-container .content-title::before {
-    content: '';
-    width: 4px;
-    height: 28px;
-    background: var(--gradient-success);
-    border-radius: 2px;
+    margin-top: 1rem;
 }
 
 .dates {
     display: flex;
-    justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
-    padding: 0 1rem;
+    padding-bottom: 0.5rem;
 }
 
-/* Tarjetas de fecha mejoradas */
+/* Tarjetas de fecha rápida */
 .date-card {
-    min-width: 140px;
-    min-height: 150px;
-    border: 2px solid var(--border);
-    border-radius: 16px;
-    padding: 1.25rem 1rem;
-    text-align: center;
+    flex: 1;
+    min-width: 120px;
+    min-height: 110px;
     background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
     cursor: pointer;
-    transition: all var(--transition-base);
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .date-card:hover {
-    border-color: var(--success);
-    transform: translateY(-6px);
-    box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.12),
-        0 4px 12px rgba(16, 185, 129, 0.2);
+    border-color: var(--primary);
+    transform: translateY(-2px);
 }
 
 .date-card-active {
-    border-color: var(--success);
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    box-shadow:
-        0 12px 40px rgba(16, 185, 129, 0.4),
-        0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-4px) scale(1.05);
-}
-
-.date-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--gradient-success);
-    opacity: 0;
-    transition: opacity var(--transition-base);
-}
-
-.date-card:hover::before {
-    opacity: 1;
-}
-
-.date-card-active::before {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.date-card-active .date-header,
-.date-card-active .date-value {
-    color: white;
+    border-color: var(--primary);
+    background-color: var(--primary-soft);
+    box-shadow: var(--shadow-glow);
 }
 
 .date-header {
     font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
     font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
 }
+
+/* .date-card-active .date-header {
+    color: rgba(255,255,255,0.6);
+} */
 
 .date-value {
     font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.5rem;
+    font-weight: 800;
+    line-height: 1.1;
 }
 
 .date-action {
-    font-size: 0.875rem;
-    color: var(--success);
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 500;
     background: transparent;
     border: none;
-    cursor: pointer;
-    font-weight: 500;
-    transition: color var(--transition-fast);
+    pointer-events: none; /* Es solo visual */
 }
 
 .date-card-active .date-action {
-    color: white;
+    color: var(--success);
 }
 
-/* Horarios disponibles */
-#container-schedules {
-    padding: 2.5rem 2rem;
-}
-
-.schedules-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-.schedules-grid .content-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.schedules-grid .content-title::before {
-    content: '⏰';
-    font-size: 1.5rem;
-}
-
-.schedules-empty {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-muted);
-}
-
-#schedules-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border: 2px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        inset 0 1px 2px rgba(0, 0, 0, 0.05);
-    background: white;
-}
-
-.schedule-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.25rem 1.5rem;
-    background: white;
-    border-bottom: 2px solid var(--border);
-    transition: all var(--transition-fast);
-    position: relative;
-}
-
-.schedule-card:last-child {
-    border-bottom: none;
-}
-
-.schedule-card:hover {
-    background: #f8fafc;
-    padding-left: 2rem;
-}
-
-/* Tarjetas de horario mejoradas */
-.schedule-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.25rem 1.5rem;
-    background: white;
-    border-bottom: 1px solid var(--border);
-    transition: all var(--transition-fast);
-    position: relative;
-}
-
-.schedule-card:last-child {
-    border-bottom: none;
-}
-
-.schedule-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background: var(--gradient-success);
-    opacity: 0;
-    transition: opacity var(--transition-fast);
-}
-
-.schedule-card:hover {
-    background: var(--bg-soft);
-}
-
-.schedule-card:hover::before {
-    opacity: 1;
-}
-
-.schedule-hour {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.schedule-hour::before {
-    content: '🕐';
-    font-size: 1.25rem;
-}
-
-.btn-reservar {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 0.625rem 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    box-shadow: var(--shadow-sm);
-}
-
-.btn-reservar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
-}
-
-.btn-reservar:active {
-    transform: translateY(0);
-}
-
-/* Modal del calendario */
+/* =========================================
+   CALENDARIO MODAL
+   ========================================= */
 .calendar-modal {
-    display: none;
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.6); /* Backdrop oscuro */
+    backdrop-filter: blur(4px);
+    display: none; /* Controlado por JS */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    animation: fadeIn var(--transition-base);
+    z-index: 9999;
 }
 
 .calendar-card {
-    position: relative;
     background: white;
-    border-radius: 28px;
-    box-shadow:
-        0 30px 90px rgba(0, 0, 0, 0.3),
-        0 10px 30px rgba(0, 0, 0, 0.2),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-    padding: 2rem;
-    max-width: 540px;
-    width: 90%;
-    animation: slideUp var(--transition-base);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.calendar-card {
-    position: relative;
-    background: white;
-    border-radius: 24px;
-    box-shadow: var(--shadow-xl);
-    padding: 2rem;
-    max-width: 540px;
-    width: 90%;
-    animation: slideUp var(--transition-base);
+    width: 100%;
+    max-width: 500px;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    padding-top: 40px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    animation: slideUp 0.3s ease-out;
 }
 
 @keyframes slideUp {
-    from {
-        transform: translateY(30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .calendar-header {
@@ -589,291 +283,319 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--border);
 }
 
 .calendar-header h3 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--text);
+    margin: 0;
 }
 
 .calendar-actions {
     display: flex;
-    gap: 0.5rem;
-    align-items: center;
+    gap: 5px;
 }
 
-.calendar-header .button-action {
-    border: none;
+.button-action {
+    /* background: var(--bg-body); */
     background: var(--primary);
-    color: white;
-    width: 36px;
-    height: 36px;
+    border: none;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.25rem;
-    transition: all var(--transition-fast);
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.calendar-header .button-action:hover {
-    background: var(--primary-dark);
-    transform: scale(1.1);
-}
-
-.btn-today {
-    border: 2px solid var(--primary);
-    background: white;
-    color: var(--primary);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 0.875rem;
-    transition: all var(--transition-fast);
+    color: #ffffff;
+    transition: background 0.2s;
 }
 
-.btn-today:hover {
-    background: var(--primary);
-    color: white;
-}
-
-.calendar-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-
-.calendar-weekdays div {
-    font-weight: 700;
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    padding: 0.75rem 0;
-}
-
-.calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.25rem;
-    text-align: center;
-}
-
-.calendar-days div {
-    padding: 0.75rem;
-    cursor: pointer;
-    border-radius: 10px;
-    font-weight: 500;
-    transition: all var(--transition-fast);
-    position: relative;
-}
-
-.calendar-days div:not(.inactive):hover {
-    background: var(--primary-soft);
-    color: var(--primary);
-    transform: scale(1.05);
-}
-
-.calendar-days .inactive {
-    color: var(--text-light);
-    cursor: default;
-}
-
-.calendar-days .selected {
-    background: var(--gradient-primary);
-    color: white;
-    box-shadow: var(--shadow-sm);
+.button-action:hover {
+    background: var(--border);
 }
 
 .close-calendar {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: var(--bg-soft);
+    background: white;
     border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
     cursor: pointer;
+    color: var(--text-muted);
+    float: right;
+    margin-top: -31px;
+    margin-right: 0;
+}
+
+.calendar-weekdays, .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.calendar-weekdays div {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+}
+
+.calendar-days div {
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--transition-fast);
-    z-index: 10;
+    font-size: 0.9rem;
+    border-radius: 50%; /* Circular */
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.close-calendar:hover {
-    background: var(--border);
-    transform: rotate(90deg);
+.calendar-days div:hover:not(.empty) {
+    background-color: var(--primary-soft);
+    color: var(--primary);
 }
 
-/* Confirmar reserva */
-#confirm-reservation {
-    padding: 2.5rem 2rem;
+.calendar-days div.selected {
+    background-color: var(--primary);
+    color: white;
 }
 
-#confirm-reservation .content-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-#confirm-reservation .text-muted {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.resumen {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #f8fafc;
+.btn-today {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 4px 12px;
     border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow:
-        inset 0 2px 8px rgba(0, 0, 0, 0.06),
-        0 1px 2px rgba(0, 0, 0, 0.05);
-    border: 2px solid #e2e8f0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =========================================
+   HORARIOS (SCHEDULES)
+   ========================================= */
+#schedules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem; /* Espacio para scrollbar */
+}
+
+/* Scrollbar personalizado */
+#schedules-list::-webkit-scrollbar {
+    width: 6px;
+}
+#schedules-list::-webkit-scrollbar-track {
+    background: var(--bg-body);
+    border-radius: 4px;
+}
+#schedules-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.schedule-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.schedule-card:hover {
+    border-color: var(--primary-light);
+    background-color: var(--bg-body);
+}
+
+.schedule-hour {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Botón Reservar */
+.btn-reservar {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-reservar:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px rgba(79, 70, 229, 0.25);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+}
+
+.empty-state svg {
+    margin-bottom: 1rem;
+    width: 64px;
+    height: 64px;
+}
+
+/* =========================================
+   PÁGINA: CONFIRMAR RESERVA
+   ========================================= */
+.resumen {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .resumen h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--text);
+    text-align: left;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 3px solid var(--success);
+    border-bottom: 2px dashed var(--border); /* Efecto Ticket */
 }
 
 .info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
-.info-field,
-.info-client {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 1.75rem;
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        0 2px 8px rgba(0, 0, 0, 0.06),
-        inset 0 0 0 1px rgba(16, 185, 129, 0.1);
-    border-left: 5px solid var(--success);
-    transition: all var(--transition-base);
-    position: relative;
+/* Cards de información (Cliente/Cancha) */
+.info-field, .info-client {
+    background: var(--bg-legacy);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
 }
 
-.info-field:hover,
-.info-client:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.15),
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        inset 0 0 0 1px rgba(16, 185, 129, 0.2);
-    border-left-width: 6px;
+.info-icon {
+    background: white;
+    color: var(--primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
 }
 
-.info-field:hover::before,
-.info-client:hover::before {
-    width: 6px;
-    left: -6px;
-    box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+.info-content p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
 }
 
-.info-field p,
-.info-client p {
-    margin: 0.5rem 0;
-    font-size: 0.9375rem;
-}
-
-.info-field strong,
-.info-client strong {
-    color: var(--text);
+.info-content strong {
+    color: var(--text-main);
     font-weight: 600;
 }
 
+/* Formulario */
 .formulario {
-    display: grid;
-    gap: 1.5rem;
-}
-
-.campo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    background: var(--bg-body);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
 }
 
 .campo label {
+    display: flex;
+    align-items: center;
     font-weight: 600;
-    color: var(--text);
-    font-size: 0.9375rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.campo label svg {
+    color: var(--text-muted);
 }
 
 .campo textarea {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     padding: 1rem;
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    font-size: 0.9375rem;
     font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
     resize: vertical;
-    transition: all var(--transition-fast);
-    min-height: 100px;
 }
 
 .campo textarea:focus {
-    outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px var(--primary-soft);
 }
 
+.campo-hint {
+    display: block;
+    text-align: right;
+    margin-top: 0.25rem;
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+/* Botón Grande Confirmar */
 .btn-confirmar {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;
+    background: var(--gradient-brand);
     color: white;
-    padding: 1rem 2rem;
-    font-size: 1.0625rem;
+    font-size: 1.1rem;
     font-weight: 700;
+    padding: 1rem;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all var(--transition-base);
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
 }
 
 .btn-confirmar:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow:
-        0 12px 32px rgba(16, 185, 129, 0.5),
-        0 4px 12px rgba(0, 0, 0, 0.15),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.1),
-        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
 }
 
-.btn-confirmar:active {
-    transform: translateY(0);
+.btn-confirmar svg {
+    margin-right: 0.5rem;
 }
 
-/* Utilidades */
-.hidden {
-    display: none !important;
-}
-
-/* Responsive */
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
 @media (max-width: 768px) {
+    #container-header {
+        padding: 2rem 1rem;
+    }
+    
     #container-header .content-title {
-        font-size: 1.875rem;
+        font-size: 1.75rem;
+    }
+
+    .info {
+        grid-template-columns: 1fr;
     }
 
     .fields-grid {
@@ -881,203 +603,19 @@ body {
     }
 
     .dates {
-        flex-direction: column;
-        align-items: stretch;
+        overflow-x: auto; /* Scroll horizontal en móviles para fechas */
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
     }
 
     .date-card {
-        min-width: 100%;
+        min-width: 140px;
+        min-height: 123px;
     }
-
-    .info {
-        grid-template-columns: 1fr;
-    }
-
-    .calendar-card {
-        width: 95%;
-        padding: 1.5rem;
-    }
-
-    #container-dates,
-    #container-schedules,
-    #confirm-reservation {
-        border-radius: 20px;
-        padding: 2rem 1.5rem;
-    }
-
-    .resumen {
-        padding: 2rem 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    #container-header {
-        padding: 2rem 1.5rem;
-    }
-
-    #container-header .content-title {
-        font-size: 1.5rem;
-    }
-
-    .field-card {
+    
+    .schedule-card {
         flex-direction: column;
+        gap: 1rem;
         text-align: center;
-    }
-}
-
-/* ========== AJUSTES ADICIONALES ========== */
-
-/* Estado vacío mejorado */
-.empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-muted);
-}
-
-.empty-state svg {
-    margin-bottom: 1rem;
-    opacity: 0.5;
-}
-
-.empty-state p {
-    font-size: 1rem;
-    max-width: 400px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-/* Iconos SVG en field-card */
-.field-card .field-icon svg path {
-    fill: var(--primary);
-    transition: fill var(--transition-base);
-}
-
-/* Iconos en info cards */
-.info-field,
-.info-client {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-}
-
-.info-icon {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(
-        135deg,
-        rgba(16, 185, 129, 0.15) 0%,
-        rgba(5, 150, 105, 0.15) 100%
-    );
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow:
-        0 4px 12px rgba(16, 185, 129, 0.2),
-        inset 0 2px 4px rgba(255, 255, 255, 0.5);
-    border: 2px solid rgba(16, 185, 129, 0.2);
-}
-
-.info-icon svg {
-    color: var(--success-dark);
-    filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.3));
-}
-
-.info-content {
-    flex: 1;
-}
-
-.info-content p {
-    margin: 0.5rem 0;
-    font-size: 0.9375rem;
-    line-height: 1.6;
-}
-
-/* Label con iconos */
-.campo label {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    color: var(--text);
-    font-size: 0.9375rem;
-}
-
-.campo label svg {
-    color: var(--success);
-}
-
-/* Hint del campo */
-.campo-hint {
-    font-size: 0.8125rem;
-    color: var(--text-light);
-    margin-top: 0.25rem;
-    display: block;
-}
-
-.btn-confirmar:active {
-    transform: translateY(-1px) scale(0.98);
-    box-shadow:
-        0 6px 16px rgba(16, 185, 129, 0.4),
-        0 2px 6px rgba(0, 0, 0, 0.1),
-        inset 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-/* Botones del calendario con iconos SVG */
-.calendar-header .button-action svg {
-    display: block;
-}
-
-/* Mejora del placeholder del textarea */
-.campo textarea {
-    padding: 1.25rem;
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    font-size: 0.9375rem;
-    font-family: inherit;
-    resize: vertical;
-    transition: all var(--transition-fast);
-    min-height: 100px;
-    background: #ffffff;
-    box-shadow:
-        inset 0 2px 4px rgba(0, 0, 0, 0.06),
-        0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.campo textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow:
-        0 0 0 4px rgba(37, 99, 235, 0.1),
-        inset 0 2px 4px rgba(0, 0, 0, 0.06),
-        0 4px 12px rgba(37, 99, 235, 0.15);
-    transform: translateY(-2px);
-}
-
-/* Contador de caracteres (opcional - requiere JS) */
-.campo[data-maxlength] {
-    position: relative;
-}
-
-.campo[data-maxlength]::after {
-    content: attr(data-count) ' / ' attr(data-maxlength);
-    position: absolute;
-    bottom: -1.5rem;
-    right: 0;
-    font-size: 0.75rem;
-    color: var(--text-light);
-}
-
-/* Responsive para info cards con iconos */
-@media (max-width: 768px) {
-    .info-field,
-    .info-client {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .info-content {
-        width: 100%;
     }
 }

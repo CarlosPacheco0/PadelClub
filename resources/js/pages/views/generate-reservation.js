@@ -69,8 +69,8 @@ generateDates();
 /* ==== SELECCIONAR CANCHA ==== */
 function selectField(element) {
     // Si ya está seleccionada → deseleccionar
-    if (element.classList.contains('field-active')) {
-        element.classList.remove('field-active');
+    if (element.classList.contains('field-selected')) {
+        element.classList.remove('field-selected');
         fieldSelected = null;
         return;
     }
@@ -78,10 +78,10 @@ function selectField(element) {
     // Quitar selección a las demás
     document
         .querySelectorAll('.field-card')
-        .forEach((card) => card.classList.remove('field-active'));
+        .forEach((card) => card.classList.remove('field-selected'));
 
     // Seleccionar la nueva
-    element.classList.add('field-active');
+    element.classList.add('field-selected');
     fieldSelected = element.dataset.id;
 
     if (dateSelected) getSchedulesFree();
