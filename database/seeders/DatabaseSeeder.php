@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
 
         // Llamar el Factory
-        Field::factory(5)->create(); // Canchas
+        // Field::factory(5)->create(); // Canchas
         Schedule::factory(6)->create(); // Horarios
 
 
