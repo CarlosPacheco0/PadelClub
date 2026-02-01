@@ -27,7 +27,7 @@
             </button>
 
             <div class="nav-menu">
-                <a href="{{ route('profile.edit') }}">⚙️ Configuración</a>
+                {{-- <a href="">⚙️ Configuración</a> --}}
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
