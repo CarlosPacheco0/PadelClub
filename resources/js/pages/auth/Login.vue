@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { register } from '@/routes';
-import { store } from '@/routes/login';
+import { login as store } from '@/routes/';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 
