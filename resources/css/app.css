@@ -1,5 +1,21 @@
 @import './layout.css';
 
+/* IMPORT CSS  */
+@import './alerts.css';
+@import './auth.css';
+@import './contact.css';
+@import './dashboard.css';
+@import './fields.css';
+@import './generate-reservation.css';
+@import './home.css';
+@import './information.css';
+@import './navbar.css';
+@import './reservations.css';
+@import './schedule_assignment.css';
+@import './schedules.css';
+@import './tables.css';
+@import './users.css';
+
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
