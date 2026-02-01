@@ -1,8 +1,5 @@
 import Swal from 'sweetalert2';
 
-import './pages/views/generate-reservation.js';
-import './pages/views/layout.js';
-
 window.Swal = Swal; // 👈 hacerlo global
 
 // Alertas desde el js

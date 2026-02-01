@@ -4,13 +4,15 @@ import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
+import { glob } from 'glob';
+
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/app.js', 
-                'resources/css/app.css'
+                ...glob.sync('resources/css/*.css'),
+                ...glob.sync('resources/js/*.js')
             ],
             ssr: 'resources/js/ssr.ts',
             refresh: true,
