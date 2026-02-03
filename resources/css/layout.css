@@ -27,9 +27,11 @@
     /* --- Neutros & Fondos --- */
     --bg-body: #f8fafc;       /* Slate 50 - Fondo moderno */
     --bg-card: #ffffff;
+    --bg-light: #f8f9fa;
     --text-main: #0f172a;     /* Slate 900 - Texto principal */
     --text-muted: #64748b;    /* Slate 500 - Texto secundario */
     --text-light: #94a3b8;    /* Slate 400 */
+    --text-dark: #2d3748;
     --border: #c1c1c1;        /* Borde suave */
     --text-legacy: #1f2937;   /* Variable antigua para compatibilidad */
 

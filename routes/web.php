@@ -154,6 +154,11 @@ Route::middleware(['auth', 'validate_role:admin'])->group(function () {
         ->name('assignment.delete');
 
 
+    // Definir precio a los horarios
+    Route::get('/schedules/update-lote', [SchedulesController::class, 'rateManagement'])
+        ->name('schedules.rateManagement');
+
+
 
 
     // Gestión de Usuarios

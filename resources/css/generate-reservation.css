@@ -315,6 +315,32 @@ body {
     background: var(--border);
 }
 
+.nav-btn {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: var(--text-main);
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
 .close-calendar {
     background: white;
     border: none;
@@ -375,6 +401,7 @@ body {
    ========================================= */
 #schedules-list {
     display: flex;
+    text-align: center;
     flex-direction: column;
     gap: 0.5rem;
     max-height: 400px;

@@ -1,126 +1,117 @@
-/* ===== ALERTAS BASE ===== */
-.alert {
-    padding: 14px 18px;
-    margin-bottom: 16px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    background: #f9fafb;
-    color: #1f2937;
-    border: 1px solid transparent;
-
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-
-.alert-fixed {
+/* Contenedor posicionado */
+.toast-container {
     position: fixed;
     top: 20px;
     right: 20px;
-
-    min-width: 320px;
-    max-width: 380px;
-
     z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.d-none {
-    display: none !important;
+/* La tarjeta de la alerta */
+.toast-card {
+    background: rgba(255, 255, 255, 0.95); /* Blanco casi opaco */
+    backdrop-filter: blur(10px); /* Efecto vidrio sutil */
+    min-width: 300px;
+    max-width: 400px;
+    padding: 16px;
+    border-radius: 16px; /* Bordes redondeados consistentes */
+    box-shadow: 0 0 25px -8px rgb(0 0 0);
+    border: 1px solid var(--slate-100, #f1f5f9);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Rebote suave */
+    overflow: hidden;
+    position: relative;
 }
 
-/* Animación */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Estado visible */
+.toast-card.show {
+    transform: translateX(0);
 }
 
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+/* Icono Container */
+.toast-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
 }
 
-.alert-fixed {
-    animation: slideInRight 0.3s ease-out;
+/* Contenido de texto */
+.toast-content {
+    flex: 1;
 }
 
-/* Texto */
-.alert strong {
-    font-weight: 600;
+.toast-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--slate-800, #1e293b);
+    margin-bottom: 2px;
 }
 
-/* Botón cerrar (opcional) */
-.alert .close-alert {
-    margin-left: auto;
+.toast-message {
+    font-size: 0.85rem;
+    color: var(--slate-500, #64748b);
+    line-height: 1.4;
+}
+
+/* Botón cerrar */
+.toast-close {
     background: none;
     border: none;
-    font-size: 18px;
+    color: #94a3b8;
     cursor: pointer;
-    opacity: 0.6;
+    padding: 0;
+    font-size: 1rem;
+    transition: color 0.2s;
 }
+.toast-close:hover { color: #475569; }
 
-.alert .close-alert:hover {
-    opacity: 1;
+/* --- Variantes de Color (Sutiles) --- */
+
+/* Éxito (Verde suave) */
+.toast-success .toast-icon {
+    background: #dcfce7; /* Green 100 */
+    color: #16a34a;      /* Green 600 */
 }
-
-/* Alert Suuccess */
-.alert-success {
-    background: #ecfdf5;
-    color: #065f46;
-    border-color: #6ee7b7;
-}
-
-/* Alert Danger */
-.alert-error {
-    background: #fef2f2;
-    color: #991b1b;
-    border-color: #fecaca;
-}
-
-/* Alert Warning */
-.alert-warning {
-    background: #fffbeb;
-    color: #92400e;
-    border-color: #fde68a;
-}
-
-/* Alert Info  */
-.alert-info {
-    background: #eff6ff;
-    color: #1e40af;
-    border-color: #bfdbfe;
-}
-
-/* Iconos de alertas */
-.alert::before {
+.toast-success::before {
     content: '';
-    font-size: 18px;
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #22c55e;
 }
 
-.alert-success::before {
-    content: '✔️';
+/* Error (Rojo suave) */
+.toast-error .toast-icon {
+    background: #fee2e2; /* Red 100 */
+    color: #dc2626;      /* Red 600 */
 }
-.alert-error::before {
-    content: '❌';
+.toast-error::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #ef4444;
 }
-.alert-warning::before {
-    content: '⚠️';
+
+/* Info (Azul suave - Tu color de marca) */
+.toast-info .toast-icon {
+    background: #e0f2fe; /* Blue 100 */
+    color: #0284c7;      /* Blue 600 */
 }
-.alert-info::before {
-    content: 'ℹ️';
+.toast-info::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #0ea5e9;
 }

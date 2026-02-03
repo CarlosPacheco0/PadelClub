@@ -61,7 +61,7 @@
                             </button>
 
                             <div class="calendar-header">
-                                <button id="prevBtn" onclick="prevMonth()" class="button-action" aria-label="Mes anterior">
+                                <button id="prevBtn" onclick="prevMonth()" class="nav-btn" aria-label="Mes anterior">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                         <path fill="currentColor" d="M15.41 7.41L14 6l-6 6l6 6l1.41-1.41L10.83 12z"/>
                                     </svg>
@@ -71,7 +71,7 @@
 
                                 <div class="calendar-actions">
                                     <button onclick="goToCurrentMonth()" class="btn-today">Hoy</button>
-                                    <button onclick="nextMonth()" class="button-action" aria-label="Mes siguiente">
+                                    <button onclick="nextMonth()" class="nav-btn" aria-label="Mes siguiente">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                             <path fill="currentColor" d="M8.59 16.59L10 18l6-6l-6-6l-1.41 1.41L13.17 12z"/>
                                         </svg>

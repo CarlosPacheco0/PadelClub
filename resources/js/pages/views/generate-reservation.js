@@ -10,7 +10,7 @@ let fieldSelected = null;
 let dateSelected = null;
 
 const today = new Date();
-let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+let currentDate = new Date(today.getFullYear(), today.getMonth(), 1); 
 
 /* =====================================================
    ELEMENTOS DOM
@@ -117,7 +117,7 @@ function selectDate(element) {
 ===================================================== */
 function getSchedulesFree() {
     if (!fieldSelected || !dateSelected) {
-        showAlert('error', 'Debe seleccionar una cancha y fecha deseada');
+        showToast('error', 'Error', 'Debe seleccionar una cancha y fecha deseada');
         return;
     }
 

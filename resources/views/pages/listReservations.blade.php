@@ -126,7 +126,7 @@
             getInfo(reservation.field_id, reservation.date, reservation);
 
             // === Asignamiento de valores ===
-            document.getElementById('editReservationModal').style.display = 'block';
+            document.getElementById('editReservationModal').style.display = 'flex';
 
             // ID de la reserva y nombre de usuario
             document.getElementById('res_id').value = reservation.id;

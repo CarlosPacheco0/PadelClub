@@ -3,7 +3,7 @@
 <x-nav-link route="reservations" label="Reservas" />
 
 @php
-    $horariosActive = request()->routeIs('schedules*', 'schedule.assignment');
+    $horariosActive = request()->routeIs('schedules*', 'schedule.assignment', 'hours.price');
 @endphp
 
 <div class="nav-dropdown">
@@ -14,6 +14,7 @@
     <div class="nav-menu">
         <a href="{{ route('schedules') }}">📅 Horarios</a>
         <a href="{{ route('schedule.assignment') }}">📅 Asignación de horarios</a>
+        <a href="{{ route('schedules.rateManagement') }}">📅 Gestión de Tarifas</a>
     </div>
 </div>
 

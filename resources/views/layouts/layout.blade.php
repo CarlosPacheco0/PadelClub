@@ -39,14 +39,15 @@
     <main class="content">
 
         {{-- Alertas desde js  --}}
-        <div id="js-alert" class="alert alert-fixed d-none" role="alert"></div>
+        {{-- <div id="js-alert" class="alert alert-fixed d-none" role="alert"></div> --}}
+        <div id="toast-container" class="toast-container"></div>
 
 
         {{-- Alertas correspondientes desde el backend --}}
         @if (session('success'))
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
-                    showAlert('success', @json(session('success')));
+                    showToast('success', 'Completado', @json(session('success')));
                 });
             </script>
         @endif
@@ -55,7 +56,7 @@
         @if (session('error'))
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
-                    showAlert('error', @json(session('error')));
+                    showToast('error', 'Error', @json(session('error')));
                 });
             </script>
         @endif

@@ -181,4 +181,11 @@ class SchedulesController extends Controller
             'message' => 'Horarios eliminados correctamente'
         ]);
     }
+
+
+    // Asignar precio a los horarios
+    public function rateManagement()
+    {
+        return view('pages.admin.rateManagement');
+    }
 }
