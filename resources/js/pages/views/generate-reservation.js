@@ -139,6 +139,8 @@ function getSchedulesFree() {
         .then((response) => {
             const schedules = response.data ?? response;
 
+            console.log(response)
+
             // Realizar scroll automatico al final.
             setTimeout(() => {
                 window.scrollTo({

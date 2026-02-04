@@ -180,42 +180,95 @@ class ReservationsController extends Controller
         ]);
     }
 
+    /**
+     * Obtiene los horarios disponibles y calcula su precio dinámicamente.
+     * Refactorizado para alto rendimiento y legibilidad.
+     */
     private function getSchedulesFree(int $field_id, string $date): array
     {
-        // Obtener horarios ya asignados
-        $assignedSchedules = ScheduleDate::where('date', $date)
-            ->pluck('schedule_id')
-            ->toArray();
+        // 1. Configuración inicial
+        $carbonDate = \Carbon\Carbon::parse($date);
+        $dayWeek = $carbonDate->dayOfWeekIso;
 
-
-        // Todos los horarios asignados
-        $schedules = Schedule::whereIn('id', $assignedSchedules)
+        // 2. Optimización: Pre-procesar tarifas a una estructura ligera (Minutos)
+        // Esto evita instanciar Carbon cientos de veces dentro del bucle de horarios.
+        $rates = \App\Models\Rate::where('day_week', $dayWeek)
             ->get()
-            ->map(function ($schedule) {
-                return [
-                    'id'   => $schedule->id,
-                    'hour' => $schedule->start_time->format('H:i')
-                        . ' - ' .
-                        $schedule->end_time->format('H:i'),
+            ->map(function ($rate) {
+                // Asumimos que start_time/end_time son Carbon o Strings H:i:s
+                $start = \Carbon\Carbon::parse($rate->start_time);
+                $end = \Carbon\Carbon::parse($rate->end_time);
+                return (object) [
+                    'start_min' => ($start->hour * 60) + $start->minute,
+                    'end_min'   => ($end->hour * 60) + $end->minute,
+                    'price'     => (float) $rate->price,
                 ];
-            })
-            ->values()
-            ->toArray();
+            });
 
+        // 3. Obtener IDs necesarios (Assignments y Reservations)
+        $assignedScheduleIds = ScheduleDate::where('date', $date)
+            ->pluck('schedule_id'); // No necesitamos toArray aquí, whereIn acepta colecciones
 
-
-        // Horarios ya reservados
-        $reservations = Reservation::where('date', $date)
+        $reservedScheduleIds = Reservation::where('date', $date)
             ->where('field_id', $field_id)
             ->pluck('schedule_id')
-            ->toArray();
+            ->toArray(); // Aquí sí array para búsquedas rápidas con in_array
 
-        // Horarios disponibles
-        return array_values(
-            array_filter($schedules, function ($schedule) use ($reservations) {
-                return !in_array($schedule['id'], $reservations);
+        // 4. Procesamiento Core: Fetch -> Map (Precio) -> Filter (Reservas)
+        return Schedule::whereIn('id', $assignedScheduleIds)
+            ->get()
+            ->map(function ($schedule) use ($rates) {
+                // Cálculo de precio optimizado
+                $price = $this->calculatePriceForSchedule($schedule, $rates);
+
+                return [
+                    'id'    => $schedule->id,
+                    'hour'  => $schedule->start_time->format('H:i') . ' - ' . $schedule->end_time->format('H:i'),
+                    'price' => $price,
+                ];
             })
-        );
+            // Filtramos los horarios que ya están en la lista de reservas
+            ->filter(fn($item) => !in_array($item['id'], $reservedScheduleIds))
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * Calcula el precio basado en intersección de tiempos (Weighted Pricing).
+     * Trabaja puramente con minutos (Integers) para máxima velocidad.
+     * * @param \App\Models\Schedule $schedule
+     * @param \Illuminate\Support\Collection $normalizedRates Colección de tarifas pre-procesadas
+     */
+    private function calculatePriceForSchedule($schedule, $normalizedRates): float
+    {
+        // Convertir horario a minutos
+        $startMin = ($schedule->start_time->hour * 60) + $schedule->start_time->minute;
+        $endMin   = ($schedule->end_time->hour * 60) + $schedule->end_time->minute;
+        $duration = $endMin - $startMin;
+
+        if ($duration <= 0) return 0.00;
+
+        $totalCost = 0.0;
+        $minutesCovered = 0;
+
+        foreach ($normalizedRates as $rate) {
+            // Lógica de intersección matemática simple (sin Carbon)
+            $overlapStart = max($startMin, $rate->start_min);
+            $overlapEnd   = min($endMin, $rate->end_min);
+            $overlap      = $overlapEnd - $overlapStart;
+
+            if ($overlap > 0) {
+                // Proporción del tiempo cubierto
+                $ratio = $overlap / $duration;
+                $totalCost += ($rate->price * $ratio);
+                $minutesCovered += $overlap;
+            }
+        }
+
+        // Si no hay cobertura de tarifa, retornamos 0
+        if ($minutesCovered === 0) return 0.00;
+
+        return round($totalCost, 2);
     }
 
     // Gestión de todas las reservas (Vista principal)
