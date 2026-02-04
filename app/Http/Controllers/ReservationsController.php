@@ -203,6 +203,7 @@ class ReservationsController extends Controller
             ->toArray();
 
 
+
         // Horarios ya reservados
         $reservations = Reservation::where('date', $date)
             ->where('field_id', $field_id)

@@ -14,7 +14,7 @@
     <div class="nav-menu">
         <a href="{{ route('schedules') }}">📅 Horarios</a>
         <a href="{{ route('schedule.assignment') }}">📅 Asignación de horarios</a>
-        <a href="{{ route('schedules.rateManagement') }}">📅 Gestión de Tarifas</a>
+        <a href="{{ route('rates') }}">📅 Gestión de Tarifas</a>
     </div>
 </div>
 

@@ -15,6 +15,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FieldsController;
+use App\Http\Controllers\RateManagementController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\UsersController;
 
@@ -155,8 +156,14 @@ Route::middleware(['auth', 'validate_role:admin'])->group(function () {
 
 
     // Definir precio a los horarios
-    Route::get('/schedules/update-lote', [SchedulesController::class, 'rateManagement'])
-        ->name('schedules.rateManagement');
+    Route::get('/rates', RateManagementController::class)
+        ->name('rates');
+
+    Route::post('/rates/store', [RateManagementController::class, 'store'])
+        ->name('rate.store');
+
+    Route::post('/rates/delete', [RateManagementController::class, 'delete'])
+        ->name('rate.delete');
 
 
 

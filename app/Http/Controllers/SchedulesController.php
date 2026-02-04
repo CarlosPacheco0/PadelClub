@@ -182,10 +182,4 @@ class SchedulesController extends Controller
         ]);
     }
 
-
-    // Asignar precio a los horarios
-    public function rateManagement()
-    {
-        return view('pages.admin.rateManagement');
-    }
 }

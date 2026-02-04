@@ -22,9 +22,6 @@ return new class extends Migration
             
             // Usamos decimal para precisión en precios de moneda
             $table->decimal('price', 8, 2)->default(0.00);
-            
-            // Para saber si el horario está disponible o ya reservado
-            $table->boolean('is_available')->default(true);
 
             $table->timestamps();
 
