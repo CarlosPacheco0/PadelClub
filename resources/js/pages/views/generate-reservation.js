@@ -160,7 +160,7 @@ function getSchedulesFree() {
 
                 schedulesDiv.innerHTML += `
                 <div class="schedule-card">
-                    <span class="schedule-hour">${schedule.hour}</span>
+                    <span class="schedule-hour">${schedule.hour}</span>                     
 
                     <form method="POST" action="${reservationUrl}">
                         <input type="hidden" name="_token" value="${csrfToken}">

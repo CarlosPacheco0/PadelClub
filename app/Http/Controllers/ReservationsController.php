@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use App\Models\Reservation;
 use App\Models\Client;
 use App\Models\Field;
+use App\Models\Rate;
 use App\Models\ScheduleDate;
 use App\Models\User;
 use Carbon\Carbon;
@@ -45,7 +46,22 @@ class ReservationsController extends Controller
         // Infor del usuario en sesión
         $user = Auth::user();
 
-        return view('pages.confirm-reservation', compact('field', 'schedule', 'dateReservation', 'user'));
+        // Buscar en BD las tarifas que cubren este rango de horario
+        $date = $request->date;
+        $start_time = $schedule->start_time->format('H:i');
+        $end_time = $schedule->end_time->format('H:i');
+
+        $dayWeek = Carbon::parse($dateReservation)->dayOfWeekIso;
+
+        $ratesDB = Rate::where('day_week', $dayWeek)
+            ->where('start_time', '<', $end_time)  // La tarifa empieza antes de que acabe el turno
+            ->where('end_time', '>', $start_time)  // La tarifa termina después de que empiece el turno
+            ->take(1)
+            ->get('price');
+
+        $rate = $ratesDB->first()['price'];
+
+        return view('pages.confirm-reservation', compact('field', 'schedule', 'dateReservation', 'user', 'rate'));
     }
 
     // Se guarda la reserva en DB
@@ -180,95 +196,42 @@ class ReservationsController extends Controller
         ]);
     }
 
-    /**
-     * Obtiene los horarios disponibles y calcula su precio dinámicamente.
-     * Refactorizado para alto rendimiento y legibilidad.
-     */
-    private function getSchedulesFree(int $field_id, string $date): array
+    private function getSchedulesFree(int $field_id, string $date)
     {
-        // 1. Configuración inicial
-        $carbonDate = \Carbon\Carbon::parse($date);
-        $dayWeek = $carbonDate->dayOfWeekIso;
-
-        // 2. Optimización: Pre-procesar tarifas a una estructura ligera (Minutos)
-        // Esto evita instanciar Carbon cientos de veces dentro del bucle de horarios.
-        $rates = \App\Models\Rate::where('day_week', $dayWeek)
-            ->get()
-            ->map(function ($rate) {
-                // Asumimos que start_time/end_time son Carbon o Strings H:i:s
-                $start = \Carbon\Carbon::parse($rate->start_time);
-                $end = \Carbon\Carbon::parse($rate->end_time);
-                return (object) [
-                    'start_min' => ($start->hour * 60) + $start->minute,
-                    'end_min'   => ($end->hour * 60) + $end->minute,
-                    'price'     => (float) $rate->price,
-                ];
-            });
-
-        // 3. Obtener IDs necesarios (Assignments y Reservations)
-        $assignedScheduleIds = ScheduleDate::where('date', $date)
-            ->pluck('schedule_id'); // No necesitamos toArray aquí, whereIn acepta colecciones
-
-        $reservedScheduleIds = Reservation::where('date', $date)
-            ->where('field_id', $field_id)
+        // Obtener horarios ya asignados
+        $assignedSchedules = ScheduleDate::where('date', $date)
             ->pluck('schedule_id')
-            ->toArray(); // Aquí sí array para búsquedas rápidas con in_array
+            ->toArray();
 
-        // 4. Procesamiento Core: Fetch -> Map (Precio) -> Filter (Reservas)
-        return Schedule::whereIn('id', $assignedScheduleIds)
+
+        // Todos los horarios asignados
+        $schedules = Schedule::whereIn('id', $assignedSchedules)
             ->get()
-            ->map(function ($schedule) use ($rates) {
-                // Cálculo de precio optimizado
-                $price = $this->calculatePriceForSchedule($schedule, $rates);
-
+            ->map(function ($schedule) {
                 return [
-                    'id'    => $schedule->id,
-                    'hour'  => $schedule->start_time->format('H:i') . ' - ' . $schedule->end_time->format('H:i'),
-                    'price' => $price,
+                    'id'   => $schedule->id,
+                    'hour' => $schedule->start_time->format('H:i')
+                        . ' - ' .
+                        $schedule->end_time->format('H:i'),
                 ];
             })
-            // Filtramos los horarios que ya están en la lista de reservas
-            ->filter(fn($item) => !in_array($item['id'], $reservedScheduleIds))
             ->values()
             ->toArray();
-    }
 
-    /**
-     * Calcula el precio basado en intersección de tiempos (Weighted Pricing).
-     * Trabaja puramente con minutos (Integers) para máxima velocidad.
-     * * @param \App\Models\Schedule $schedule
-     * @param \Illuminate\Support\Collection $normalizedRates Colección de tarifas pre-procesadas
-     */
-    private function calculatePriceForSchedule($schedule, $normalizedRates): float
-    {
-        // Convertir horario a minutos
-        $startMin = ($schedule->start_time->hour * 60) + $schedule->start_time->minute;
-        $endMin   = ($schedule->end_time->hour * 60) + $schedule->end_time->minute;
-        $duration = $endMin - $startMin;
 
-        if ($duration <= 0) return 0.00;
 
-        $totalCost = 0.0;
-        $minutesCovered = 0;
+        // Horarios ya reservados
+        $reservations = Reservation::where('date', $date)
+            ->where('field_id', $field_id)
+            ->pluck('schedule_id')
+            ->toArray();
 
-        foreach ($normalizedRates as $rate) {
-            // Lógica de intersección matemática simple (sin Carbon)
-            $overlapStart = max($startMin, $rate->start_min);
-            $overlapEnd   = min($endMin, $rate->end_min);
-            $overlap      = $overlapEnd - $overlapStart;
-
-            if ($overlap > 0) {
-                // Proporción del tiempo cubierto
-                $ratio = $overlap / $duration;
-                $totalCost += ($rate->price * $ratio);
-                $minutesCovered += $overlap;
-            }
-        }
-
-        // Si no hay cobertura de tarifa, retornamos 0
-        if ($minutesCovered === 0) return 0.00;
-
-        return round($totalCost, 2);
+        // Horarios disponibles
+        return array_values(
+            array_filter($schedules, function ($schedule) use ($reservations) {
+                return !in_array($schedule['id'], $reservations);
+            })
+        );
     }
 
     // Gestión de todas las reservas (Vista principal)
