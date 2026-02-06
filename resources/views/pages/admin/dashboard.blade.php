@@ -7,55 +7,68 @@
 @section('content')
     <main class="admin-content">
 
-        <!-- HEADER -->
         <section class="dashboard-header">
-            <div>
-                <h1><i class="fa-solid fa-chart-line"></i> Dashboard</h1>
-                <p>Resumen general del club</p>
+            <div class="header-title">
+                <h1>Hola, Admin 👋</h1>
+                <p>Aquí tienes el resumen de actividad de <strong>Pádel Club</strong></p>
+            </div>
+
+            <div class="date-badge">
+                <i class="fa-regular fa-calendar"></i>
+                {{ now()->format('d M, Y') }}
             </div>
         </section>
 
-        <!-- KPIs -->
         <section class="kpi-grid">
 
-            <div class="kpi-card green">
-                <div>
+            <div class="kpi-card revenue">
+                <div class="kpi-info">
                     <span>Ingresos Hoy</span>
-                    <h2>$120</h2> <!-- QUEMADO -->
+                    <h2>$120</h2>
                 </div>
-                <i class="fa-solid fa-dollar-sign"></i>
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
             </div>
 
-            <div class="kpi-card blue">
-                <div>
+            <div class="kpi-card reservations">
+                <div class="kpi-info">
                     <span>Total Reservas</span>
                     <h2>{{ $infoReservations['amount'] }}</h2>
                 </div>
-                <i class="fa-solid fa-calendar-check"></i>
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
             </div>
 
-            <div class="kpi-card purple">
-                <div>
+            <div class="kpi-card fields">
+                <div class="kpi-info">
                     <span>Canchas Activas</span>
                     <h2>{{ $amountFields }}</h2>
                 </div>
-                <i class="fa-solid fa-table-tennis-paddle-ball"></i>
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-table-tennis-paddle-ball"></i>
+                </div>
             </div>
 
-            <div class="kpi-card yellow">
-                <div>
-                    <span>Usuarios Registrados</span>
+            <div class="kpi-card users">
+                <div class="kpi-info">
+                    <span>Usuarios</span>
                     <h2>{{ $amountUsers }}</h2>
                 </div>
-                <i class="fa-solid fa-users"></i>
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
             </div>
 
         </section>
 
-        <!-- CHART -->
         <section class="card">
             <div class="chart-header">
-                <h2><i class="fa-solid fa-chart-area"></i> Ingresos</h2>
+                <h2 class="section-title">
+                    <i class="fa-solid fa-chart-area" style="color: var(--primary)"></i>
+                    Balance de Ingresos
+                </h2>
                 <div class="chart-filters">
                     <button class="filter-btn active">Día</button>
                     <button class="filter-btn">Semana</button>
@@ -63,51 +76,75 @@
                 </div>
             </div>
 
-            <canvas height="120"></canvas> <!-- GRÁFICA QUEMADA -->
+            <div style="position: relative; width: 100%;">
+                <canvas id="incomeChart" height="100"></canvas>
+            </div>
         </section>
 
-        <!-- RESERVAS -->
         <section class="card">
-            <h2><i class="fa-solid fa-list"></i> Reservas recientes</h2>
+            <div class="chart-header">
+                <h2 class="section-title">
+                    <i class="fa-solid fa-list-check" style="color: var(--primary)"></i>
+                    Últimas Reservas
+                </h2>
+                <a href="#"
+                    style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">Ver todas
+                    &rarr;</a>
+            </div>
 
-            <table class="table-modern">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Cancha</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estado</th>
-                        <th>Observación</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($topReservations as $reservation)
+            <div class="table-container">
+                <table class="table-modern">
+                    <thead>
                         <tr>
-                            <td>{{ $reservation->user->name }}</td>
-                            <td>{{ $reservation->field->name }}</td>
-                            <td>{{ $reservation->date->format('d-m-Y') }}</td>
-                            <td>
-                                {{ $reservation->schedule->start_time->format('H:i') }}
-                                -
-                                {{ $reservation->schedule->end_time->format('H:i') }}
-                            </td>
-                            <td>
-                                <span class="status {{ $reservation->status_reservation }}">
-                                    {{ ucfirst($reservation->status_reservation) }}
-                                </span>
-                            </td>
-                            <td>{{ $reservation->observation ?? '-' }}</td>
+                            <th>Cliente</th>
+                            <th>Cancha</th>
+                            <th>Horario</th>
+                            <th>Estado</th>
+                            <th>Notas</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="empty-data">
-                                No hay registros para mostrar
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($topReservations as $reservation)
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar-small">
+                                            {{ strtoupper(substr($reservation->user->name, 0, 1)) }}
+                                        </div>
+                                        {{ $reservation->user->name }}
+                                    </div>
+                                </td>
+                                <td>{{ $reservation->field->name }}</td>
+                                <td>
+                                    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                                        <span style="font-weight: 600;">{{ $reservation->date->format('d/m') }}</span>
+                                        <span style="font-size: 0.8rem; color: #64748b;">
+                                            {{ $reservation->schedule->start_time->format('H:i') }} -
+                                            {{ $reservation->schedule->end_time->format('H:i') }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status {{ strtolower($reservation->status_reservation) }}">
+                                        {{ ucfirst($reservation->status_reservation) }}
+                                    </span>
+                                </td>
+                                <td style="color: #64748b; font-size: 0.85rem;">
+                                    {{ Str::limit($reservation->observation ?? '-', 30) }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="empty-data">
+                                    <i class="fa-regular fa-folder-open"
+                                        style="font-size: 24px; display: block; margin-bottom: 10px; opacity: 0.5;"></i>
+                                    No hay reservas recientes
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </section>
 
     </main>

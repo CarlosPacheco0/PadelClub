@@ -26,7 +26,7 @@
                 <!-- IMAGEN DEL MOCKUP: Reemplaza 'src' con la ruta de tu imagen de celular -->
                 <!-- He puesto un placeholder visual por ahora -->
                 <div class="phone-mockup">
-                    <img src="https://images.unsplash.com/photo-1595435742656-5272d0b3fa82?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80   " alt="Vista previa de la aplicación con una cancha de pádel">
+                    <img src="{{ Vite::asset('resources/images/home.jpg') }}" alt="Vista previa de la aplicación con una cancha de pádel">
                 </div>
                 <!-- Decoración de fondo (Blob) -->
                 <div class="blob-bg"></div>

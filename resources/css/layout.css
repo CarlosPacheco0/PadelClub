@@ -1,459 +1,246 @@
-/* =========================================
-   1. VARIABLES & THEME CONFIGURATION
-   (Aquí se define toda la paleta de colores y efectos)
-   ========================================= */
+/* ==========================================================================
+   1. VARIABLES & THEME CONFIGURATION (MIDNIGHT NEON THEME)
+   ========================================================================== */
 :root {
-    /* --- Paleta Principal (Brand) --- */
-    --primary: #4f46e5;       /* Indigo 600 */
-    --primary-dark: #3730a3;  /* Indigo 800 */
-    --primary-light: #818cf8; /* Indigo 400 */
-    --primary-soft: #eef2ff;  /* Indigo 50 */
-    --primary-glow: rgba(79, 70, 229, 0.4); 
+    /* --- Brand & Accents (Neón) --- */
+    --primary: #818cf8;          /* Indigo Brillante */
+    --primary-dark: #6366f1;
+    --primary-hover: #6366f1;    /* Indigo Base */
+    --primary-glow: rgba(129, 140, 248, 0.4); /* Resplandor */
+    --primary-soft: rgba(99, 102, 241, 0.15); /* Fondos translúcidos */
 
-    /* --- Paleta Secundaria / Legacy --- */
-    --secondary: #1b6ca8;
-    --accent: #2ecc71;        /* Green Accent */
-    --bg-legacy: #e1e1e1;     /* Color de fondo original */
+    --secondary: #38bdf8;        /* Sky Blue */
+    --accent: #4ade80;           /* Green Neon */
+
+    /* --- Estados (Feedback) --- */
+    --success: #34d399;          /* Emerald */
+    --success-bg: rgba(16, 185, 129, 0.15);
     
-    /* --- Paleta de Acción / Estados --- */
-    --success: #10b981;       /* Emerald 500 */
-    --success-dark: #047857;  /* Emerald 700 */
-    --success-soft: #ecfdf5;  /* Emerald 50 */
+    --warning: #fbbf24;          /* Amber */
+    --warning-bg: rgba(251, 191, 36, 0.15);
+
+    --danger: #f87171;           /* Coral Red */
+    --danger-bg: rgba(239, 68, 68, 0.15);
+    --danger-glow: rgba(248, 113, 113, 0.4);
+
+    /* --- Fondos & Superficies (DARK MODE) --- */
+    --bg-body: #0f172a;          /* Slate 900 (Fondo Principal) */
+    --bg-card: #1e293b;          /* Slate 800 (Tarjetas/Nav) */
+    --bg-input: #111827;         /* Slate 950 (Inputs profundos) */
+    --bg-hover: #334155;         /* Slate 700 (Hover effects) */
+
+    /* --- Tipografía --- */
+    --text-main: #f8fafc;        /* Blanco casi puro */
+    --text-muted: #94a3b8;       /* Gris azulado (Slate 400) */
+    --text-light: #cbd5e1;       /* Gris claro (Slate 300) */
+
+    /* --- Bordes & Efectos --- */
+    --border: #334155;           /* Borde sutil */
     
-    --danger: #ef4444;        /* Red 500 */
-    --danger-soft: #fef2f2;   /* Red 50 */
-    --danger-glow: rgba(239, 68, 68, 0.4);
-
-    /* --- Neutros & Fondos --- */
-    --bg-body: #f8fafc;       /* Slate 50 - Fondo moderno */
-    --bg-card: #ffffff;
-    --bg-light: #f8f9fa;
-    --text-main: #0f172a;     /* Slate 900 - Texto principal */
-    --text-muted: #64748b;    /* Slate 500 - Texto secundario */
-    --text-light: #94a3b8;    /* Slate 400 */
-    --text-dark: #2d3748;
-    --border: #c1c1c1;        /* Borde suave */
-    --text-legacy: #1f2937;   /* Variable antigua para compatibilidad */
-
-    /* --- Efectos Visuales (Radio, Sombras, Gradientes) --- */
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 24px;
 
-    /* Sombras */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadow-glow: 0 0 15px rgba(79, 70, 229, 0.3);
-
+    /* Sombras Adaptadas a Oscuro */
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(129, 140, 248, 0.15);
+    
     /* Gradientes */
-    --gradient-brand: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    --gradient-header: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-    --gradient-surface: linear-gradient(to bottom right, #ffffff, #f8fafc);
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    --gradient-header: linear-gradient(to right, #1e293b, #0f172a); 
 }
 
-/* =========================================
-   2. RESET & GLOBAL STYLES
-   ========================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ==========================================================================
+   2. GLOBAL RESET & BASE STYLES
+   ========================================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    background-color: var(--bg-legacy);
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-body);
     color: var(--text-main);
-    /* Patrón de fondo sutil */
-    background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-size: 32px 32px;
     min-height: 100vh;
 }
 
-.content {
-    margin: 30px 40px;
+/* Contenedor Principal (Layout) */
+.page-container, .admin-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    animation: fadeIn 0.5s ease-out;
 }
 
-/* Título Principal de Secciones */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Títulos de Sección Globales */
+.content {
+    margin: 10px 30px;
+}
+
 .content-title {
     font-size: 2rem;
     font-weight: 800;
     color: var(--text-main);
-    margin: 2rem 0 1.5rem;
-    position: relative;
-    padding-left: 1rem;
+    margin: 0;
     letter-spacing: -0.025em;
+    text-shadow: 0 0 20px rgba(255,255,255,0.1);
 }
 
-.content-title::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 50%; 
-    transform: translateY(-50%);
-    width: 6px; height: 32px;
-    background: var(--primary);
-    border-radius: 4px;
-    box-shadow: 0 0 15px var(--primary-glow);
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
 }
 
 
-/* =========================================
-   4. SHARED COMPONENTS (Buttons, Cards)
-   ========================================= */
-/* Botones Generales */
+/* ==========================================================================
+   4. UI KIT (COMPONENTES GENERALES)
+   ========================================================================== */
+
+/* --- BOTONES --- */
 .btn {
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.75rem 1.5rem; border-radius: 12px;
+    font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    border: none; transition: all 0.2s ease; gap: 8px;
     text-decoration: none;
 }
 
-.btn-primary {
-    /* Actualizado al gradiente de la marca o color primary */
-    background: white;
-    color: var(--primary);
-    padding: 1rem 2rem;
-    border-radius: 50px; /* Pill shape */
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.btn-secondary {
-    background: var(--primary);
+/* Botón Principal (Gradiente Neón) */
+.btn-primary, .btn-save, .btn-neon {
+    background: var(--gradient-primary);
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    font-weight: 700;
-    box-shadow: 0 4px 12px var(--primary-glow);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 0 15px var(--primary-glow);
+    border: 1px solid rgba(255,255,255,0.1);
 }
-
-.btn-secondary:hover {
-    background: var(--primary-light);
+.btn-primary:hover, .btn-save:hover, .btn-neon:hover {
+    filter: brightness(1.1);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px var(--primary-glow);
+    box-shadow: 0 10px 20px -5px var(--primary-glow);
 }
 
-.btn-login {
-    padding: 8px 16px;
-    border-radius: 8px;
-    background: var(--primary);
-    color: #fff !important;
+/* Botón Fantasma (Cancelar/Secundario) */
+.btn-ghost, .btn-cancel {
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+.btn-ghost:hover, .btn-cancel:hover {
+    color: white; border-color: var(--text-light);
+    background: rgba(255,255,255,0.05);
 }
 
-/* Tarjetas Genéricas */
-.cards {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+/* Botones de Icono (Tablas) */
+.btn-icon {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); padding: 6px 12px; border-radius: 8px;
+    cursor: pointer; transition: all 0.2s; font-size: 0.85rem;
+}
+.btn-icon.edit:hover {
+    border-color: var(--primary); color: var(--primary); background: var(--primary-soft);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+.btn-icon.delete:hover {
+    border-color: var(--danger); color: var(--danger); background: var(--danger-bg);
+    box-shadow: 0 0 10px var(--danger-glow);
 }
 
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--text-legacy);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-/* =========================================
-   5. MÓDULO: RESERVAS (Tabla y Acciones)
-   ========================================= */
-
-/* --- Tabla Moderna --- */
-.table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+/* --- TARJETAS --- */
+.card, .table-card {
     background: var(--bg-card);
     border-radius: var(--radius-md);
-    overflow: hidden;
+    border: 1px solid var(--border);
     box-shadow: var(--shadow-card);
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden; /* Para bordes redondeados */
 }
 
-/* Encabezado Tabla */
-.table thead tr {
-    background: var(--gradient-header);
+/* --- INPUTS & FORMS --- */
+.input-dark, select.input-dark, textarea.input-dark {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
     color: white;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none; transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    color-scheme: dark; /* Iconos blancos nativos */
 }
-
-.table th {
-    padding: 1.25rem 1.5rem;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    border: none;
+.input-dark:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+    background: #1f2937;
 }
-
-/* Cuerpo Tabla */
-.table tbody tr {
-    transition: all 0.2s ease;
-    border-bottom: 1px solid var(--border);
+label {
+    display: block; color: var(--text-muted); font-size: 0.85rem;
+    margin-bottom: 8px; font-weight: 500;
 }
+.form-group { margin-bottom: 20px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-.table tbody tr:last-child {
-    border-bottom: none;
+/* --- STATUS BADGES --- */
+.status {
+    padding: 4px 12px; border-radius: 99px;
+    font-size: 0.75rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.03em;
 }
+.status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
 
-.table tbody tr:hover {
-    background-color: #f1f5f9;
-    transform: scale(1.002);
-}
+.status.active, .status.confirmada { background: var(--success-bg); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.2); }
+.status.active::before, .status.confirmada::before { background: var(--success); box-shadow: 0 0 6px var(--success); }
 
-.table td {
-    padding: 1.25rem 1.5rem;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--border);
-}
+.status.inactive, .status.pendiente { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(251, 191, 36, 0.2); }
+.status.inactive::before, .status.pendiente::before { background: var(--warning); }
 
-.table td:nth-child(1), /* Usuario */
-.table td:nth-child(2) { /* Cancha */
-    color: var(--text-main);
-    font-weight: 600;
-}
+.status.cancelada { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(248, 113, 113, 0.2); }
+.status.cancelada::before { background: var(--danger); }
 
-.table td:nth-child(5) { /* Estado */
-    font-weight: 600;
-    text-transform: capitalize;
-}
 
-.empty-data {
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-/* --- Botones de Acción en Tabla --- */
-.actions-table {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-start;
-}
-
-/* Botón Editar (Estilo Outline Moderno) */
-.btn-edit {
-    background: white;
-    color: var(--primary);
-    border: 1px solid var(--primary-light);
-}
-
-.btn-edit:hover {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px var(--primary-glow);
-    transform: translateY(-2px);
-}
-
-/* Botón Eliminar/Cancelar (Estilo Soft Red) */
-.btn-delete, 
-.btn-cancel {
-    background: var(--danger-soft);
-    color: var(--danger);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-}
-
-.btn-delete:hover,
-.btn-cancel:hover {
-    background: var(--danger);
-    color: white;
-    box-shadow: 0 4px 12px var(--danger-glow);
-    transform: translateY(-2px);
-}
-
-/* Botón Guardar (Estilo Primary) */
-.btn-save {
-    background: var(--primary);
-    color: white;
-    border: none;
-}
-
-.btn-save:hover {
-    background: var(--primary-dark);
-    box-shadow: 0 8px 20px var(--primary-glow);
-    transform: translateY(-2px);
-}
-
-.btn-disabled {
-    background: #f1f5f9;
-    color: #cbd5e1;
-    border-color: transparent;
-    cursor: not-allowed;
-    pointer-events: none;
-    box-shadow: none !important;
-}
-
-/* =========================================
-   6. MÓDULO: MODAL (Glass Effect)
-   ========================================= */
+/* ==========================================================================
+   5. MÓDULO: MODALS (GLOBAL DARK GLASS)
+   ========================================================================== */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0; top: 0;
+    display: none; position: fixed; z-index: 2000; left: 0; top: 0;
     width: 100%; height: 100%;
-    overflow: auto;
-    background-color: rgba(15, 23, 42, 0.6);
+    background-color: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
-    animation: fadeIn 0.3s ease-out;
+    align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s ease;
 }
+.modal.show { opacity: 1; }
 
 .modal-content {
     background: var(--bg-card);
-    margin: 5vh auto;
-    padding: 2.5rem;
+    width: 90%; max-width: 500px;
     border-radius: var(--radius-lg);
+    border: 1px solid rgba(255,255,255,0.1);
     box-shadow: var(--shadow-float);
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.8);
-    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 32px;
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.modal.show .modal-content { transform: translateY(0); }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { 
-    from { opacity: 0; transform: translateY(40px) scale(0.95); } 
-    to { opacity: 1; transform: translateY(0) scale(1); } 
+.modal-title {
+    margin-top: 0; color: var(--text-main); font-size: 1.5rem;
+    text-align: center; margin-bottom: 24px; font-weight: 700;
 }
-
-#modalTitle {
-    margin-top: 0;
-    color: var(--text-main);
-    font-size: 1.5rem;
-    border-bottom: 2px solid var(--primary-light);
-    padding-bottom: 0.5rem;
-    display: inline-block;
-    margin-bottom: 1.5rem;
+.modal-buttons {
+    display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px;
 }
+.modal .btn-save { width: 100%; } /* Botón full width en modales */
 
-.modal form div {
-    margin-bottom: 1.25rem;
-}
 
-.modal label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--text-main);
-    font-size: 0.9rem;
-}
-
-/* Inputs Modal */
-.modal input[type="text"],
-.modal input[type="date"],
-.modal select,
-.modal textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: #f8fafc;
-    color: var(--text-main);
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: all 0.2s;
-}
-
-.modal input:focus,
-.modal select:focus,
-.modal textarea:focus {
-    background: white;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-glow);
-    outline: none;
-}
-
-.modal input:disabled {
-    background: #e2e8f0;
-    color: var(--text-muted);
-    cursor: not-allowed;
-    border-color: transparent;
-}
-
-/* Botones específicos del modal */
-.modal .btn-save {
-    width: 100%;
-    margin-top: 1rem;
-    padding: 1rem;
-}
-
-.modal .btn-cancel {
-    width: 100%;
-    margin-top: 0.5rem;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-}
-
-.modal .btn-cancel:hover {
-    color: var(--danger);
-    background: var(--danger-soft);
-    box-shadow: none;
-}
-
-/* =========================================
-   7. UTILIDADES & RESPONSIVE
-   ========================================= */
+/* ==========================================================================
+   9. RESPONSIVE UTILITIES
+   ========================================================================== */
 @media (max-width: 768px) {
-    .table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    
-    .content-title {
-        font-size: 1.5rem;
-    }
-
-    .modal-content {
-        padding: 1.5rem;
-        margin: 10vh auto;
-    }
-}
-
-/* SweetAlert Overrides */
-.swal-popup {
-    border-radius: 14px !important;
-    font-family: inherit !important;
-}
-
-.swal-confirm {
-    background: var(--danger) !important;
-}
-
-.swal-cancel {
-    background: var(--border) !important;
-    color: var(--text-main) !important;
-}
-
-.swal2-container {
-    z-index: 99999 !important;
+    .navbar nav { display: none; } /* Mobile Menu Logic needed */
+    .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .kpi-grid { grid-template-columns: 1fr; }
 }

@@ -1,0 +1,162 @@
+/* =================================================================
+   MÓDULO: (TABLA)
+   ================================================================= */
+
+/* Contenedor de la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    /* border-collapse: separate; */
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    /* Sombra profunda y borde sutil */
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.5),
+        0 0 0 1px var(--border);
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+/* Encabezado (Thead) */
+.table thead tr {
+    /* Fondo oscuro sólido o gradiente muy sutil */
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted); /* Color gris azulado */
+    border-bottom: 1px solid var(--border);
+
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 24px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Cuerpo (Tbody) */
+.table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border);
+}
+
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Efecto Hover en Filas (Iluminación sutil) */
+.table tbody tr:hover {
+    background-color: var(--bg-hover); /* Slate 700 */
+    transform: scale(1); /* Quitamos el scale en dark mode para evitar blur */
+}
+
+.table td {
+    padding: 1.25rem 1.5rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border);
+
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    font-size: 0.95rem;
+    vertical-align: middle;
+    transition: background 0.2s;
+}
+
+/* Celdas destacadas */
+.table td:first-child {
+    font-weight: 600;
+    color: white;
+}
+
+/* Contenedor responsivo */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Columnas destacadas */
+.table td:nth-child(1), /* Usuario */
+.table td:nth-child(2) {
+    /* Cancha */
+    color: var(--text-main); /* Blanco brillante */
+    font-weight: 600;
+}
+
+.table td:nth-child(5) {
+    /* Estado */
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.empty-data {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* --- Botones de Acción (Dentro de la Tabla) --- */
+.actions-table {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Botón Editar (Ghost Button) */
+.btn-edit {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 8px;
+}
+
+.btn-edit:hover {
+    background: var(--primary-soft);
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Botón Eliminar (Ghost Red) */
+.btn-delete,
+.btn-cancel {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    padding: 6px 16px;
+    border-radius: 8px;
+}
+
+.btn-delete:hover,
+.btn-cancel:hover {
+    background: var(--danger-soft);
+    color: #fff;
+    border-color: var(--danger);
+    box-shadow: 0 0 15px var(--danger-glow);
+}
+
+/* Efecto Hover en Filas */
+.table tr:hover td {
+    background: var(--bg-hover);
+}
+.table tr:last-child td {
+    border-bottom: none;
+}
+

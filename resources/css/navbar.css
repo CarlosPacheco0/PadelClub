@@ -1,44 +1,57 @@
 /* =========================================
-   NAVBAR STYLES (Modern & Clean)
-   Nota: Asegúrate de que las variables :root estén cargadas 
-   (ya sea en este archivo o en el css principal)
+   NAVBAR STYLES (Midnight Neon Edition)
    ========================================= */
-
-/* Si este archivo se carga solo, descomenta este root. 
-   Si ya cargas reservations.css, no es necesario duplicarlo. */
-/*
-:root {
-    --primary: #4f46e5;
-    --primary-soft: #eef2ff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --bg-body: #f8fafc;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-float: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-*/
 
 /* NAVBAR CONTAINER */
 .navbar {
-    background: rgba(255, 255, 255, 0.95); /* Blanco translúcido */
-    backdrop-filter: blur(8px); /* Efecto vidrio */
-    border-bottom: 1px solid rgba(0,0,0,0.04);
-    position: sticky; /* Se pega al techo al bajar */
+    /* Fondo oscuro translúcido (Slate 950 con alpha) */
+    background: rgba(11, 17, 32, 0.85);
+    backdrop-filter: blur(12px); /* Blur más fuerte para dark mode */
+    -webkit-backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--border); /* Borde sutil */
+    position: sticky;
     top: 0;
     z-index: 1000;
     padding: 0.75rem 0;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); /* Sombra muy sutil inicial */
+
+    /* Sombra oscura difusa */
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* Estado al hacer scroll (puedes agregar esta clase con JS si quieres más sombra) */
+.navbar .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* Estado al hacer scroll */
 .navbar.scrolled {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    background: rgba(11, 17, 32, 0.95); /* Más sólido al bajar */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
+    border-bottom-color: var(--primary-glow); /* Un toque de luz al bajar */
 }
 
 .container {
     width: 100%;
-    max-width: 1280px; /* Ancho máximo para pantallas grandes */
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
@@ -50,100 +63,147 @@
     height: 100%;
 }
 
+.navbar nav a:hover,
+.navbar nav a.active {
+    color: var(--primary);
+    background: var(--primary-soft);
+    border-color: rgba(129, 140, 248, 0.2);
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.1);
+}
+
 /* LOGOTIPO */
 .logo {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--text-main, #0f172a);
+    color: var(--text-main);
     text-decoration: none;
     letter-spacing: -0.03em;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     transition: transform 0.2s;
+
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .logo:hover {
     transform: scale(1.02);
+    color: white;
 }
 
 /* ENLACES DE NAVEGACIÓN */
 .navbar nav {
     display: flex;
-    gap: 0.5rem; /* Espacio para los botones tipo píldora */
+    gap: 0.5rem;
     align-items: center;
 }
 
 .navbar a,
 .navbar button {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-family: inherit;
 }
 
 /* Estilo moderno para los links (Pill shape) */
 nav a {
     text-decoration: none;
-    color: var(--text-muted, #64748b);
+    color: var(--text-muted); /* Gris claro */
     font-weight: 600;
     padding: 0.6rem 1.2rem;
-    border-radius: 50px; /* Forma de píldora */
+    border-radius: 50px;
     transition: all 0.2s ease;
-    border-bottom: none !important; /* Quitamos el borde antiguo */
-    margin: 0; /* Quitamos margin lateral antiguo */
+    border: 1px solid transparent; /* Reserva espacio para borde hover */
 }
 
-/* Hover & Active State */
-nav a:hover, 
-nav a.active, 
-nav button:hover, 
-nav button.active {
-    color: var(--primary, #4f46e5);
-    background-color: var(--primary-soft, #eef2ff);
+/* Hover & Active State (Neon Glow) */
+nav a:hover,
+nav a.active {
+    color: var(--primary); /* Indigo Neón */
+    background-color: rgba(129, 140, 248, 0.1); /* Fondo translúcido */
+    border-color: rgba(129, 140, 248, 0.2);
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.1); /* Glow suave */
     transform: translateY(-1px);
 }
 
-/* USER MENU / DROPDOWN */
+/* USER MENU / DROPDOWN TRIGGER */
 .nav-trigger {
     background: transparent;
-    border: none;
+    border: 1px solid transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.75rem;
     padding: 0.5rem 0.75rem;
-    border-radius: 50px; /* Redondeado completo */
-    border: 1px solid transparent;
+    border-radius: 50px;
     transition: all 0.2s;
-    color: var(--text-main, #0f172a);
+    color: var(--text-main);
     font-weight: 600;
 }
 
-.nav-trigger:hover {
-    background: #f8fafc;
-    border-color: #e2e8f0;
+.nav-trigger:hover,
+.nav-dropdown.open .nav-trigger {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border);
 }
 
-/* Menú Desplegable (Estilo Tarjeta Flotante) */
+/* Avatar dentro del trigger (si tienes uno) */
+.nav-trigger img,
+.nav-trigger .avatar-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary); /* Anillo de color */
+}
+
+/* Menú Desplegable (Tarjeta Oscura Flotante) */
 .nav-dropdown {
     position: relative;
 }
 
 .nav-menu {
-    display: none; /* Se activa con JS agregando clase .open al padre */
+    display: none;
     position: absolute;
-    top: 120%; /* Un poco separado del botón */
+    top: 130%; /* Un poco más separado */
     right: 0;
-    width: 230px;
-    background: white;
-    border-radius: 16px; /* Bordes muy redondeados */
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* Sombra flotante */
-    border: 1px solid rgba(0,0,0,0.04);
-    padding: 0.5rem;
+    width: 240px;
+
+    /* Estilo Dark Card */
+    background: var(--bg-card); /* #1e293b */
+    border-radius: 16px;
+    border: 1px solid var(--border);
+
+    /* Sombra flotante profunda */
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+
+    padding: 0.75rem;
     z-index: 100;
     flex-direction: column;
-    /* Animación de entrada */
     animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: top right;
+}
+
+/* Flechita decorativa del dropdown (opcional) */
+.nav-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 20px;
+    width: 12px;
+    height: 12px;
+    background: var(--bg-card);
+    transform: rotate(45deg);
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
 }
 
 .nav-dropdown.open .nav-menu {
@@ -160,34 +220,46 @@ nav button.active {
     text-align: left;
     background: transparent;
     border: none;
-    border-radius: 10px; /* Items redondeados internamente */
+    border-radius: 10px;
     cursor: pointer;
     text-decoration: none;
-    color: var(--text-muted, #64748b);
+    color: var(--text-light); /* Gris claro */
     font-size: 0.9rem;
     font-weight: 500;
-    margin: 0; /* Reset margins */
-    border-bottom: none; /* Reset borders */
+    transition: all 0.2s;
+    gap: 10px; /* Espacio para iconos */
 }
 
+/* Hover en items del menú */
 .nav-menu a:hover,
 .nav-menu button:hover {
-    background: var(--primary-soft, #eef2ff);
-    color: var(--primary, #4f46e5);
+    background: rgba(129, 140, 248, 0.1); /* Indigo translúcido */
+    color: var(--primary); /* Indigo Neón */
 }
 
-/* Separador si lo necesitas */
+/* Iconos dentro del menú (si usas FontAwesome) */
+.nav-menu i {
+    width: 20px;
+    text-align: center;
+    opacity: 0.7;
+}
+.nav-menu a:hover i {
+    opacity: 1;
+}
+
+/* Separador */
 .nav-menu hr {
     margin: 0.5rem 0;
     border: none;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid var(--border);
+    opacity: 0.5;
 }
 
 /* Animación Suave */
 @keyframes slideDownFade {
     from {
         opacity: 0;
-        transform: translateY(-8px) scale(0.98);
+        transform: translateY(-10px) scale(0.95);
     }
     to {
         opacity: 1;
@@ -195,11 +267,9 @@ nav button.active {
     }
 }
 
-/* RESPONSIVE NAV (Básico) */
+/* RESPONSIVE NAV */
 @media (max-width: 768px) {
     .navbar nav {
-        display: none; /* Aquí deberías implementar un menú hamburguesa si no existe */
+        display: none; /* Aquí iría tu lógica de menú móvil */
     }
-    
-    /* Mostrar solo logo y quizás botón de menú móvil */
 }
