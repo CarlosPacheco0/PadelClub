@@ -20,7 +20,7 @@ const datesContainer = document.querySelector('.date-container .dates');
 const schedulesDiv = document.querySelector('#schedules div');
 
 /* ==== FECHAS RÁPIDAS ==== */
-function generateDates(days = 3) {
+function generateDates(days = 3) {  
     datesContainer.innerHTML = '';
 
     for (let i = 0; i < days; i++) {
