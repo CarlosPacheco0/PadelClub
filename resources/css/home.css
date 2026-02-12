@@ -207,7 +207,6 @@
 }
 
 /* --- WAVE DIVIDER (Separador) --- */
-/* --- FIX: Transiciones de sección sin bloques blancos --- */
 .wave-divider {
     background: linear-gradient(
         to bottom,

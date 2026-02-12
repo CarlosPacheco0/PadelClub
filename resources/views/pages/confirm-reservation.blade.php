@@ -7,11 +7,10 @@
 @section('content')
     <section class="section">
         <div id="confirm-reservation">
-            <h2 class="content-title">Confirmar reserva</h2>
+            <h2 class="content-title">Resumen de tu reserva</h2>
             <p class="text-muted">Confirma los datos para finalizar la reserva</p>
 
             <div class="resumen">
-                <h3>Resumen de tu reserva</h3>
 
                 <div class="info">
                     {{-- Información de la cancha  --}}
@@ -89,7 +88,7 @@
                         <small class="campo-hint">Máximo 300 caracteres</small>
                     </div>
 
-                    <button class="btn-confirmar" type="submit">
+                    <button class="btn btn-primary btn-confirmar" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                             style="display: inline-block; vertical-align: middle; margin-right: 8px;">
                             <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19L21 7l-1.41-1.41z" />

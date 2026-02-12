@@ -29,6 +29,9 @@ body {
     color: var(--text-muted);
     font-size: 0.95rem;
     line-height: 1.5;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed var(--border);
+
 }
 
 /* Contenedor Principal */
@@ -59,7 +62,7 @@ body {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(circle at 20% 150%, rgba(255,255,255,0.15) 0%, transparent 50%);
+    background-image: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -108,7 +111,7 @@ body {
 }
 
 .field-card {
-    background: white;
+    /* background: white; */
     border: 2px solid var(--border);
     border-radius: var(--radius-md);
     padding: 1.25rem;
@@ -150,7 +153,7 @@ body {
 
 .field-card:hover .field-icon {
     color: var(--primary);
-    background: white;
+    /* background: white; */
 }
 
 .field-selected .field-icon {
@@ -190,8 +193,8 @@ body {
 .date-card {
     flex: 1;
     min-width: 120px;
-    min-height: 110px;
-    background: white;
+    min-height: 125px;
+    /* background: white; */
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 1rem;
@@ -249,13 +252,13 @@ body {
 }
 
 /* =========================================
-   CALENDARIO MODAL
+   CALENDARIO MODAL (MIDNIGHT NEON)
    ========================================= */
 .calendar-modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(15, 23, 42, 0.6); /* Backdrop oscuro */
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.85); /* Fondo más oscuro para concentrar la atención */
+    backdrop-filter: blur(8px);
     display: none; /* Controlado por JS */
     justify-content: center;
     align-items: center;
@@ -263,65 +266,53 @@ body {
 }
 
 .calendar-card {
-    background: white;
+    background: var(--bg-card); /* Slate 800 - ADIÓS AL BLANCO */
     width: 100%;
-    max-width: 500px;
+    max-width: 450px; /* Un poco más compacto */
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    padding-top: 40px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    animation: slideUp 0.3s ease-out;
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Animación suave */
+    position: relative;
+    color: var(--text-main);
 }
 
 @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from { transform: translateY(20px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
+/* Cabecera del Calendario */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    margin-top: 15px;
 }
 
-.calendar-header h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
+/* .calendar-header h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
     margin: 0;
-}
+    color: white;
+    text-transform: capitalize;
+} */
 
+/* Botones de Navegación (< >) */
 .calendar-actions {
     display: flex;
-    gap: 5px;
-}
-
-.button-action {
-    /* background: var(--bg-body); */
-    background: var(--primary);
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #ffffff;
-    transition: background 0.2s;
-}
-
-.button-action:hover {
-    background: var(--border);
+    gap: 10px;
 }
 
 .nav-btn {
-    background: transparent;
-    border: 1px solid #e2e8f0;
-    color: var(--text-main);
+    background: var(--bg-input); /* Fondo oscuro */
+    border: 1px solid var(--border);
+    color: white;
     width: 36px;
     height: 36px;
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -330,70 +321,110 @@ body {
 }
 
 .nav-btn:hover:not(:disabled) {
-    background: var(--primary-light);
-    color: var(--primary);
+    background: var(--primary);
     border-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
 }
 
 .nav-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
 }
 
-
-.close-calendar {
-    background: white;
-    border: none;
-    cursor: pointer;
-    color: var(--text-muted);
-    float: right;
-    margin-top: -31px;
-    margin-right: 0;
-}
-
-.calendar-weekdays, .calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-}
-
-.calendar-weekdays div {
+/* Botón Hoy */
+.btn-today {
+    background: rgba(129, 140, 248, 0.15); /* Primary Soft */
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 6px 16px;
+    border-radius: 20px;
     font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    padding-bottom: 0.5rem;
-}
-
-.calendar-days div {
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    border-radius: 50%; /* Circular */
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
 }
 
+.btn-today:hover {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Botón Cerrar (X) */
+.close-calendar {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    background: transparent; /* Quitar fondo blanco */
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    margin: 0;
+}
+
+.close-calendar:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--danger);
+}
+
+/* Grid de Días */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.calendar-weekdays div {
+    font-size: 0.75rem;
+    color: var(--text-muted); /* Gris claro */
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px; /* Espacio entre días */
+}
+
+.calendar-days div {
+    height: 38px;
+    width: 38px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    border-radius: 10px; /* Bordes redondeados modernos */
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-main); /* Números blancos */
+}
+
+/* Interacción con los días */
 .calendar-days div:hover:not(.empty) {
-    background-color: var(--primary-soft);
+    background-color: var(--bg-hover);
     color: var(--primary);
+    border: 1px solid var(--primary);
 }
 
 .calendar-days div.selected {
     background-color: var(--primary);
     color: white;
+    font-weight: 700;
+    box-shadow: 0 0 15px var(--primary-glow);
 }
 
-.btn-today {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
+.calendar-days div.empty {
+    cursor: default;
 }
 
 /* =========================================
@@ -406,6 +437,7 @@ body {
     gap: 0.5rem;
     max-height: 400px;
     overflow-y: auto;
+    padding-top: 10px;
     padding-right: 0.5rem; /* Espacio para scrollbar */
 }
 
@@ -423,10 +455,10 @@ body {
 }
 
 .schedule-card {
-    background: white;
+    /* background: white; */
     border: 1px solid var(--border);
     padding: 1rem 1.5rem;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -434,8 +466,8 @@ body {
 }
 
 .schedule-card:hover {
-    border-color: var(--primary-light);
-    background-color: var(--bg-body);
+    border-color: var(--primary);
+    transform: translateY(-2px);
 }
 
 .schedule-hour {
@@ -499,16 +531,18 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
 }
 
 /* Cards de información (Cliente/Cancha) */
 .info-field, .info-client {
-    background: var(--bg-legacy);
+    background: var(--bg-body);
     padding: 1.5rem;
     border-radius: var(--radius-md);
     display: flex;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -557,7 +591,8 @@ body {
 
 .campo textarea {
     width: 100%;
-    background: white;
+    color: #fff;
+    background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 1rem;
@@ -585,12 +620,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
     margin-top: 1.5rem;
-    background: var(--gradient-brand);
     color: white;
     font-size: 1.1rem;
-    font-weight: 700;
     padding: 1rem;
     border: none;
     border-radius: var(--radius-sm);

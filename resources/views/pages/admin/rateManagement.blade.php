@@ -7,51 +7,93 @@
 @section('content')
     <div class="container-tarifas">
 
-        {{-- SECCIÓN 1: FORMULARIO DE CREACIÓN MASIVA (El que ya diseñamos) --}}
+        {{-- SECCIÓN 1: CONFIGURADOR DE TARIFAS (NEXT GEN UI) --}}
         <div class="pricing-card mb-5">
             <div class="pricing-header">
-                <i class="fas fa-tags"></i>
-                <h3>Configuración Masiva de Tarifas</h3>
+                <div class="header-icon">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Nueva Regla de Tarifa</h3>
+                    <p class="text-muted">Configura días específicos y rangos horarios para tus canchas.</p>
+                </div>
             </div>
 
             <form action="{{ route('rate.store') }}" method="POST">
                 @csrf
-                <!-- Selección de Días -->
-                <div class="section-group">
-                    <span class="section-label">1. Selecciona los días</span>
-                    <div class="days-container">
-                        <label class="day-pill">
-                            <input type="checkbox" name="days[]" value="lunes-viernes">
-                            <span class="pill-content">Lunes a Viernes</span>
+                
+                <div class="config-section">
+                    <label class="section-title">1. ¿Qué días aplica esta tarifa?</label>
+                    <div class="week-selector">
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="1">
+                            <div class="day-circle">L</div>
+                            <span class="day-label">Lun</span>
                         </label>
-                        <label class="day-pill">
-                            <input type="checkbox" name="days[]" value="sabado">
-                            <span class="pill-content">Sábado</span>
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="2">
+                            <div class="day-circle">M</div>
+                            <span class="day-label">Mar</span>
                         </label>
-                        <label class="day-pill">
-                            <input type="checkbox" name="days[]" value="domingo">
-                            <span class="pill-content">Domingo</span>
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="3">
+                            <div class="day-circle">M</div>
+                            <span class="day-label">Mié</span>
+                        </label>
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="4">
+                            <div class="day-circle">J</div>
+                            <span class="day-label">Jue</span>
+                        </label>
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="5">
+                            <div class="day-circle">V</div>
+                            <span class="day-label">Vie</span>
+                        </label>
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="6">
+                            <div class="day-circle weekend">S</div>
+                            <span class="day-label">Sáb</span>
+                        </label>
+                        <label class="day-toggle">
+                            <input type="checkbox" name="days[]" value="7">
+                            <div class="day-circle weekend">D</div>
+                            <span class="day-label">Dom</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- Inputs de Rango y Precio -->
-                <div class="section-group">
-                    <span class="section-label">2. Define Rango y Precio</span>
-                    <div class="inputs-row">
-                        <div class="input-field">
-                            <label>Desde</label>
-                            <input type="time" name="start_time" required>
+                <div class="separator"></div>
+
+                <div class="config-grid">
+                    
+                    <div class="config-group time-group">
+                        <label class="section-title">2. Rango Horario</label>
+                        <div class="time-inputs">
+                            <div class="time-box">
+                                <span class="time-label">Desde</span>
+                                <input type="time" name="start_time" required class="digital-input">
+                            </div>
+                            <div class="time-arrow">➜</div>
+                            <div class="time-box">
+                                <span class="time-label">Hasta</span>
+                                <input type="time" name="end_time" required class="digital-input">
+                            </div>
                         </div>
-                        <div class="input-field">
-                            <label>Hasta</label>
-                            <input type="time" name="end_time" required>
+                    </div>
+
+                    <div class="config-group price-group">
+                        <label class="section-title">3. Valor por Hora</label>
+                        <div class="price-input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" name="price" step="0.01" placeholder="00.00" required class="price-input">
                         </div>
-                        <div class="input-field">
-                            <label>Precio por hora ($)</label>
-                            <input type="number" name="price" step="0.01" placeholder="0.00" required>
-                        </div>
-                        <button type="submit" class="btn-submit">Aplicar Tarifa</button>
+                    </div>
+
+                    <div class="config-group action-group">
+                        <label class="section-title" style="visibility: hidden;">Acción</label> <button type="submit" class="btn-create-rate">
+                            <i class="fas fa-plus-circle"></i> Crear Tarifa
+                        </button>
                     </div>
                 </div>
             </form>
@@ -59,16 +101,21 @@
 
         {{-- SECCIÓN 2: TABLA DE VISUALIZACIÓN Y EDICIÓN --}}
         <div class="pricing-card">
-            <div class="pricing-header space-between">
-                <div class="flex-center">
-                    <i class="fas fa-list-alt"></i>
+            <div class="pricing-header rates-header">
+                <div class="header-text">
                     <h3>Tarifas Vigentes</h3>
+                    <p class="text-muted">Lista completa de reglas activas.</p>
                 </div>
-                {{-- Filtro rápido opcional --}}
+                
+                {{-- Filtro rápido --}}
                 <div class="filters">
-                    <select id="filtroDia" class="form-select-sm">
+                    <select id="filtroDia" class="form-select-sm" onchange="filtrarTabla(this.value)">
                         <option value="all">Todos los días</option>
                         <option value="1">Lunes</option>
+                        <option value="2">Martes</option>
+                        <option value="3">Miércoles</option>
+                        <option value="4">Jueves</option>
+                        <option value="5">Viernes</option>
                         <option value="6">Sábado</option>
                         <option value="7">Domingo</option>
                     </select>
@@ -87,17 +134,16 @@
                     </thead>
                     <tbody>
                         @foreach ($rates as $rate)
-                            <tr>
+                            <tr class="rate-row" data-day="{{ $rate->day_week }}">
                                 <td>
                                     @php
                                         $nameDays = [
-                                            1 => 'Lunes',
-                                            2 => 'Martes',
-                                            3 => 'Miércoles',
-                                            4 => 'Jueves',
-                                            5 => 'Viernes',
-                                            6 => 'Sábado',
-                                            7 => 'Domingo',
+                                            1 => 'Lunes', 2 => 'Martes', 3 => 'Miércoles',
+                                            4 => 'Jueves', 5 => 'Viernes', 6 => 'Sábado', 7 => 'Domingo',
+                                        ];
+                                        $shortDays = [
+                                            1 => 'LUN', 2 => 'MAR', 3 => 'MIE',
+                                            4 => 'JUE', 5 => 'VIE', 6 => 'SAB', 7 => 'DOM',
                                         ];
                                         $claseBadge = $rate->day_week >= 6 ? 'badge-weekend' : 'badge-weekday';
                                     @endphp
@@ -105,19 +151,16 @@
                                         {{ $nameDays[$rate->day_week] }}
                                     </span>
                                 </td>
-                                <td class="font-weight-bold">
+                                <td class="font-weight-bold text-white">
                                     {{ $rate->start_time->format('H:i') }} - {{ $rate->end_time->format('H:i') }}
                                 </td>
                                 <td class="text-price">${{ number_format($rate->price, 2) }}</td>
-                                <td>
                                 <td class="text-right">
-                                    <!-- Botón Editar (Abre Modal Individual) -->
                                     <button class="btn-icon edit"
                                         onclick="editarTarifa({{ $rate->id }}, '{{ $rate->price }}')">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
 
-                                    <!-- Formulario Eliminar -->
                                     <form action="{{ route('rate.delete', $rate->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
@@ -130,27 +173,41 @@
                                 </td>
                             </tr>
                         @endforeach
+                        
+                        @if($rates->isEmpty())
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                    <i class="fas fa-info-circle" style="margin-bottom: 10px; display: block; font-size: 24px;"></i>
+                                    No hay tarifas configuradas aún.
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
-
-            <!-- Paginación -->
-            <div class="pagination-container">
-                {{-- {{ $tarifas->links() }} --}}
+            
+            <div class="pagination-container mt-4">
+                {{-- {{ $rates->links() }} --}}
             </div>
         </div>
     </div>
 
-    {{-- MODAL SIMPLE PARA EDICIÓN RÁPIDA (Script al final) --}}
+    {{-- MODAL DE EDICIÓN RÁPIDA --}}
     <div id="editModal" class="modal-overlay" style="display:none;">
         <div class="modal-content">
             <h4>Editar Precio Individual</h4>
+            <p class="text-muted mb-4" style="font-size: 0.9rem;">Modifica el valor para este bloque horario específico.</p>
+            
             <form id="formEditar" method="POST" action="">
                 @csrf
                 @method('PUT')
                 <div class="input-field">
-                    <label>Nuevo Precio</label>
-                    <input type="number" name="precio" id="modalPrecio" step="0.01" required>
+                    <label>Nuevo Precio por Hora ($)</label>
+                    <div class="price-input-wrapper">
+                        <span class="currency" style="left: 12px; font-size: 1rem;">$</span>
+                        <input type="number" name="price" id="modalPrecio" step="0.01" required 
+                               class="price-input" style="padding-left: 24px;">
+                    </div>
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
@@ -162,19 +219,29 @@
 
     <script>
         function editarTarifa(id, precioActual) {
-            // Configuramos la acción del formulario dinámicamente
             const form = document.getElementById('formEditar');
-            form.action = `/tarifas/${id}`; // Asegúrate de que esta ruta exista en tu web.php
+            // Asegúrate de que esta ruta coincida con tu routes/web.php
+            // Ejemplo: Route::put('/tarifas/{id}', [RateController::class, 'update'])->name('rate.update');
+            form.action = `/tarifas/${id}`; 
 
-            // Ponemos el valor actual en el input
             document.getElementById('modalPrecio').value = precioActual;
-
-            // Mostramos el modal
             document.getElementById('editModal').style.display = 'flex';
         }
 
         function closeModal() {
             document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Script simple para filtrar la tabla en el cliente (opcional)
+        function filtrarTabla(dia) {
+            const filas = document.querySelectorAll('.rate-row');
+            filas.forEach(fila => {
+                if (dia === 'all' || fila.getAttribute('data-day') === dia) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
         }
     </script>
 @endsection

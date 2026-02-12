@@ -1,4 +1,4 @@
-<x-nav-link route="home" label="Inicio" />
+{{-- <x-nav-link route="home" label="Inicio" /> --}}
 
 @php
     $reservasActive = request()->routeIs('reservation', 'reservations.*');

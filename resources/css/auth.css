@@ -1,38 +1,34 @@
 /* =========================================
-   AUTH PAGES STYLES (Split Screen Design)
+   AUTH PAGES STYLES (Midnight Neon Edition)
    ========================================= */
 
-:root {
-    /* Brand Colors */
-    --primary: #4f46e5;
-    --primary-dark: #3730a3;
-    --primary-light: #818cf8;
-    --primary-soft: #eef2ff;
+/* :root {
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --primary-soft: rgba(129, 140, 248, 0.15);
     
-    /* Neutrals */
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --bg-white: #ffffff;
+    --bg-body: #0f172a;       
+    --bg-card: #1e293b;      
+    --bg-input: #0b1120;     
+    
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
 
-    /* Brand Gradient */
-    --gradient-brand: linear-gradient(135deg, rgba(79, 70, 229, 0.95) 0%, rgba(124, 58, 237, 0.9) 100%);
-    
-    /* Effects */
+    --gradient-auth: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(79, 70, 229, 0.7) 100%);
     --radius-input: 12px;
-    --shadow-input: 0 0 0 4px var(--primary-soft);
-}
+} */
 
-/* RESET */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* RESET & BASE */
+/* * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     min-height: 100vh;
-    background: white;
+    background-color: var(--bg-body);
     color: var(--text-main);
     overflow-x: hidden;
-}
+} */
 
 /* LAYOUT: SPLIT SCREEN */
 .split-screen {
@@ -41,38 +37,33 @@ body {
     width: 100%;
 }
 
-/* LEFT SIDE: Visual/Brand (Oculto en móvil) */
+/* --- LEFT SIDE: Visual/Brand --- */
 .visual-side {
-    display: none; /* Por defecto oculto en móviles */
+    display: none; /* Oculto en móviles */
     position: relative;
-    background-color: var(--primary);
+    background-color: var(--bg-body);
     overflow: hidden;
-    color: white;
 }
 
-/* Imagen de fondo + Overlay */
 .visual-side::before {
     content: '';
     position: absolute;
     inset: 0;
-    /* Imagen de cancha de pádel de fondo */
-    background-image: url('https://images.unsplash.com/photo-1554068865-24cecd4e34b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-image: url('https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=1350&q=80');
     background-size: cover;
     background-position: center;
+    filter: grayscale(100%) brightness(0.4); /* Más oscuro para que el neón resalte */
     z-index: 0;
-    filter: grayscale(100%); /* Hacemos la imagen BN para que el color de marca resalte */
 }
 
 .visual-side::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--gradient-brand); /* Tu gradiente violeta/índigo */
-    opacity: 0.85; /* Transparencia para ver la textura del fondo */
+    background: var(--gradient-auth);
     z-index: 1;
 }
 
-/* Contenido sobre la imagen (Texto, Logo) */
 .visual-content {
     position: relative;
     z-index: 2;
@@ -80,56 +71,69 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4rem;
-    max-width: 600px;
+    padding: 5rem;
+    max-width: 650px;
 }
 
 .visual-content h2 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 1.5rem;
+    letter-spacing: -0.04em;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .visual-content p {
     font-size: 1.25rem;
+    color: var(--text-light);
     opacity: 0.9;
     line-height: 1.6;
 }
 
-/* RIGHT SIDE: Form Container */
+/* --- RIGHT SIDE: Form Container --- */
 .form-side {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    background: white;
+    padding: 2.5rem;
+    background-color: var(--bg-body); /* Fondo oscuro profundo */
     position: relative;
 }
 
-/* Contenedor interno del formulario */
-.form-container {
-    width: 100%;
-    max-width: 440px; /* Ancho elegante, no muy ancho */
-    animation: fadeIn 0.5s ease-out;
+/* Decoración sutil de fondo para el lado del formulario */
+.form-side::before {
+    content: '';
+    position: absolute;
+    top: 10%; right: 10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, var(--primary-soft) 0%, transparent 70%);
+    z-index: 0;
 }
 
-/* CARD / FORM STYLES */
-/* Ya no es una "tarjeta" con sombra, sino parte del layout limpio */
+.form-container {
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 .header-text {
-    text-align: left; /* Alineado a la izquierda es más moderno */
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
 }
 
 .header-text h1 {
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: var(--text-main);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     letter-spacing: -0.03em;
+    background: linear-gradient(to right, #fff, var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .header-text .subtitle {
@@ -137,92 +141,93 @@ body {
     font-size: 1rem;
 }
 
-/* Inputs */
-.form-group { margin-bottom: 1.5rem; }
+/* --- INPUTS MODERNO DARK --- */
+.form-group { margin-bottom: 1.75rem; }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--text-main);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .form-group input {
     width: 100%;
-    padding: 0.85rem 1rem;
+    padding: 1rem 1.2rem;
     border-radius: var(--radius-input);
     border: 1px solid var(--border);
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: all 0.2s;
-    background: #f8fafc; /* Fondo gris muy suave */
+    font-size: 1rem;
+    background: var(--bg-input); /* Fondo profundo */
+    color: white;
+    transition: all 0.25s;
+    outline: none;
+    color-scheme: dark; /* Para iconos nativos de email/pass */
 }
+
+.form-group input::placeholder { color: #4b5563; }
 
 .form-group input:focus {
-    outline: none;
-    background: white;
+    background: #1e293b;
     border-color: var(--primary);
-    box-shadow: var(--shadow-input);
+    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+    transform: translateY(-1px);
 }
 
-/* Grid para registro */
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Buttons */
+/* --- BOTÓN NEÓN --- */
 .btn-primary {
     width: 100%;
-    padding: 1rem;
+    padding: 1.1rem;
     border: none;
     border-radius: var(--radius-input);
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     color: white;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s;
     margin-top: 1rem;
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 12px 25px rgba(99, 102, 241, 0.5);
+    filter: brightness(1.1);
 }
 
-/* Botón Volver */
+/* --- BOTÓN VOLVER (Glassmorphism) --- */
 .btn-back {
     position: absolute;
-    top: 2rem;
-    left: 2rem;
+    top: 2.5rem;
+    left: 2.5rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     color: var(--text-muted);
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
-    transition: color 0.2s;
-    background: #f1f5f9;
-    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.6rem 1.2rem;
     border-radius: 50px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
 }
 
 .btn-back:hover {
-    color: var(--primary);
-    background: var(--primary-soft);
+    color: white;
+    background: var(--bg-hover);
+    border-color: var(--text-muted);
 }
 
-/* Footer links */
+/* FOOTER */
 .footer-text {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
 }
 
@@ -230,38 +235,24 @@ body {
     color: var(--primary);
     font-weight: 700;
     text-decoration: none;
+    margin-left: 0.4rem;
+    transition: 0.2s;
 }
 
-.footer-text a:hover { text-decoration: underline; }
+.footer-text a:hover { color: white; text-shadow: 0 0 10px var(--primary); }
 
-/* MEDIA QUERIES (Desktop) */
+/* --- RESPONSIVE --- */
 @media (min-width: 1024px) {
-    .visual-side {
-        display: flex;
-        flex: 1; /* Ocupa el 50% del espacio */
-        width: 50%;
-    }
-    
-    .form-side {
-        flex: 1;
-        width: 50%;
-        padding: 4rem;
-    }
-    
-    /* Para registro, damos un poco más de espacio al formulario */
-    .register-mode .form-side { flex: 1.2; }
-    .register-mode .visual-side { flex: 0.8; }
+    .visual-side { display: flex; flex: 1; }
+    .form-side { flex: 1; padding: 4rem; }
 }
 
 @media (max-width: 640px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .header-text h1 { font-size: 1.75rem; }
-    .btn-back { top: 1rem; left: 1rem; }
-    .form-side { padding: 4rem 1.5rem 2rem; } /* Más padding arriba para el botón volver */
+    .form-side { padding: 5rem 1.5rem 2rem; }
+    .header-text h1 { font-size: 1.85rem; }
 }
 
-/* Animaciones */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }

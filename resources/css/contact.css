@@ -1,72 +1,220 @@
-/* CONTACTO */
-.contacto-grid {
-    max-width: 1000px;
-    margin: 40px auto 0;
+/* =========================================
+   CONTACT PAGE STYLES (Midnight Neon)
+   ========================================= */
+
+/* Layout General */
+.page-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.header-section {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.content-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Grid Principal */
+.contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr 1.3fr; /* La columna del form es más ancha */
     gap: 30px;
 }
 
-.contacto-info,
-.contacto-form {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    text-align: left;
-}
-
-.formulario {
-    display: grid;
-    gap: 20px;
-    text-align: left;
-}
-
-.campo {
+/* TARJETAS COMUNES */
+.contact-card {
+    background: var(--bg-card); /* Slate 800 */
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
 }
 
-.campo label {
-    margin-bottom: 5px;
-    font-weight: bold;
+/* Encabezados de Tarjetas con Iconos */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
 }
 
-.campo input,
-.campo textarea {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    resize: none;
-}
-
-.contacto-info h3,
-.contacto-form h3 {
-    margin-bottom: 15px;
-    color: #1b5e20;
-}
-
-.contacto-info p {
-    margin-bottom: 12px;
-}
-
-.contacto-info .nota {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #777;
-}
-
-.btn-confirmar {
-    background: #1b5e20;
+.card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
     color: white;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+    font-weight: 700;
 }
 
-.btn-confirmar:hover {
-    background: #2e7d32;
+/* Cajas de Iconos (Estilo Glow) */
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-primary {
+    background: rgba(129, 140, 248, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.15);
+}
+
+.icon-accent {
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+}
+
+/* --- ESTILOS DE INFO (IZQUIERDA) --- */
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-item .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.info-item .value {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.info-item .highlight {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.info-item a:hover {
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.schedule-box {
+    margin-top: auto; /* Empuja esto al fondo */
+    padding-top: 2rem;
+    border-top: 1px dashed var(--border);
+}
+
+.schedule-box h4 {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.schedule-box p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+.text-white { color: white !important; font-weight: 600; }
+
+/* --- ESTILOS DE FORMULARIO (DERECHA) --- */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.input-neon {
+    width: 100%;
+    background: var(--bg-input); /* Slate 950 */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-neon:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #1e293b; /* Ligeramente más claro */
+    box-shadow: 0 0 0 4px var(--primary-soft);
+    transform: translateY(-2px);
+}
+
+textarea.input-neon {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Botón de Envío */
+.btn-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--gradient-primary);
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+    filter: brightness(1.1);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    .header-section {
+        padding: 0 1rem;
+    }
 }

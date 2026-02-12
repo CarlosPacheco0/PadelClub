@@ -1,271 +1,215 @@
-/* Filtros / búsqueda */
+/* ==========================================================================
+   11. COMPONENTES: FILTROS, BUSCADORES Y SWITCH NEÓN
+   ========================================================================== */
 
-input#search {
-  padding-left: 36px;
-}
-
+/* --- BARRA DE FILTROS --- */
 .filters {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 16px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
-
-  background: #FFFFFF;
-  border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-
-.filters input,
-.filters select {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    align-items: center;
+    
+    background: var(--bg-card); /* Slate 800 */
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
 }
 
 .filters label {
-    font-weight: bold;
-    margin-right: 5px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
+.filters input,
+.filters select {
+    background: var(--bg-input); /* Slate 950 */
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    outline: none;
+    color-scheme: dark;
+}
 
+.filters input:focus,
+.filters select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
 
-/* ===============================
-   MODAL
-================================ */
+/* Ajuste específico para el buscador con icono */
+input#search {
+    padding-left: 36px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 12px center;
+}
+
+/* --- MODAL (Corrección de Animación) --- */
 .modal {
-    display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex; /* Usamos flex para centrado */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    
+    /* Estado inicial oculto para animación suave */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .modal-content {
-    background: #fff;
-    width: 100%;
+    background: var(--bg-card);
+    width: 95%;
     max-width: 520px;
-    border-radius: 8px;
-    padding: 25px;
-    animation: modalFade 0.2s ease-in-out;
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-float);
+    
+    /* Animación de entrada */
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes modalFade {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.modal.show .modal-content {
+    transform: translateY(0) scale(1);
 }
 
 .modal-content h2 {
-    margin-bottom: 20px;
-    font-size: 20px;
+    color: var(--text-main);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
 }
 
-/* ===============================
-   FORMULARIO
-================================ */
+/* --- FORMULARIOS --- */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 6px;
-    font-size: 14px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 9px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    padding: 12px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    transition: all 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+    background: #1e293b;
 }
 
-/* ===============================
-   ACCIONES DEL MODAL
-================================ */
-/* Botones de accion formulario */
-.form-actions {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-}
-
-/* Switch de cambio contraseña */
-
-/* From Uiverse.io by Galahhad */
+/* --- SWITCH NEÓN (Customización Uiverse) --- */
 .switch {
-    /* switch */
-    --switch-width: 46px;
+    /* Ajuste de variables para Midnight Neon */
+    --switch-width: 48px;
     --switch-height: 24px;
-    --switch-bg: rgb(131, 131, 131);
-    --switch-checked-bg: rgb(0, 218, 80);
-    --switch-offset: calc((var(--switch-height) - var(--circle-diameter)) / 2);
-    --switch-transition: all 0.2s cubic-bezier(0.27, 0.2, 0.25, 1.51);
-    /* circle */
+    --switch-bg: #334155; /* Slate 700 */
+    --switch-checked-bg: var(--primary); /* Indigo Neón */
     --circle-diameter: 18px;
-    --circle-bg: #fff;
-    --circle-shadow: 1px 1px 2px rgba(146, 146, 146, 0.45);
-    --circle-checked-shadow: -1px 1px 2px rgba(163, 163, 163, 0.45);
-    --circle-transition: var(--switch-transition);
-    /* icon */
-    --icon-transition: all 0.2s cubic-bezier(0.27, 0.2, 0.25, 1.51);
-    --icon-cross-color: var(--switch-bg);
-    --icon-cross-size: 6px;
-    --icon-checkmark-color: var(--switch-checked-bg);
-    --icon-checkmark-size: 10px;
-    /* effect line */
-    --effect-width: calc(var(--circle-diameter) / 2);
-    --effect-height: calc(var(--effect-width) / 2 - 1px);
-    --effect-bg: var(--circle-bg);
-    --effect-border-radius: 1px;
-    --effect-transition: all 0.2s ease-in-out;
-}
-
-.switch input {
-    display: none;
-}
-
-.switch {
+    --circle-bg: #ffffff;
+    
+    --icon-checkmark-color: var(--success); /* Emerald */
+    --icon-cross-color: #94a3b8;
+    
     display: inline-block;
-}
-
-.switch svg {
-    -webkit-transition: var(--icon-transition);
-    -o-transition: var(--icon-transition);
-    transition: var(--icon-transition);
-    position: absolute;
-    height: auto;
-}
-
-.switch .checkmark {
-    width: var(--icon-checkmark-size);
-    color: var(--icon-checkmark-color);
-    -webkit-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-}
-
-.switch .cross {
-    width: var(--icon-cross-size);
-    color: var(--icon-cross-color);
+    vertical-align: middle;
 }
 
 .slider {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
     width: var(--switch-width);
     height: var(--switch-height);
     background: var(--switch-bg);
     border-radius: 999px;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     position: relative;
-    -webkit-transition: var(--switch-transition);
-    -o-transition: var(--switch-transition);
-    transition: var(--switch-transition);
     cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.switch input:checked + .slider {
+    background: var(--switch-checked-bg);
+    box-shadow: 0 0 15px var(--primary-glow);
 }
 
 .circle {
     width: var(--circle-diameter);
     height: var(--circle-diameter);
     background: var(--circle-bg);
-    border-radius: inherit;
-    -webkit-box-shadow: var(--circle-shadow);
-    box-shadow: var(--circle-shadow);
-    display: -webkit-box;
-    display: -ms-flexbox;
+    border-radius: 50%;
+    position: absolute;
+    left: 4px; /* Offset manual */
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
-    -webkit-transition: var(--circle-transition);
-    -o-transition: var(--circle-transition);
-    transition: var(--circle-transition);
-    z-index: 1;
-    position: absolute;
-    left: var(--switch-offset);
-}
-
-.slider::before {
-    content: '';
-    position: absolute;
-    width: var(--effect-width);
-    height: var(--effect-height);
-    left: calc(var(--switch-offset) + (var(--effect-width) / 2));
-    background: var(--effect-bg);
-    border-radius: var(--effect-border-radius);
-    -webkit-transition: var(--effect-transition);
-    -o-transition: var(--effect-transition);
-    transition: var(--effect-transition);
-}
-
-/* actions */
-
-.switch input:checked + .slider {
-    background: var(--switch-checked-bg);
-}
-
-.switch input:checked + .slider .checkmark {
-    -webkit-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-}
-
-.switch input:checked + .slider .cross {
-    -webkit-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-}
-
-.switch input:checked + .slider::before {
-    left: calc(
-        100% - var(--effect-width) - (var(--effect-width) / 2) -
-            var(--switch-offset)
-    );
+    transition: all 0.3s cubic-bezier(0.27, 0.2, 0.25, 1.51);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .switch input:checked + .slider .circle {
-    left: calc(100% - var(--circle-diameter) - var(--switch-offset));
-    -webkit-box-shadow: var(--circle-checked-shadow);
-    box-shadow: var(--circle-checked-shadow);
+    left: calc(100% - var(--circle-diameter) - 4px);
 }
 
+/* Iconos dentro del switch */
+.switch .checkmark, .switch .cross {
+    position: absolute;
+    width: 10px;
+    transition: all 0.3s;
+}
+
+.switch .checkmark { opacity: 0; color: var(--success); transform: scale(0); }
+.switch .cross { opacity: 1; color: var(--text-muted); }
+
+.switch input:checked + .slider .checkmark { opacity: 1; transform: scale(1); }
+.switch input:checked + .slider .cross { opacity: 0; transform: scale(0); }
+
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
     .filters {
         flex-direction: column;
+        align-items: stretch;
     }
-
-    th,
-    td {
-        font-size: 14px;
+    
+    .modal-content {
+        padding: 24px;
+        margin: 10px;
     }
 }
