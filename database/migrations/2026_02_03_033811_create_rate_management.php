@@ -11,22 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rate_management', function (Blueprint $table) {
+        Schema::create('rates', function (Blueprint $table) {
             $table->id();
-            
-            // 1 = Lunes, 7 = Domingo (Estándar ISO-8601)
-            $table->unsignedTinyInteger('day_week'); 
-            
+            // 1 = Lunes, 7 = Domingo (ISO-8601)
+            $table->tinyInteger('day_of_week');
+
+            // Formato H:i:s (Ej: 08:00:00)
             $table->time('start_time');
             $table->time('end_time');
-            
-            // Usamos decimal para precisión en precios de moneda
-            $table->decimal('price', 8, 2)->default(0.00);
+
+            // Precio con 2 decimales
+            $table->decimal('price', 10, 2);
+
+            // Opcional: Si quieres tarifas distintas por tipo de cancha (Techada/Aire libre)
+            // $table->foreignId('court_type_id')->nullable(); 
 
             $table->timestamps();
 
-            // Índice para mejorar la velocidad de búsqueda por rangos
-            $table->index(['day_week', 'start_time', 'end_time']);
+            // IMPORTANTE: Índice para búsquedas rápidas al reservar
+            $table->index(['day_of_week', 'start_time', 'end_time']);
         });
     }
 
@@ -35,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rate_management');
+        Schema::dropIfExists('rates');
     }
 };

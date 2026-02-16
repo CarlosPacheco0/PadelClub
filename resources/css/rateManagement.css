@@ -10,9 +10,20 @@
     animation: fadeIn 0.5s ease-out;
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-.mb-5 { margin-bottom: 3rem; }
+.mb-5 {
+    margin-bottom: 3rem;
+}
 
 /* =========================================
    1. TARJETAS PRINCIPALES (CONTENEDORES)
@@ -44,22 +55,39 @@
 
 /* Icono del Header */
 .header-icon {
-    width: 48px; height: 48px;
+    width: 48px;
+    height: 48px;
     background: var(--primary-soft);
     color: var(--primary);
     border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.25rem;
     box-shadow: 0 0 15px rgba(129, 140, 248, 0.1);
 }
 
-.header-text h3 { margin: 0; font-size: 1.25rem; color: white; font-weight: 700; }
-.header-text p { margin: 4px 0 0; font-size: 0.9rem; color: var(--text-muted); }
+.header-text h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: white;
+    font-weight: 700;
+}
+.header-text p {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
 
 /* Separador */
 .separator {
     height: 1px;
-    background: linear-gradient(to right, transparent, var(--border), transparent);
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--border),
+        transparent
+    );
     margin: 24px 0;
 }
 
@@ -90,25 +118,40 @@
     cursor: pointer;
 }
 
-.day-toggle input { display: none; }
+.day-toggle input {
+    display: none;
+}
 
 .day-circle {
-    width: 40px; height: 40px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: var(--bg-input);
     border: 1px solid var(--border);
     color: var(--text-muted);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.day-label { font-size: 0.75rem; color: var(--text-muted); transition: color 0.2s; }
+.day-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
 
 /* Hover */
-.day-toggle:hover .day-circle { border-color: var(--primary); color: white; transform: translateY(-2px); }
-.day-toggle:hover .day-label { color: white; }
+.day-toggle:hover .day-circle {
+    border-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+.day-toggle:hover .day-label {
+    color: white;
+}
 
 /* Seleccionado */
 .day-toggle input:checked + .day-circle {
@@ -140,8 +183,17 @@
     gap: 12px;
 }
 
-.time-box { display: flex; flex-direction: column; flex: 1; }
-.time-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px; text-transform: uppercase; }
+.time-box {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.time-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
 
 .digital-input {
     background: transparent;
@@ -155,11 +207,25 @@
     color-scheme: dark;
 }
 
-.time-arrow { color: var(--text-muted); font-size: 1.2rem; }
+.time-arrow {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
 
 /* Input de Precio */
-.price-input-wrapper { position: relative; display: flex; align-items: center; }
-.currency { position: absolute; left: 14px; color: var(--success); font-weight: 700; font-size: 1.1rem; z-index: 2; }
+.price-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.currency {
+    position: absolute;
+    left: 14px;
+    color: var(--success);
+    font-weight: 700;
+    font-size: 1.1rem;
+    z-index: 2;
+}
 
 .price-input {
     width: 100%;
@@ -172,9 +238,12 @@
     padding: 12px 12px 12px 28px;
     outline: none;
     transition: all 0.2s;
-    height: 50px; /* Altura fija */
+    height: 56px; /* Altura fija */
 }
-.price-input:focus { border-color: var(--success); box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15); }
+.price-input:focus {
+    border-color: var(--success);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+}
 
 /* Botón Crear */
 .btn-create-rate {
@@ -188,10 +257,16 @@
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     box-shadow: 0 4px 15px var(--primary-glow);
 }
-.btn-create-rate:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6); }
+.btn-create-rate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+}
 
 /* =========================================
    4. TABLA DE TARIFAS (EL ARREGLO PRINCIPAL)
@@ -276,8 +351,13 @@
     font-size: 1rem;
 }
 
-.text-white { color: white; font-weight: 600; }
-.text-right { text-align: right; }
+.text-white {
+    color: white;
+    font-weight: 600;
+}
+.text-right {
+    text-align: right;
+}
 
 /* Botones de Acción (Iconos) */
 .btn-icon {
@@ -292,52 +372,173 @@
     margin-left: 4px;
 }
 
-.btn-icon.edit:hover { background: var(--primary-soft); color: var(--primary); }
-.btn-icon.delete:hover { background: rgba(248, 113, 113, 0.15); color: var(--danger); }
+.btn-icon.edit:hover {
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+.btn-icon.delete:hover {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--danger);
+}
 
 /* =========================================
    5. MODAL EDICIÓN
    ========================================= */
 .modal-overlay {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(5px);
     z-index: 1000;
-    display: flex; justify-content: center; align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
     background: var(--bg-card);
     padding: 32px;
     border-radius: 16px;
-    width: 90%; max-width: 400px;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-.modal-content h4 { color: white; margin-top: 0; margin-bottom: 8px; font-size: 1.25rem; }
+.modal-content h4 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+}
 
 .modal-actions {
-    display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
 }
 
 .btn-cancel {
-    background: transparent; border: 1px solid var(--border); color: var(--text-muted);
-    padding: 10px 20px; border-radius: 8px; cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
 }
-.btn-cancel:hover { color: white; border-color: white; }
+.btn-cancel:hover {
+    color: white;
+    border-color: white;
+}
 
 .btn-save {
-    background: var(--gradient-primary); color: white; border: none;
-    padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
 }
-.btn-save:hover { filter: brightness(1.1); }
+.btn-save:hover {
+    filter: brightness(1.1);
+}
 
+/* --- PERSONALIZACIÓN DEL RELOJ (ESTILO MIDNIGHT NEON) --- */
+
+/* El contenedor flotante (Popover) */
+
+.popover-content:last-child {
+        background-color: #0f172a !important;
+}
+
+.popover.clockpicker-popover {
+    background-color: #1e293b !important; /* Slate 800 */
+    border: 1px solid #334155;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    color: white;
+    position: absolute;
+    z-index: 99999 !important; /* Encima de todo */
+}
+
+/* La flechita del popover */
+.popover.bottom > .arrow:after {
+    border-bottom-color: #1e293b !important;
+}
+.popover-title {
+    background-color: #0f172a !important;
+    color: white !important;
+    border-bottom: 1px solid #fff;
+}
+
+.time-value {
+    display: flex;
+    align-items: center;
+}
+
+/* El Reloj (Círculo) */
+.clockpicker-plate {
+    background-color: #1e293b !important;
+    border: 1px solid #334155;
+}
+
+/* Los números (Tickers) */
+.clockpicker-tick {
+    color: #94a3b8 !important;
+}
+.clockpicker-tick:hover {
+    background: #334155 !important;
+    color: white !important;
+}
+
+/* La aguja y el punto central */
+.clockpicker-canvas-bg {
+    fill: rgba(129, 140, 248, 0.2) !important;
+} /* Rastro suave */
+.clockpicker-canvas-bearing {
+    fill: #818cf8 !important;
+} /* Punto centro */
+.clockpicker-canvas-fg {
+    fill: #818cf8 !important;
+} /* Aguja */
+
+/* Botón "Done/Aceptar" */
+.btn-block {
+    color: #818cf8 !important; /* Texto índigo */
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.btn-block:hover {
+    background-color: #334155 !important;
+}
+
+/* Input de Precio: Ocultar flechas nativas */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type='number'] {
+    -moz-appearance: textfield;
+}
 /* Responsive */
 @media (max-width: 768px) {
-    .config-grid { grid-template-columns: 1fr; }
-    .week-selector { justify-content: space-between; }
-    .pricing-header { flex-direction: column; align-items: flex-start; }
-    .filters { width: 100%; margin-top: 10px; }
-    .filters select { width: 100%; }
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+    .week-selector {
+        justify-content: space-between;
+    }
+    .pricing-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .filters {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .filters select {
+        width: 100%;
+    }
 }

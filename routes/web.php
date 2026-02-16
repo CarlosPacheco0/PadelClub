@@ -162,6 +162,9 @@ Route::middleware(['auth', 'validate_role:admin'])->group(function () {
     Route::post('/rates/store', [RateManagementController::class, 'store'])
         ->name('rate.store');
 
+    Route::put('/rates', [RateManagementController::class, 'edit'])
+        ->name('rate.edit');
+
     Route::post('/rates/delete', [RateManagementController::class, 'delete'])
         ->name('rate.delete');
 

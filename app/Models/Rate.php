@@ -9,7 +9,7 @@ class Rate extends Model
 {
     use HasFactory;
 
-    protected $table = 'rate_management';
+    protected $table = 'rates';
 
 
     protected function casts()
@@ -22,7 +22,7 @@ class Rate extends Model
 
 
     protected $fillable = [
-        'day_week',
+        'day_of_week',
         'start_time',
         'end_time',
         'price',
