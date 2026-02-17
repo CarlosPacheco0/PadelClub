@@ -63,7 +63,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td>No hay registros para mostrar</td>
+                    <td colspan="4">No hay registros para mostrar</td>
                 </tr>
             @endforelse
         </tbody>

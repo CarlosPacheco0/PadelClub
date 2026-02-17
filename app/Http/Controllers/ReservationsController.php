@@ -21,12 +21,7 @@ class ReservationsController extends Controller
     // Generación de nueva reserva
     public function index()
     {
-        $fields = Field::where('status', 1)
-            ->orderBy('name', 'desc')
-            ->get();
-
-        $schedules = Schedule::all();
-        return view('pages.generate-reservation', compact('fields', 'schedules'));
+        return view('pages.generate-reservation');
     }
 
     // Confirmación de la creación de la reserva
@@ -53,7 +48,7 @@ class ReservationsController extends Controller
 
         $dayWeek = Carbon::parse($dateReservation)->dayOfWeekIso;
 
-        $ratesDB = Rate::where('day_week', $dayWeek)
+        $ratesDB = Rate::where('day_of_week', $dayWeek)
             ->where('start_time', '<', $end_time)  // La tarifa empieza antes de que acabe el turno
             ->where('end_time', '>', $start_time)  // La tarifa termina después de que empiece el turno
             ->take(1)
@@ -178,15 +173,13 @@ class ReservationsController extends Controller
     // Obtener los horarios disponibles por Cancha y Fecha
     public function schedulesFree(Request $request)
     {
-
         $validated = $request->validate([
-            'field_id'  => 'required|exists:fields,id',
+            // 'field_id'  => 'required|exists:fields,id',
             'date'      => 'required|date'
         ]);
 
-
         $schedules = $this->getSchedulesFree(
-            (int) $validated['field_id'],
+            // (int) $validated['field_id'],
             $validated['date']
         );
 
@@ -196,13 +189,13 @@ class ReservationsController extends Controller
         ]);
     }
 
-    private function getSchedulesFree(int $field_id, string $date)
+    // private function getSchedulesFree(int $field_id, string $date)
+    private function getSchedulesFree(string $date)
     {
         // Obtener horarios ya asignados
         $assignedSchedules = ScheduleDate::where('date', $date)
             ->pluck('schedule_id')
             ->toArray();
-
 
         // Todos los horarios asignados
         $schedules = Schedule::whereIn('id', $assignedSchedules)
@@ -222,7 +215,7 @@ class ReservationsController extends Controller
 
         // Horarios ya reservados
         $reservations = Reservation::where('date', $date)
-            ->where('field_id', $field_id)
+            // ->where('field_id', $field_id)
             ->pluck('schedule_id')
             ->toArray();
 
@@ -262,7 +255,7 @@ class ReservationsController extends Controller
     public function fieldsFree(Request $request)
     {
         $validated = $request->validate([
-            'field_id'  => 'required|exists:fields,id',
+            // 'field_id'  => 'required|exists:fields,id',
             'date'      => 'required|date'
         ]);
 
@@ -274,14 +267,14 @@ class ReservationsController extends Controller
             ->get();
 
         // Obtener los horarios disponibles para la cancha y fecha actual
-        $schedules = $this->getSchedulesFree(
-            (int) $validated['field_id'],
-            $validated['date']
-        );
+        // $schedules = $this->getSchedulesFree(
+        //     // (int) $validated['field_id'],
+        //     $validated['date']
+        // );
 
         return [
-            'fields' => $fieldsFree,
-            'schedules' => $schedules
+            'fields' => $fieldsFree
+            // 'schedules' => $schedules
         ];
     }
 

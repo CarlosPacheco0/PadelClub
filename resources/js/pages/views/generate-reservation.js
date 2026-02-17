@@ -1,16 +1,18 @@
 /* =====================================================
    CONFIGURACIÓN DESDE BLADE
 ===================================================== */
-const { schedulesUrl, reservationUrl, csrfToken } = window.RESERVATION_CONFIG;
+const { schedulesUrl, reservationUrl, fieldsUrl, csrfToken } =
+    window.RESERVATION_CONFIG;
 
 /* =====================================================
    ESTADO GLOBAL
 ===================================================== */
-let fieldSelected = null;
+// let fieldSelected = null;
 let dateSelected = null;
+let scheduleSelected = null;
 
 const today = new Date();
-let currentDate = new Date(today.getFullYear(), today.getMonth(), 1); 
+let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
 /* =====================================================
    ELEMENTOS DOM
@@ -19,8 +21,10 @@ const calendarDiv = document.querySelector('.calendar-modal');
 const datesContainer = document.querySelector('.date-container .dates');
 const schedulesDiv = document.querySelector('#schedules div');
 
+const fieldContainer = document.querySelector('.fields-grid');
+
 /* ==== FECHAS RÁPIDAS ==== */
-function generateDates(days = 3) {  
+function generateDates(days = 3) {
     datesContainer.innerHTML = '';
 
     for (let i = 0; i < days; i++) {
@@ -89,6 +93,9 @@ function selectField(element) {
 
 /* ==== SELECCIONAR FECHA ==== */
 function selectDate(element) {
+
+    fieldContainer.innerHTML = '';
+
     // Cerrar calendario al seleccionar fecha
     closeCalendar();
 
@@ -116,8 +123,13 @@ function selectDate(element) {
    HORARIOS DISPONIBLES
 ===================================================== */
 function getSchedulesFree() {
-    if (!fieldSelected || !dateSelected) {
-        showToast('error', 'Error', 'Debe seleccionar una cancha y fecha deseada');
+    // if (!fieldSelected || !dateSelected) {
+    if (!dateSelected) {
+        showToast(
+            'error',
+            'Error',
+            'Debe seleccionar una cancha y fecha deseada',
+        );
         return;
     }
 
@@ -131,7 +143,7 @@ function getSchedulesFree() {
             'X-CSRF-TOKEN': csrfToken,
         },
         body: JSON.stringify({
-            field_id: fieldSelected,
+            // field_id: fieldSelected,
             date: dateSelected,
         }),
     })
@@ -139,7 +151,7 @@ function getSchedulesFree() {
         .then((response) => {
             const schedules = response.data ?? response;
 
-            console.log(response)
+            console.log(response);
 
             // Realizar scroll automatico al final.
             setTimeout(() => {
@@ -162,22 +174,67 @@ function getSchedulesFree() {
                 <div class="schedule-card">
                     <span class="schedule-hour">${schedule.hour}</span>                     
 
-                    <form method="POST" action="${reservationUrl}">
-                        <input type="hidden" name="_token" value="${csrfToken}">
-                        <input type="hidden" name="field_id" value="${fieldSelected}">
-                        <input type="hidden" name="date" value="${dateSelected}">
-                        <input type="hidden" name="schedule_id" value="${schedule.id}">
+                    <button type="submit" class="btn-select" onclick="getFields('${schedule.id}', '${dateSelected}')">
+                        Seleccionar
+                    </button>
 
-                        <button type="submit" class="btn-reservar">
-                            Reservar
-                        </button>
-                    </form>
                 </div>
             `;
             });
         })
         .catch(() => {
             schedulesDiv.innerHTML = '<p>Error al cargar horarios</p>';
+        });
+}
+
+function getFields(schedule, date) {
+
+    scheduleSelected = schedule;
+
+    fetch(`${fieldsUrl}?date=${date}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+    })
+        .then((res) => res.json())
+        .then((response) => {
+            let data = response.fields;
+
+            fieldContainer.innerHTML = '';
+
+            data.forEach((item) => {
+                fieldContainer.innerHTML += `
+                    <div class="field-card" data-id="${item.id}">
+
+                        <div class="field-card-info">
+                            <div class="field-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512 512">
+                                    <path fill="currentColor" d="M120.8 55L87.58 199h18.52l29.1-126h18.2l-20.6 126h18.3l10.1-62H247v62h18v-62h85.8l10.1 62h18.3L358.6 73h18.2l29.1 126h18.5L391.2 55zm50.9 18h168.6l7.6 46H164.1zM73 217v30h366v-30zm-.64 48L20.69 489H491.3l-51.7-224h-18.5l47.6 206h-45L390 265h-18.3l14.2 87H265v-87h-18v87H126.1l14.2-87H122L88.35 471H43.31l47.56-206zm50.74 105h265.8l16.5 101H106.6z" />
+                                </svg>
+                            </div>
+
+                            <div class="field-info">
+                                <h3>${item.name}</h3>
+                                <p>${item.description}</p>
+                            </div>
+                        </div>
+                        <form method="POST" action="${reservationUrl}">
+                            
+                            <input type="hidden" name="_token" value="${csrfToken}">
+                            <input type="hidden" name="field_id" value="${item.id}">
+                            <input type="hidden" name="date" value="${date}">
+                            <input type="hidden" name="schedule_id" value="${scheduleSelected}">
+
+                            <button type="submit" class="btn-select">
+                                Seleccionar
+                            </button>
+                        </form>
+
+                    </div>
+                `;
+            });
         });
 }
 
@@ -284,5 +341,7 @@ window.renderCalendar = renderCalendar;
 window.prevMonth = prevMonth;
 window.nextMonth = nextMonth;
 window.goToCurrentMonth = goToCurrentMonth;
+
+window.getFields = getFields;
 
 window.closeCalendar = closeCalendar;

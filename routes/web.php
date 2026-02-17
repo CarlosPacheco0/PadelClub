@@ -76,7 +76,7 @@ Route::middleware(['auth', 'validate_role:user'])->group(function () {
     Route::post('/schedulesFree', [ReservationsController::class, 'schedulesFree'])
         ->name('schedulesFree');
 
-    Route::get('/fieldsFree', [ReservationsController::class, 'fieldsFree'])
+    Route::get('/fieldsFree/date', [ReservationsController::class, 'fieldsFree'])
         ->name('fieldsFree');
 
     Route::get('/user', fn() => view('user.dashboard'))
