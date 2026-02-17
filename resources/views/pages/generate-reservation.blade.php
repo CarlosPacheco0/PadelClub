@@ -12,7 +12,7 @@
 
         <div id="container-header">
             <h2 class="content-title">Realiza tu reserva</h2>
-            <p class="text-muted">Selecciona una cancha, una fecha y un horario disponible</p>
+            <p class="text-muted">Selecciona una fecha, un horario y una cancha disponible</p>
         </div>
 
         <div id="container-section">

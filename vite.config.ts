@@ -12,7 +12,8 @@ export default defineConfig({
         laravel({
             input: [
                 ...glob.sync('resources/css/*.css'),
-                ...glob.sync('resources/js/**/*.js')
+                ...glob.sync('resources/js/**/*.js'),
+                ...glob.sync('resources/img/**')
             ],
             ssr: 'resources/js/ssr.ts',
             refresh: true,
