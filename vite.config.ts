@@ -13,7 +13,7 @@ export default defineConfig({
             input: [
                 ...glob.sync('resources/css/*.css'),
                 ...glob.sync('resources/js/**/*.js'),
-                ...glob.sync('resources/images/**')
+                ...glob.sync('resources/images/**/*.jpg')
             ],
             ssr: 'resources/js/ssr.ts',
             refresh: true,
