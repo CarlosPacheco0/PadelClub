@@ -14,7 +14,7 @@ export default defineConfig({
                 ...glob.sync('resources/css/*.css'),
                 ...glob.sync('resources/css/tables/*.css'),
                 ...glob.sync('resources/js/**/*.js'),
-                ...glob.sync('resources/images/**/*.jpg')
+                ...glob.sync('resources/images/*.jpg')
             ],
             ssr: 'resources/js/ssr.ts',
             refresh: true,

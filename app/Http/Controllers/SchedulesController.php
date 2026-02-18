@@ -133,6 +133,7 @@ class SchedulesController extends Controller
         ]);
     }
 
+    // Guardar horarios seleccionados por fecha
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -156,10 +157,20 @@ class SchedulesController extends Controller
         }
 
         // Realizar insert de la data
-        DB::table('schedule_dates')->insertOrIgnore($data);
+        $insertedCount = DB::table('schedule_dates')->insertOrIgnore($data);
+
+        if ($insertedCount > 0) {
+            return response()->json([
+                'status'  => 'success',
+                'title'   => 'Completado',
+                'message' => 'Horarios asignados correctamente.'
+            ]);
+        }
 
         return response()->json([
-            'message' => 'Horarios asignados correctamente'
+            'status'  => 'error',
+            'title'   => 'Error',
+            'message' => 'No fue posible asignar los horarios.'
         ]);
     }
 
@@ -171,7 +182,7 @@ class SchedulesController extends Controller
             'schedules.*'   => 'integer|exists:schedules,id',
         ]);
 
-        
+
         // Buscar horarios correspondientes por fecha
         $delete = ScheduleDate::where('date', $validated['date'])
             ->whereIn('id', $validated['schedules'])
@@ -181,5 +192,4 @@ class SchedulesController extends Controller
             'message' => 'Horarios eliminados correctamente'
         ]);
     }
-
 }
