@@ -5,6 +5,7 @@
 // Asegúrate de que en tu vista Blade definas window.SCHEDULE_CONFIG con las claves exactas.
 const { url_store, url_get_info, url_delete } = window.SCHEDULE_CONFIG;
 
+
 const today = new Date();
 let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
@@ -161,7 +162,7 @@ function selectDay(dayElement) {
                             </label>`;
                 });
             } else {
-                schedules_free.innerHTML = `<div class="empty-state"><span>No hay cupos disponibles</span></div>`;
+                schedules_free.innerHTML = `<div class="empty-state"><span>No hay horarios disponibles</span></div>`;
             }
 
             // 2. Renderizar Asignados (Chips Rojos)
@@ -223,7 +224,7 @@ function countDeleteSchedule() {
 function saveData() {
     const selectedDay = document.querySelector('.day-selected');
     if (!selectedDay) {
-        alert('Selecciona una fecha primero');
+        showToast('info', 'Atención', 'Selecciona una fecha primero.');
         return;
     }
 
@@ -233,13 +234,12 @@ function saveData() {
     ).map((input) => Number(input.dataset.id));
 
     if (schedules.length === 0) {
-        alert('Selecciona al menos un horario para asignar');
+        showToast('info', 'Atención', 'Selecciona al menos un horario para asignar.');
         return;
     }
 
     if (!url_store) {
-        console.error('Configuración faltante: url_store');
-        alert('Error de sistema: Ruta de guardado no configurada.');
+        showToast('error', 'Error', 'Error de sistema: Ruta de guardado no configurada.');
         return;
     }
 
@@ -258,10 +258,11 @@ function saveData() {
     })
         .then((r) => r.json())
         .then((data) => {
-            selectDay(selectedDay);
-
-            if (!data) return;
+            
             showToast(data.status, data.title, data.message);
+            
+            if( data.status == 'scucess' ) selectDay(selectedDay);
+
         })
         .catch((e) => {
             console.error('Error:', e);
@@ -269,28 +270,33 @@ function saveData() {
         });
 }
 
-function deleteSchedules() {
+function deleteSchedules() { 
+
     const selectedDay = document.querySelector('.day-selected');
     const schedules = Array.from(
         document.querySelectorAll('.schedule-list.added input:checked'),
     ).map((input) => Number(input.dataset.id));
 
-    if (!selectedDay || schedules.length === 0) return;
+    if (!selectedDay || schedules.length === 0) {
+        showToast('info', 'Atención', 'Selecciona al menos un horario para eliminar.');
+        return;
+    }
 
     const date = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${selectedDay.textContent.trim().padStart(2, '0')}`;
 
     if (!confirm('¿Estás seguro de eliminar estos horarios?')) return;
 
     if (!url_delete) {
-        console.error('Configuración faltante: url_delete');
-        alert('Error de sistema: Ruta de eliminación no configurada.');
+        showToast('error', 'Error', 'Error de sistema: Ruta de guardado no configurada.');
         return;
     }
-
+    
+    console.log(date, schedules)
     fetch(url_delete, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'X-CSRF-TOKEN': document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute('content'),
@@ -300,14 +306,23 @@ function deleteSchedules() {
             schedules,
         }),
     })
-        .then((r) => r.json())
-        .then((data) => {
-            alert(data.message || 'Eliminado correctamente');
-            selectDay(selectedDay);
-        })
-        .catch((e) => {
-            console.log('Error:', e);
-        });
+    .then((r) => r.json())
+    .then((data) => {
+        console.log(data);
+
+        if (!data) return;
+
+        showToast(data.status, data.title, data.message);
+
+        // 2. IMPORTANTE: Recargar la vista para quitar los elementos borrados
+        if (data.status === 'success') { // O como identifiques el éxito en tu backend
+             selectDay(selectedDay); 
+        }
+    })
+    .catch((e) => {
+        console.error('Error:', e);
+        showToast('error', 'Error', 'No fue posible eliminar los horarios.');
+    });
 }
 
 /* ==========================================================================

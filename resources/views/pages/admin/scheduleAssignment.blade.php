@@ -112,7 +112,8 @@
                     </div>
 
                     <div class="action-footer">
-                        <div style="flex-grow:1"></div> <button class="btn btn-delete" onclick="deleteSchedules()">
+                        <div style="flex-grow:1"></div> 
+                        <button type="button" class="btn btn-delete" onclick="deleteSchedules()">
                             Eliminar Seleccionados
                         </button>
                     </div>
@@ -129,7 +130,7 @@
             window.SCHEDULE_CONFIG = {
                 url_store: "{{ route('assignment.store') }}",
                 url_get_info: "{{ route('assignment.info') }}",
-                url_delte: "{{ route('assignment.delete') }}"
+                url_delete: "{{ route('assignment.delete') }}"
             };
         </script>
 

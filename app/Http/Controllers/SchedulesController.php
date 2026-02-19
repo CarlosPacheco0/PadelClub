@@ -179,17 +179,28 @@ class SchedulesController extends Controller
         $validated = $request->validate([
             'date'          => 'required|date',
             'schedules'     => 'required|array|min:1',
-            'schedules.*'   => 'integer|exists:schedules,id',
+            'schedules.*'   => 'integer|exists:schedule_dates,id',
         ]);
 
+        // return $validated['date'];  
 
         // Buscar horarios correspondientes por fecha
-        $delete = ScheduleDate::where('date', $validated['date'])
+        $deleted = ScheduleDate::where('date', $validated['date'])
             ->whereIn('id', $validated['schedules'])
             ->delete();
 
+        if ($deleted) {
+            return response()->json([
+                'status'  => 'success',
+                'title'   => 'Completado',
+                'message' => 'Horarios asignados correctamente.'
+            ]);
+        }
+
         return response()->json([
-            'message' => 'Horarios eliminados correctamente'
+            'status'  => 'error',
+            'title'   => 'Error',
+            'message' => 'No fue posible eliminar los horarios.'
         ]);
     }
 }

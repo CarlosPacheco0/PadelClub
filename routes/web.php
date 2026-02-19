@@ -151,9 +151,10 @@ Route::middleware(['auth', 'validate_role:admin'])->group(function () {
         ->name('assignment.info');
 
     // Eliminar horarios asignados
-    Route::delete('/getInfo-date', [SchedulesController::class, 'assignmentDelete'])
+    Route::delete('/schedule-delete', [SchedulesController::class, 'assignmentDelete'])
         ->name('assignment.delete');
 
+        
 
     // Definir precio a los horarios
     Route::get('/rates', RateManagementController::class)
