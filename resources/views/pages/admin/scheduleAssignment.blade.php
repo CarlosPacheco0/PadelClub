@@ -71,7 +71,7 @@
                     <div class="schedule-container">
                         <div class="schedule-list free">
                             <div class="empty-state">
-                                <span>👈 Selecciona una fecha primero</span>
+                                <span>Selecciona una fecha primero</span>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                             <span class="dot"></span> Seleccionados: <strong class="schedules-selecteds"
                                 style="margin-left: 4px;">0</strong>
                         </div>
-                        <button class="btn btn-primary" onclick="saveData()">
+                        <button class="btn btn-primary btn-disabled" id="save-btn" onclick="saveData()">
                             Guardar Asignación
                         </button>
                     </div>
@@ -106,14 +106,14 @@
                     <div class="schedule-container">
                         <div class="schedule-list added">
                             <div class="empty-state">
-                                <span>Sin horarios registrados</span>
+                                <span>Selecciona una fecha primero</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="action-footer">
                         <div style="flex-grow:1"></div> 
-                        <button type="button" class="btn btn-delete" onclick="deleteSchedules()">
+                        <button type="button" class="btn btn-delete btn-disabled" id="delete-btn" onclick="deleteSchedules()">
                             Eliminar Seleccionados
                         </button>
                     </div>

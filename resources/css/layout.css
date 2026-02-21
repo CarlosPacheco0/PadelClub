@@ -200,6 +200,11 @@ body {
     box-shadow: 0 0 10px var(--danger-glow);
 }
 
+.btn-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 /* --- TARJETAS --- */
 .card,
 .table-card {

@@ -92,20 +92,27 @@ class SchedulesController extends Controller
     // Asignación de horarios
     public function assignment()
     {
-        // $schedules = Schedule::orderBy('id', 'asc')
-        //     ->get();
-
         return view('pages.admin.scheduleAssignment');
     }
 
     public function getInfoDate(Request $request)
     {
-        // Horarios disponible
-        // $allSchedules = Schedule::where('status', 1)
-        //     ->orderBy('id', 'asc')
-        //     ->get();
 
+        // Validamos que sea una fecha o un array de fechas
+        $dates = is_array($request->date) ? $request->date : [$request->date];
 
+        // Si hay más de una fecha, listamos todos los horarios sin filtrar disponibilidad
+        if (count($dates) > 1) {
+            $allSchedules = Schedule::where('status', '1')
+                ->orderBy('id', 'asc')
+                ->get(['id', 'start_time', 'end_time', 'status']);
+
+            return response()->json([
+                'free'  => $allSchedules
+            ]);
+        }
+
+        // Lógica para una sola fecha
         /// Horarios asignados con fecha
         $schedulesAssigned = ScheduleDate::with('schedule:id,start_time,end_time')
             ->where('date', $request->date)
@@ -116,16 +123,10 @@ class SchedulesController extends Controller
         $schedulesAddedIds = $schedulesAssigned->pluck('schedule_id');
 
         // Horarios disponibles
-        $schedulesFree = Schedule::select(
-            'id',
-            'start_time',
-            'end_time',
-            'status'
-        )
-            ->where('status', '1')
+        $schedulesFree = Schedule::where('status', '1')
             ->whereNotIn('id', $schedulesAddedIds)
             ->orderBy('id', 'asc')
-            ->get();
+            ->get(['id', 'start_time', 'end_time', 'status']);
 
         return response()->json([
             'free'  => $schedulesFree,
@@ -144,6 +145,7 @@ class SchedulesController extends Controller
         ]);
 
         $data = [];
+        $now = now();
 
         // Recorremos cada valor obtenido para la inserción
         foreach ($validated['dates'] as $date) {
@@ -151,7 +153,7 @@ class SchedulesController extends Controller
                 $data[] = [
                     'schedule_id' => $scheduleId,
                     'date'        => $date,
-                    'created_at'  => now()
+                    'created_at'  => $now
                 ];
             }
         }
@@ -159,11 +161,18 @@ class SchedulesController extends Controller
         // Realizar insert de la data
         $insertedCount = DB::table('schedule_dates')->insertOrIgnore($data);
 
+        $totalEnviados = count($data);
+
         if ($insertedCount > 0) {
+            // Si se insertaron menos de los enviados, informamos que algunos se omitieron
+            $mensaje = ($insertedCount < $totalEnviados)
+                ? "Se asignaron $insertedCount horarios nuevos. Los horarios que ya estaban ocupados fueron omitidos."
+                : "Horarios asignados correctamente.";
+
             return response()->json([
                 'status'  => 'success',
                 'title'   => 'Completado',
-                'message' => 'Horarios asignados correctamente.'
+                'message' => $mensaje
             ]);
         }
 
@@ -193,14 +202,14 @@ class SchedulesController extends Controller
             return response()->json([
                 'status'  => 'success',
                 'title'   => 'Completado',
-                'message' => 'Horarios asignados correctamente.'
+                'message' => 'El horario asignado fue eliminado correctamente.'
             ]);
         }
 
         return response()->json([
             'status'  => 'error',
             'title'   => 'Error',
-            'message' => 'No fue posible eliminar los horarios.'
+            'message' => 'No fue posible eliminar el horario asignado.'
         ]);
     }
 }

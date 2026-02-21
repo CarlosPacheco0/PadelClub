@@ -5,9 +5,11 @@
 // Asegúrate de que en tu vista Blade definas window.SCHEDULE_CONFIG con las claves exactas.
 const { url_store, url_get_info, url_delete } = window.SCHEDULE_CONFIG;
 
-
 const today = new Date();
 let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+let schedulesLoaded;
+let dates_string = '';
 
 // TODO: Para que esto sea real, tu backend debería pasar un array de fechas ocupadas.
 const busyDates = [];
@@ -18,6 +20,9 @@ const busyDates = [];
 const schedulesCounter = document.querySelector('.schedules-selecteds');
 const schedules_free = document.querySelector('.schedule-list.free');
 const schedules_added = document.querySelector('.schedule-list.added');
+
+const btn_save = document.getElementById('save-btn');
+const btn_delete = document.getElementById('delete-btn');
 
 /* ==========================================================================
    3. NAVEGACIÓN DEL CALENDARIO
@@ -116,19 +121,21 @@ function renderCalendar() {
 /* ==========================================================================
    5. INTERACCIÓN Y SELECCIÓN DE DÍAS
    ========================================================================== */
-function selectDay(dayElement) {
-    // Visual Toggle solo en UI
-    document
-        .querySelectorAll('.day-selected')
-        .forEach((d) => d.classList.remove('day-selected'));
-    dayElement.classList.add('day-selected');
+async function selectDay(dayElement) {
+    // Seleccionar dias
+    dayElement.classList.toggle('day-selected');
 
-    let date =
-        currentDate.getFullYear() +
-        '-' +
-        String(currentDate.getMonth() + 1).padStart(2, '0') +
-        '-' +
-        dayElement.textContent.trim().padStart(2, '0');
+    dates_string = ''; // Setiamos como string vacio al realizar la seleccion
+
+    document.querySelectorAll('.day-selected').forEach((day) => {
+        dates_string +=
+            currentDate.getFullYear() +
+            '-' +
+            String(currentDate.getMonth() + 1).padStart(2, '0') +
+            '-' +
+            day.textContent.trim().padStart(2, '0') +
+            ',';
+    });
 
     // Resetear UI mientras carga
     schedules_free.innerHTML =
@@ -142,17 +149,48 @@ function selectDay(dayElement) {
         return;
     }
 
-    fetch(`${url_get_info}?date=${date}`)
-        .then((res) => res.json())
-        .then((data) => {
-            const schedulesFree = Array.isArray(data.free) ? data.free : [];
-            const schedulesAdded = Array.isArray(data.added) ? data.added : [];
+    if (dates_string) schedulesLoaded = await loadSchedules();
 
-            // 1. Renderizar Disponibles (Chips)
-            schedules_free.innerHTML = '';
-            if (schedulesFree.length > 0) {
-                schedulesFree.forEach((item) => {
-                    schedules_free.innerHTML += `
+    schedulesToRender(dates_string);
+}
+
+/* ==========================================================================
+   6. CARGA Y RENDERIZADO DE HORARIOS
+   ========================================================================== */
+
+async function loadSchedules() {
+    try {
+        const res = await fetch(`${url_get_info}?date=${dates_string}`);
+        const data = await res.json();
+
+        // Almacenas en una variable
+        const misHorarios = data;
+        return misHorarios;
+    } catch (error) {
+        console.error(error);
+        schedules_free.innerHTML =
+            '<div class="empty-state"><span>Error al cargar</span></div>';
+    }
+}
+
+function schedulesToRender(date) {
+    const schedulesFree =
+        schedulesLoaded && Array.isArray(schedulesLoaded.free)
+            ? schedulesLoaded.free
+            : [];
+    const schedulesAdded =
+        schedulesLoaded && Array.isArray(schedulesLoaded.added)
+            ? schedulesLoaded.added
+            : [];
+
+    if (date) {
+        // 1. Renderizar Disponibles (Chips)
+        schedules_free.innerHTML = '';
+        if (schedulesFree.length > 0) {
+            btn_save.classList.remove('btn-disabled');
+
+            schedulesFree.forEach((item) => {
+                schedules_free.innerHTML += `
                             <label class="schedule-chip">
                                 <input type="checkbox" data-id="${item.id}" onchange="updateSchedulesCount()">
                                 <span class="chip-content">
@@ -160,16 +198,19 @@ function selectDay(dayElement) {
                                     <span class="check-icon">✔</span>
                                 </span>
                             </label>`;
-                });
-            } else {
-                schedules_free.innerHTML = `<div class="empty-state"><span>No hay horarios disponibles</span></div>`;
-            }
+            });
+        } else {
+            btn_save.classList.add('btn-disabled');
+            schedules_free.innerHTML = `<div class="empty-state"><span>No hay horarios disponibles</span></div>`;
+        }
 
-            // 2. Renderizar Asignados (Chips Rojos)
-            schedules_added.innerHTML = '';
-            if (schedulesAdded.length > 0) {
-                schedulesAdded.forEach((item) => {
-                    schedules_added.innerHTML += `
+        // 2. Renderizar Asignados (Chips Rojos)
+        schedules_added.innerHTML = '';
+        if (schedulesAdded.length > 0) {
+            btn_delete.classList.remove('btn-disabled');
+
+            schedulesAdded.forEach((item) => {
+                schedules_added.innerHTML += `
                             <label class="schedule-chip danger-chip">
                                 <input type="checkbox" data-id="${item.id}" onchange="countDeleteSchedule()">
                                 <span class="chip-content">
@@ -177,24 +218,27 @@ function selectDay(dayElement) {
                                     <span class="check-icon">✕</span>
                                 </span>
                             </label>`;
-                });
-            } else {
-                schedules_added.innerHTML = `<div class="empty-state"><span>Nada registrado hoy</span></div>`;
-            }
+            });
+        } else {
+            btn_delete.classList.add('btn-disabled');
+            schedules_added.innerHTML = `<div class="empty-state"><span>Sin horarios asignados</span></div>`;
+        }
+    } else {
 
-            updateSchedulesCount(); // Resetear contador a 0
-            countDeleteSchedule(); // Resetear estado botón eliminar
-        })
-        .catch((error) => {
-            console.error(error);
-            schedules_free.innerHTML =
-                '<div class="empty-state"><span>Error al cargar</span></div>';
-            schedules_added.innerHTML = '';
-        });
+        document
+                .querySelectorAll('.day-selected')
+                .forEach((day) => day.classList.remove('day-selected'));
+
+        schedules_free.innerHTML = `<div class="empty-state"><span>Selecciona una fecha primero</span></div>`;
+        schedules_added.innerHTML = `<div class="empty-state"><span>Selecciona una fecha primero</span></div>`;
+    }
+
+    updateSchedulesCount(); // Resetear contador a 0
+    countDeleteSchedule(); // Resetear estado botón eliminar
 }
 
 /* ==========================================================================
-   6. LÓGICA DE UI (CONTADORES)
+   7. LÓGICA DE UI (CONTADORES)
    ========================================================================== */
 function updateSchedulesCount() {
     const count = document.querySelectorAll(
@@ -219,7 +263,7 @@ function countDeleteSchedule() {
 }
 
 /* ==========================================================================
-   7. OPERACIONES DE DATOS (API)
+   8. OPERACIONES DE DATOS (API)
    ========================================================================== */
 function saveData() {
     const selectedDay = document.querySelector('.day-selected');
@@ -228,20 +272,33 @@ function saveData() {
         return;
     }
 
-    const date = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${selectedDay.textContent.trim().padStart(2, '0')}`;
+    // const date = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${selectedDay.textContent.trim().padStart(2, '0')}`;
+
     const schedules = Array.from(
         document.querySelectorAll('.schedule-list.free input:checked'),
     ).map((input) => Number(input.dataset.id));
 
     if (schedules.length === 0) {
-        showToast('info', 'Atención', 'Selecciona al menos un horario para asignar.');
+        showToast(
+            'info',
+            'Atención',
+            'Selecciona al menos un horario para asignar.',
+        );
         return;
     }
 
     if (!url_store) {
-        showToast('error', 'Error', 'Error de sistema: Ruta de guardado no configurada.');
+        showToast(
+            'error',
+            'Error',
+            'Error de sistema: Ruta de guardado no configurada.',
+        );
         return;
     }
+
+    dates_string = dates_string.slice(0, -1); // Eliminamos la utlima coma de la cadena
+    const dates_array = dates_string.split(','); // Convertimos la fechas seleccionadas en array
+
 
     fetch(url_store, {
         method: 'POST',
@@ -252,17 +309,17 @@ function saveData() {
                 .getAttribute('content'),
         },
         body: JSON.stringify({
-            dates: [date],
+            dates: dates_array,
             schedules: schedules,
         }),
     })
         .then((r) => r.json())
         .then((data) => {
-            
             showToast(data.status, data.title, data.message);
-            
-            if( data.status == 'scucess' ) selectDay(selectedDay);
 
+            // if (data.status == 'success') selectDay(selectedDay);
+            schedulesLoaded = [];
+            if (data.status == 'success') schedulesToRender('');
         })
         .catch((e) => {
             console.error('Error:', e);
@@ -270,63 +327,83 @@ function saveData() {
         });
 }
 
-function deleteSchedules() { 
-
+function deleteSchedules() {
     const selectedDay = document.querySelector('.day-selected');
     const schedules = Array.from(
         document.querySelectorAll('.schedule-list.added input:checked'),
     ).map((input) => Number(input.dataset.id));
 
     if (!selectedDay || schedules.length === 0) {
-        showToast('info', 'Atención', 'Selecciona al menos un horario para eliminar.');
+        showToast(
+            'info',
+            'Atención',
+            'Selecciona al menos un horario para eliminar.',
+        );
         return;
     }
 
     const date = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${selectedDay.textContent.trim().padStart(2, '0')}`;
 
-    if (!confirm('¿Estás seguro de eliminar estos horarios?')) return;
-
-    if (!url_delete) {
-        showToast('error', 'Error', 'Error de sistema: Ruta de guardado no configurada.');
-        return;
-    }
-    
-    console.log(date, schedules)
-    fetch(url_delete, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute('content'),
+    Swal.fire({
+        title: 'Eliminar asignación',
+        text: '¿Está seguro de querer eliminar los horarios asignados?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'No',
+        customClass: {
+            popup: 'swal-popup',
+            confirmButton: 'swal-confirm',
+            cancelButton: 'swal-cancel',
         },
-        body: JSON.stringify({
-            date,
-            schedules,
-        }),
-    })
-    .then((r) => r.json())
-    .then((data) => {
-        console.log(data);
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (!url_delete) {
+                showToast(
+                    'error',
+                    'Error',
+                    'Error de sistema: Ruta de guardado no configurada.',
+                );
+                return;
+            }
 
-        if (!data) return;
+            fetch(url_delete, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute('content'),
+                },
+                body: JSON.stringify({
+                    date,
+                    schedules,
+                }),
+            })
+                .then((r) => r.json())
+                .then((data) => {
+                    if (!data) return;
 
-        showToast(data.status, data.title, data.message);
+                    showToast(data.status, data.title, data.message);
 
-        // 2. IMPORTANTE: Recargar la vista para quitar los elementos borrados
-        if (data.status === 'success') { // O como identifiques el éxito en tu backend
-             selectDay(selectedDay); 
+                    // 2. IMPORTANTE: Recargar la vista para quitar los elementos borrados
+                    if (data.status === 'success') schedulesToRender('');
+                })
+                .catch((e) => {
+                    console.error('Error:', e);
+                    showToast(
+                        'error',
+                        'Error',
+                        'No fue posible eliminar el horario asignado.',
+                    );
+                });
         }
-    })
-    .catch((e) => {
-        console.error('Error:', e);
-        showToast('error', 'Error', 'No fue posible eliminar los horarios.');
     });
 }
 
 /* ==========================================================================
-   8. EXPOSICIÓN GLOBAL E INICIALIZACIÓN
+   9. EXPOSICIÓN GLOBAL E INICIALIZACIÓN
    ========================================================================== */
 window.saveData = saveData;
 window.deleteSchedules = deleteSchedules;
@@ -339,6 +416,7 @@ window.goToCurrentMonth = goToCurrentMonth;
 window.selectDay = selectDay;
 window.updateSchedulesCount = updateSchedulesCount;
 window.countDeleteSchedule = countDeleteSchedule;
+
 
 // Iniciar
 renderCalendar();
