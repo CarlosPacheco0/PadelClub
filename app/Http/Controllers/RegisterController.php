@@ -25,20 +25,34 @@ class RegisterController extends Controller
             'password' => 'required|confirmed|min:5',
         ]);
 
-        // Obtener id del Rol User
-        $userRole = Role::where('name', User::ROLE_USER)->first();
+        try {
 
-        $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role_id'  => $userRole->id,
-            'phone'    => $validated['phone']
-        ]);
+            // Obtener id del Rol User
+            $userRole = Role::where('name', User::ROLE_USER)->first();
 
-        // Inicio de sesión
-        Auth::login($user);
+            if (!$userRole) {
+                return back()->withErrors(['error' => 'El rol de usuario no está configurado.']);
+            }
 
-        return redirect()->route('reservation');
+            $user = User::create([
+                'name'     => $validated['name'],
+                'email'    => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role_id'  => $userRole->id,
+                'phone'    => $validated['phone']
+            ]);
+
+            // Inicio de sesión
+            Auth::login($user);
+
+            return redirect()
+                ->route('reservation')
+                ->with('success', '¡Bienvenido! Tu cuenta ha sido creada exitosamente.');
+
+        } catch (\Exception $e) {
+            return back()
+                ->withInput() // Mantiene lo que el usuario escribió
+                ->withErrors(['error' => 'Ocurrió un error inesperado. Inténtalo más tarde.']);
+        }
     }
 }

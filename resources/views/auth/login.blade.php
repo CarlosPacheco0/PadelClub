@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión - Pádel Club</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/layout.css', 'resources/css/auth.css'])
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    @vite(['resources/css/layout.css', 'resources/css/auth.css', 'resources/css/alerts.css', 'resources/js/app.js'])
+
 </head>
 <body>
+
+    <main class="content">
+        
+        <div id="toast-container" class="toast-container"></div>
+        <x-alert-view />
+
+    </main>
 
     <div class="split-screen">
         

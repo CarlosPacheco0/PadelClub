@@ -37,9 +37,8 @@ class AuthController extends Controller
 
 
         // Si falla el login
-        return back()->withErrors([
-            'email' => 'Credenciales incorrectas',
-        ]);
+        return back()
+            ->with('error', "Credenciales incorrectas.");
     }
 
     // Logout
