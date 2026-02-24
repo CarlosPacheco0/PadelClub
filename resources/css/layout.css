@@ -9,6 +9,11 @@
     --primary-glow: rgba(129, 140, 248, 0.4); /* Resplandor */
     --primary-soft: rgba(99, 102, 241, 0.15); /* Fondos translúcidos */
 
+    --panel-width: 420px;
+    --transition-speed: 0.4s;
+    --accent-color: #6366f1;
+    --bg-panel: #1e293b;
+
     --secondary: #38bdf8; /* Sky Blue */
     --accent: #4ade80; /* Green Neon */
 
@@ -313,59 +318,162 @@ label {
 }
 
 /* ==========================================================================
-   5. MÓDULO: MODALS (GLOBAL DARK GLASS)
+   GESTIÓN DE CANCHAS - SIDE PANEL & UI UPGRADE
    ========================================================================== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
+
+/* Header de contenido */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.font-bold { font-weight: 600; color: #fff; }
+
+/* Badges de estado */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-active { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
+.badge-inactive { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+
+.btn-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    /* opacity: 0;  */
-    transition: opacity 0.3s ease;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: var(--text-muted);
 }
-.modal.show {
+
+.btn-edit:hover { background: var(--accent-color); color: white; }
+.btn-delete:hover { background: #ef4444; color: white; }
+
+/* SIDE PANEL LOGIC 
+*/
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1040;
+}
+
+.drawer-overlay.active {
     opacity: 1;
+    visibility: visible;
 }
 
-.modal-content {
-    background: var(--bg-card);
-    width: 90%;
-    max-width: 500px;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-float);
-    padding: 32px;
-    transform: translateY(20px);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.modal.show .modal-content {
-    transform: translateY(0);
-}
-
-.modal-title {
-    margin-top: 0;
-    color: var(--text-main);
-    font-size: 1.5rem;
-    text-align: center;
-    margin-bottom: 24px;
-    font-weight: 700;
-}
-.modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 32px;
-}
-.modal .btn-save {
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
     width: 100%;
-} /* Botón full width en modales */
+    max-width: var(--panel-width);
+    background: var(--bg-panel);
+    z-index: 1050;
+    transform: translateX(100%);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+
+.side-panel.active {
+    transform: translateX(0);
+}
+
+.panel-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 0; }
+.panel-subtitle { font-size: 0.8rem; color: var(--text-muted); }
+
+.btn-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+.btn-close:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+.panel-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.panel-body {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.panel-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 1rem;
+    background: rgba(15, 23, 42, 0.2);
+}
+
+/* Form Styles */
+.form-group { margin-bottom: 1.5rem; }
+.form-label { display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+.form-input {
+    width: 100%;
+    background: #334155;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.info-box {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+}
+
+.info-box i { color: var(--accent-color); margin-top: 0.2rem; }
+.info-box p { font-size: 0.8rem; color: #cbd5e1; margin: 0; line-height: 1.4; }
+
+/* Botones */
+.btn-save { width: 100%; }
+.inline-form { display: inline; }
 
 /* ==========================================================================
    9. RESPONSIVE UTILITIES

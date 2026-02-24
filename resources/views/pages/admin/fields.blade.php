@@ -19,7 +19,7 @@
     </section>
 
     <div class="actions">
-        <button class="btn" id="openModal" onclick="openCreateModal()">Agregar nueva cancha</button>
+        <button class="btn btn-primary" id="openModal" onclick="openCreateModal()">Agregar nueva cancha</button>
     </div>
 
     <table class="table">
@@ -70,98 +70,127 @@
     </table>
 
     {{-- Modal Crear / Editar Cancha --}}
-    <div class="modal" id="fieldModal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Nueva cancha</h2>
+    <div id="modalOverlay" class="drawer-overlay" onclick="closeModal()"></div>
 
-            <form id="fieldForm" method="POST">
-                @csrf
+    <!-- Side Panel / Modal -->
+    <div class="side-panel" id="fieldModal">
+        <div class="panel-header">
+            <div>
+                <h2 id="modalTitle" class="panel-title">Nueva cancha</h2>
+                <p class="panel-subtitle" id="panelSubtitle">Completa la información técnica</p>
+            </div>
+            <button onclick="closeModal()" class="btn-close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
+        <form id="fieldForm" method="POST" class="panel-container">
+            @csrf
+            <div class="panel-body">
                 <input type="hidden" name="_method" id="_method">
                 <input type="hidden" name="field_id" id="field_id">
 
                 <div class="form-group">
-                    <label>Nombre</label>
-                    <input type="text" name="name" id="name" required>
+                    <label class="form-label">Nombre de la cancha</label>
+                    <input type="text" name="name" id="name" class="form-input"
+                        placeholder="Ej: Cancha Central Pro" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Descripción</label>
-                    <input type="text" name="desc" id="description" required>
+                    <label class="form-label">Descripción</label>
+                    <textarea name="desc" id="description" class="form-input" rows="4"
+                        placeholder="Detalles de la superficie, ubicación..." required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Estado</label>
-                    <select name="status" id="status" required>
-                        <option value="1">Activa</option>
-                        <option value="0">Inactiva</option>
+                    <label class="form-label">Estado de disponibilidad</label>
+                    <select name="status" id="status" class="form-input" required>
+                        <option value="1">Activa (Disponible para reservas)</option>
+                        <option value="0">Inactiva (Mantenimiento / Cerrada)</option>
                     </select>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-save" id="submitBtn">Guardar</button>
+                <div class="info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Al desactivar una cancha, los usuarios no podrán verla en el calendario de reservas.</p>
                 </div>
-            </form>
-        </div>
-    </div>
+            </div>
 
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary" id="submitBtn">Guardar cancha</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
 
 
     {{-- JS --}}
     <script>
         const modal = document.getElementById('fieldModal');
+        const overlay = document.getElementById('modalOverlay');
         const title = document.getElementById('modalTitle');
+        const subtitle = document.getElementById('panelSubtitle');
         const submitBtn = document.getElementById('submitBtn');
         const form = document.getElementById('fieldForm');
 
         const _method = document.getElementById('_method');
         const field_id = document.getElementById('field_id');
-
-        const name = document.getElementById('name');
-        const description = document.getElementById('description');
-        const status = document.getElementById('status');
+        const nameInput = document.getElementById('name');
+        const descInput = document.getElementById('description');
+        const statusInput = document.getElementById('status');
 
         const URL_STORE = "{{ route('field.save') }}";
         const URL_UPDATE = "{{ route('field.update') }}";
 
-        // CREAR
         function openCreateModal() {
-            // title.textContent = 'Nueva cancha';
-            submitBtn.textContent = 'Guardar';
+            title.textContent = 'Nueva cancha';
+            subtitle.textContent = 'Registra un nuevo espacio en el club';
+            submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar cancha';
 
             form.reset();
             form.action = URL_STORE;
             _method.value = '';
             field_id.value = '';
-            status.value = 1;
+            statusInput.value = 1;
 
-            modal.style.display = 'block';
+            togglePanel(true);
         }
 
-        // EDITAR
         function openEditModal(field) {
             title.textContent = 'Editar cancha';
-            submitBtn.textContent = 'Actualizar';
+            // subtitle.textContent = `Editando ID: #${field.id}`;
+            submitBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Actualizar datos';
 
             field_id.value = field.id;
-            name.value = field.name;
-            description.value = field.description;
-            status.value = field.status;
+            nameInput.value = field.name;
+            descInput.value = field.description;
+            statusInput.value = field.status;
 
             form.action = URL_UPDATE;
             _method.value = 'PUT';
 
-            modal.style.display = 'block';
+            togglePanel(true);
+        }
+
+        function togglePanel(isOpen) {
+            if (isOpen) {
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+            } else {
+                modal.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function closeModal() {
-            modal.style.display = 'none';
+            togglePanel(false);
         }
 
-        // Cerrar click fuera
-        // window.addEventListener('click', (e) => {
-        //     if (e.target === modal) closeModal();
-        // });
+        // Soporte para tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
     </script>
 @endsection
