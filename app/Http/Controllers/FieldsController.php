@@ -22,17 +22,17 @@ class FieldsController extends Controller
         // 1. Validaciones robustas
         $validated = $request->validate([
             'name'   => 'required|string|max:100',
-            'desc'   => 'string|max:250',
+            'desc'   => 'nullable|string|max:200',
             'status' => 'required|in:0,1',
         ]);
 
         try {
 
-            $field = Field::where('name', $validated['name'])->first();
+            $field = Field::where('name', strtolower($validated['name']))->first();
 
             if ($field) {
                 return back()
-                    ->with('info', 'Actualmente ya existe una cancha con el nombre ')
+                    ->with('info', 'Actualmente ya existe una cancha con el nombre "' . ucfirst($field->name) . '"')
                     ->withInput();
             }
 
@@ -77,12 +77,12 @@ class FieldsController extends Controller
 
             if ($hasActiveReservations) {
                 return back()
-                    ->with('info', 'No es posible eliminar la cancha "' . $field->name . '" porque tiene reservas pendientes o confirmadas.')
+                    ->with('info', 'No es posible eliminar la cancha "' . ucfirst($field->name) . '" porque tiene reservas pendientes o confirmadas.')
                     ->withInput();
             }
 
             $field->delete();
-            return back()->with('success', 'La cancha "' . $field->name . '" ha sido eliminada correctamente.');
+            return back()->with('success', 'La cancha "' . ucfirst($field->name) . '" ha sido eliminada correctamente.');
         } catch (\Exception $e) {
             return back()->with('error', 'Ocurrió un error inesperado al intentar eliminar la cancha.');
         }
@@ -94,7 +94,7 @@ class FieldsController extends Controller
         $validated = $request->validate([
             'field_id' => 'required|exists:fields,id',
             'name' => 'required|string|max:100|unique:fields,name,' . $request->field_id,
-            'desc' => 'string|max:250',
+            'desc' => 'nullable|string|max:200',
             'status' => 'required|in:0,1',
         ]);
 
@@ -108,13 +108,13 @@ class FieldsController extends Controller
 
             if ($hasActiveReservations && $validated['status'] == 0) {
                 return back()
-                    ->with('info', 'No se puede desactivar la cancha "' . $field->name . '" porque tiene reservas activas. Primero debes gestionarlas.')
+                    ->with('info', 'No se puede desactivar la cancha "' . ucfirst($field->name) . '" porque tiene reservas activas. Primero debes gestionarlas.')
                     ->withInput();
             }
 
             $field->update([
-                'name' => $validated['name'],
-                'description' => $validated['desc'], // mapear desc a description
+                'name' => strtolower($validated['name']),
+                'description' => strtolower($validated['desc']), // mapear desc a description
                 'status' => $validated['status'],
             ]);
 

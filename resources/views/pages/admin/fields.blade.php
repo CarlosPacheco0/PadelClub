@@ -37,8 +37,8 @@
 
             @forelse  ($fields as $field)
                 <tr>
-                    <td>{{ $field->name }}</td>
-                    <td>{{ $field->description }}</td>
+                    <td>{{ ucfirst($field->name) }}</td>
+                    <td>{{ ucfirst($field->description) }}</td>
                     <td class="row-status">{{ $field->status == 0 ? 'Inactiva' : 'Activa' }}</td>
                     <td class="actions-table">
 
@@ -94,7 +94,7 @@
                     <div class="form-group">
                         <label class="form-label">Descripción</label>
                         <textarea name="desc" id="description" class="form-input" rows="4"
-                            placeholder="Detalles de la superficie, ubicación..." autocomplete="off">{{ old('desc') }}</textarea>
+                            placeholder="Detalles de la superficie, ubicación..." autocomplete="off" maxlength="200">{{ old('desc') }}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -138,157 +138,39 @@
 
 
     {{-- JS --}}
-    <script>
-        const modal = document.getElementById('fieldModal');
-        const overlay = document.getElementById('modalOverlay');
-        const title = document.getElementById('modalTitle');
-        const subtitle = document.getElementById('panelSubtitle');
-        const submitBtn = document.getElementById('submitBtn');
-        const form = document.getElementById('fieldForm');
-
-        const _method = document.getElementById('_method');
-        const field_id = document.getElementById('field_id');
-        const nameInput = document.getElementById('name');
-        const descInput = document.getElementById('description');
-        const statusInput = document.getElementById('status');
-
-        const URL_STORE = "{{ route('field.save') }}";
-        const URL_UPDATE = "{{ route('field.update') }}";
-
-        let formToDelete = null;
-
-        const btnDelete = document.getElementById('btnAceptarEliminar');
-
-        // Lógica de Filtrado por Estado
-        const filterStatusInput = document.getElementById('tipo');
-        const tableRows = document.querySelectorAll('.table tbody tr');
-
-        filterStatusInput.onchange = () => {
-            const statusTerm = filterStatusInput.value; // "todos", "activas", "inactivas"
-
-            tableRows.forEach(row => {
-                const rowTable = row.querySelector('.row-status');
-
-                // Si la fila está vacía, no hacemos nada
-                if (!rowTable) return;
-
-                const statusText = rowTable.textContent.trim().toLowerCase(); // "activa" o "inactiva"
-
-                let matchesStatus = true;
-                if (statusTerm === 'activas') matchesStatus = (statusText === 'activa');
-                if (statusTerm === 'inactivas') matchesStatus = (statusText === 'inactiva');
-
-                // Mostrar u ocultar con una transición suave
-                if (matchesStatus) {
-                    row.style.display = '';
-                    row.style.opacity = '1';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        };
-
-
-        function openCreateModal() {
-            title.textContent = 'Nueva cancha';
-            subtitle.textContent = 'Registra un nuevo espacio en el club';
-            submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar cancha';
-
-            form.reset();
-            form.action = URL_STORE;
-            _method.value = '';
-            field_id.value = '';
-            statusInput.value = 1;
-
-            togglePanel(true);
-        }
-
-        function openEditModal(field) {
-            title.textContent = 'Editar cancha';
-            submitBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Actualizar datos';
-
-            field_id.value = field.id;
-            nameInput.value = field.name;
-            descInput.value = field.description;
-            statusInput.value = field.status;
-
-            form.action = URL_UPDATE;
-            _method.value = 'PUT';
-
-            togglePanel(true);
-        }
-
-        function confirmarEliminacion(event, field, name) {
-            event.preventDefault(); // Detenemos el envío automático
-
-            // Guardamos la referencia del formulario que disparó el evento
-            formToDelete = event.currentTarget;
-
-            // Seteamos el nombre en el modal
-            document.getElementById('fieldName').textContent = name;
-
-            // Mostramos el modal
-            const modal = document.getElementById('customConfirm');
-            modal.classList.add('active');
-        }
-
-        function cerrarConfirmacion() {
-            document.getElementById('customConfirm').classList.remove('active');
-            formToDelete = null;
-        }
-
-        // Escuchamos el clic en el botón de eliminar del modal
-        btnDelete.onclick = () => {
-            if (formToDelete) {
-                formToDelete.submit(); // Enviamos el formulario original
-            }
-        };
-
-        function togglePanel(isOpen) {
-            if (isOpen) {
-                modal.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Evita scroll de fondo
-            } else {
-                modal.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        function closeModal() {
-            togglePanel(false);
-        }
-
-        // Soporte para tecla Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-
-        @if (session('info') || old())
-            window.onload = function() {
-                // Si hay un mensaje de info en la sesión, 
-                // abrimos el modal automáticamente al recargar la página.
-                document.getElementById('fieldModal').classList.add('active');
-                document.getElementById('modalOverlay').classList.add('active');
-
-                let field_id = "{{ old('field_id') }}";
-
-                if (field_id) {
-
-                    let old_data = {
-                        id: field_id,
-                        name: "{{ old('name') }}",
-                        description: "{{ old('desc') }}",
-                        status: "{{ old('status') }}"
-                    }
-                    openEditModal(old_data);                    
-                } else {
-                    openCreateModal();
-                }
-
+    @push('scripts')
+        <script>
+            window.FIELDS_CONFIG = {
+                url_store: "{{ route('field.save') }}",
+                url_update: "{{ route('field.update') }}"
             };
-        @endif
-    </script>
+
+            @if (session('info') || old())
+                window.onload = function() {
+                    // Si hay un mensaje de info en la sesión, 
+                    // abrimos el modal automáticamente al recargar la página.
+                    document.getElementById('fieldModal').classList.add('active');
+                    document.getElementById('modalOverlay').classList.add('active');
+
+                    let field_id = "{{ old('field_id') }}";
+
+                    if (field_id) {
+
+                        let old_data = {
+                            id: field_id,
+                            name: "{{ old('name') }}",
+                            description: "{{ old('desc') }}",
+                            status: "{{ old('status') }}"
+                        }
+                        openEditModal(old_data);
+                    } else {
+                        openCreateModal();
+                    }
+
+                };
+            @endif
+        </script>
+
+        @vite(['resources/js/pages/views/fields.js'])
+    @endpush
 @endsection

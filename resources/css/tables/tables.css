@@ -46,6 +46,10 @@
     border-bottom: none;
 }
 
+#no-results-row {
+    text-align: center;
+}
+
 /* Efecto Hover en Filas (Iluminación sutil) */
 .table tbody tr:hover {
     background-color: var(--bg-hover); /* Slate 700 */
