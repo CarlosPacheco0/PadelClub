@@ -25,6 +25,7 @@
     letter-spacing: 0.05em;
 }
 
+
 .filters input,
 .filters select {
     background: var(--bg-input); /* Slate 950 */
