@@ -1,117 +1,126 @@
-/* Contenedor posicionado */
+/* ==========================================================================
+   TOASTS (NOTIFICACIONES PREMIUM GLASS)
+   ========================================================================== */
+
 .toast-container {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 24px;
+    right: 24px;
     z-index: 9999;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
-/* La tarjeta de la alerta */
 .toast-card {
-    background: rgba(255, 255, 255, 0.95); /* Blanco casi opaco */
-    backdrop-filter: blur(10px); /* Efecto vidrio sutil */
-    min-width: 300px;
-    max-width: 400px;
-    padding: 16px;
-    border-radius: 16px; /* Bordes redondeados consistentes */
-    box-shadow: 0 0 25px -8px rgb(0 0 0);
-    border: 1px solid var(--slate-100, #f1f5f9);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    min-width: 320px;
+    max-width: 420px;
+    padding: 18px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
     transform: translateX(120%);
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Rebote suave */
     overflow: hidden;
     position: relative;
 }
 
-/* Estado visible */
 .toast-card.show {
     transform: translateX(0);
 }
 
-/* Icono Container */
 .toast-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Contenido de texto */
 .toast-content {
     flex: 1;
 }
 
 .toast-title {
     font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--slate-800, #1e293b);
-    margin-bottom: 2px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 3px;
+    letter-spacing: -0.01em;
 }
 
 .toast-message {
     font-size: 0.85rem;
-    color: var(--slate-500, #64748b);
-    line-height: 1.4;
+    color: var(--text-muted);
+    line-height: 1.5;
 }
 
-/* Botón cerrar */
 .toast-close {
     background: none;
     border: none;
-    color: #94a3b8;
+    color: var(--text-muted);
     cursor: pointer;
-    padding: 0;
-    font-size: 1rem;
-    transition: color 0.2s;
+    padding: 4px;
+    font-size: 1.1rem;
+    transition: color 0.2s, transform 0.2s;
+    margin-top: -4px;
 }
-.toast-close:hover { color: #475569; }
 
-/* --- Variantes de Color (Sutiles) --- */
+.toast-close:hover { 
+    color: var(--text-main); 
+    transform: scale(1.1);
+}
 
-/* Éxito (Verde suave) */
+/* --- Variantes de Color Premium --- */
+
+/* Éxito */
 .toast-success .toast-icon {
-    background: #dcfce7; /* Green 100 */
-    color: #16a34a;      /* Green 600 */
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
 }
 .toast-success::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 4px;
-    background: #22c55e;
+    background: var(--success);
+    box-shadow: 2px 0 10px rgba(16, 185, 129, 0.4);
 }
 
-/* Error (Rojo suave) */
+/* Error */
 .toast-error .toast-icon {
-    background: #fee2e2; /* Red 100 */
-    color: #dc2626;      /* Red 600 */
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
 }
 .toast-error::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 4px;
-    background: #ef4444;
+    background: var(--danger);
+    box-shadow: 2px 0 10px rgba(239, 68, 68, 0.4);
 }
 
-/* Info (Azul suave - Tu color de marca) */
+/* Info */
 .toast-info .toast-icon {
-    background: #e0f2fe; /* Blue 100 */
-    color: #0284c7;      /* Blue 600 */
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--info);
 }
 .toast-info::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 4px;
-    background: #0ea5e9;
+    background: var(--info);
+    box-shadow: 2px 0 10px rgba(56, 189, 248, 0.4);
 }

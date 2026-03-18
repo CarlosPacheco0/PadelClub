@@ -123,9 +123,9 @@
 }
 
 /* Formulario dentro del modal */
-form div {
+/* form div {
     margin-bottom: 15px;
-}
+} */
 
 label {
     display: block;
@@ -144,7 +144,6 @@ select {
 textarea {
     width: 372px;
     height: 110px;
-    resize: none;
 }
 
 .time-group {

@@ -23,36 +23,35 @@
 
             @forelse ($reservations as $reservation)
                 <tr>
-                    <td>{{ $reservation->user->name }}</td>
-                    <td>{{ $reservation->field->name }}</td>
+                    <td>{{ ucfirst($reservation->user->name) }}</td>
+                    <td>{{ ucfirst($reservation->field->name) }}</td>
                     <td>{{ $reservation->date->format('d-m-Y') }}</td>
                     <td>
                         {{ $reservation->schedule->start_time->format('H:i') . ' - ' . $reservation->schedule->end_time->format('H:i') }}
                     </td>
                     <td>{{ $reservation->status_reservation }}</td>
-                    <td>{{ $reservation->observation }}</td>
+                    <td>{{ ucfirst($reservation->observation) }}</td>
 
                     <td class="actions-table">
-                        @if ($reservation->status_reservation != 'cancelada')
-                            <button class="btn btn-edit" onclick='openReservationModal({{ $reservation }})'>
-                                Editar
-                            </button>
+                        <button
+                            class="btn btn-edit {{ $reservation->status_reservation == 'cancelada' ? 'btn-disabled' : '' }}"
+                            onclick='openReservationModal({{ $reservation }})'>
+                            Editar
+                        </button>
 
-                            <button class="btn btn-delete" type="button"
-                                onclick="cancelReservation({{ $reservation->id }})">Cancelar</button>
+                        <form id="form-cancel-{{ $reservation->id }}" method="POST" action="{{ route('res.cancel') }}"
+                            onsubmit="confirmCancellation(event, '{{ $reservation->date->format('d-m-Y') }}')">
+                            @csrf
+                            @method('PUT')
 
-                            <form id="form-cancel-{{ $reservation->id }}" method="POST"
-                                action="{{ route('res.cancel') }}">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="id" value="{{ $reservation->id }}">
-                                <input type="hidden" name="flag" value="admin">
-                            </form>
-                        @else
-                            <button class="btn btn-edit btn-disabled">Editar</button>
-                            <button class="btn btn-delete btn-disabled">Cancelar</button>
-                        @endif
+                            <button
+                                class="btn btn-delete {{ $reservation->status_reservation == 'cancelada' ? 'btn-disabled' : '' }}"
+                                type="submit">Cancelar</button>
 
+
+                            <input type="hidden" name="id" value="{{ $reservation->id }}">
+                            <input type="hidden" name="flag" value="admin">
+                        </form>
                     </td>
                 </tr>
             @empty
@@ -66,205 +65,102 @@
 
 
     <!-- Modal Editar Reserva -->
-    <div id="editReservationModal" class="modal">
-        <div class="modal-content">
+    <div id="editReservationOverlay" class="drawer-overlay">
+        <div class="side-panel" id="editReservationPanel">
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Editar Reserva</h2>
+                    <p class="panel-subtitle">Modifica los detalles de la reserva</p>
+                </div>
+                <button type="button" onclick="closeReservationModal()" class="btn-close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-            <h2 id="modalTitle">Editar Reserva</h2>
-
-            <form action="{{ route('reservation.update') }}" method="POST">
+            <form action="{{ route('reservation.update') }}" method="POST" class="panel-container">
                 @csrf
                 @method('PUT')
 
-                <!-- ID oculto -->
-                <input type="hidden" name="reservation_id" id="res_id">
+                <div class="panel-body">
+                    <input type="hidden" name="reservation_id" id="res_id">
 
-                <div>
-                    <label>Usuario</label>
-                    <input type="text" id="res_user" disabled>
+                    <div class="form-group">
+                        <label class="form-label">Usuario</label>
+                        <input type="text" id="res_user" class="form-input" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cancha</label>
+                        <select name="field_id" id="res_field" class="form-input" required></select>
+                    </div>
+
+                    <div class="form-group" style="display: flex; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <label class="form-label">Fecha</label>
+                            <input type="date" name="date" id="res_date" class="form-input" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label class="form-label">Horario</label>
+                            <select name="schedule_id" id="res_schedule" class="form-input" required></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <select name="status" id="res_status" class="form-input" required>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="cancelada">Cancelada</option>
+                            <option value="completada">Completada</option>
+                        </select>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <p>Al actualizar el estado de la reserva, el sistema aplicará los cambios al calendario general.</p>
+                    </div>
+
+                    <div class="form-group form-observation">
+                        <label class="form-label">Observación</label>
+                        <textarea name="observation" id="observation" class="form-input" rows="3" maxlength="300"></textarea>
+                    </div>
                 </div>
 
-                <div>
-                    <label>Cancha</label>
-                    <select name="field_id" id="res_field" required></select>
+                <div class="panel-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeReservationModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-arrows-rotate"></i>Actualizar Reserva</button>
                 </div>
-
-                <div>
-                    <label>Fecha</label>
-                    <input type="date" name="date" id="res_date" required>
-                </div>
-
-                <div>
-                    <label>Horario</label>
-                    <select name="schedule_id" id="res_schedule" required></select>
-                </div>
-
-                <div>
-                    <label>Estado</label>
-                    <select name="status" id="res_status" required>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="confirmada">Confirmada</option>
-                        <option value="cancelada">Cancelada</option>
-                        <option value="completada">Completada</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Observación</label>
-                    <textarea name="observation" id="observation" rows="3" maxlength="300" disabled></textarea>
-                </div>
-
-
-                <button class="btn btn-cancel" onclick="closeReservationModal()">Cancelar</button>
-                <button type="submit" class="btn btn-save">Actualizar Reserva</button>
             </form>
         </div>
     </div>
 
+
+    <div id="customConfirm" class="confirm-overlay">
+        <div class="confirm-card">
+            <div class="confirm-icon">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 class="confirm-title">¿Cancelar reserva?</h3>
+            <p class="confirm-text">
+                Estás a punto de cancelar la reserva para la fecha <strong id="fieldName" style="color: #fff;"></strong>.
+                Esta acción no se puede deshacer.
+            </p>
+            <div class="confirm-actions">
+                <button type="button" class="btn-confirm-cancel" onclick="closeConfimation()">Cancelar</button>
+                <button type="button" class="btn-confirm-delete" id="btn-confirm-cancellation">Cancelar reserva</button>
+            </div>
+        </div>
+    </div>
+
     {{-- JS --}}
-    <script>
-        const inputDate = document.getElementById('res_date');
-        const selectFields = document.getElementById('res_field');
+    @push('scripts')
+        <script>
+            window.RESERVATION_CONFIG = {
+                fields_free: "{{ route('fields.free') }}"
+            };
+        </script>
 
-        function openReservationModal(reservation) {
-
-            // Obtener info de campos dinamicos
-            getInfo(reservation.field_id, reservation.date, reservation);
-
-            // === Asignamiento de valores ===
-            document.getElementById('editReservationModal').style.display = 'block';
-
-            // ID de la reserva y nombre de usuario
-            document.getElementById('res_id').value = reservation.id;
-            document.getElementById('res_user').value = reservation.user.name;
-
-
-            // Fecha de la reserva
-            const isoDate = reservation.date;
-            const dateFormatted = isoDate.split('T')[0];
-
-            inputDate.value = dateFormatted;
-
-            // Estado de la reserva
-            document.getElementById('res_status').value = reservation.status_reservation;
-
-            // Observación
-            document.getElementById('observation').value = reservation.observation;
-
-
-            // Evento al cambiar de cancha o fecha
-            inputDate.addEventListener('change', () => {
-                onFieldOrDateChange(reservation)
-            });
-
-            selectFields.addEventListener('change', () => {
-                onFieldOrDateChange(reservation)
-            });
-
-
-        }
-
-        function closeReservationModal() {
-
-            document.getElementById('editReservationModal').style.display = 'none';
-        }
-
-        function getInfo(fieldId, date, reservation) {
-
-            const URL_INFO = "{{ route('fields.free') }}";
-
-            fetch(`${URL_INFO}?field_id=${fieldId}&date=${date}`)
-                .then(res => res.json())
-                .then(data => {
-
-                    let fields = data.fields;
-                    let schedules = data.schedules;
-
-                    // Información de las canchas
-                    selectFields.innerHTML = '';
-
-                    fields.forEach(field => {
-
-                        selectFields.innerHTML +=
-                            `<option value="${field.id}">${field.name}</option>`;
-
-                    })
-
-                    // Asignar valor inicial
-                    selectFields.value = fieldId;
-
-
-                    // Información de los horarios
-                    const selectSchedules = document.getElementById('res_schedule');
-                    selectSchedules.innerHTML = `<option value="">-- Seleccione un horario --</option>`;
-
-                    // Validamos que el Horarios actual de la reserva
-                    // no exista para agregarlo manualmente
-                    if (
-                        date == reservation.date &&
-                        !schedules.some(s => s.id === reservation.schedule_id)
-                    ) {
-
-                        // Agregamos el horario actual al array
-                        schedules = [
-                            ...schedules,
-                            {
-                                id: reservation.schedule_id,
-                                hour: `${reservation.schedule.start_time} - ${reservation.schedule.end_time}`
-                            }
-                        ];
-
-                        // Ordenarmos de manera ASC por el ID
-                        schedules.sort((a, b) => a.id - b.id);
-                    }
-
-                    schedules.forEach(schedule => {
-
-                        selectSchedules.innerHTML +=
-                            `<option value="${schedule.id}">
-                                ${schedule.hour}
-                            </option>`;
-
-                    })
-
-                    if (date == reservation.date) {
-                        // Definimos el valor por defecto
-                        document.getElementById('res_schedule').value = reservation.schedule_id;
-                    }
-
-                })
-
-        }
-
-        function onFieldOrDateChange(reservation) {
-            const fieldId = selectFields.value;
-            const date = inputDate.value;
-
-            if (!fieldId || !date) return;
-
-            getInfo(fieldId, date, reservation);
-        }
-
-        function cancelReservation(reservationId) {
-            Swal.fire({
-                title: 'Cancelar reserva',
-                text: '¿Estás seguro de cancelar esta reserva?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cancelar',
-                cancelButtonText: 'No',
-                customClass: {
-                    popup: 'swal-popup',
-                    confirmButton: 'swal-confirm',
-                    cancelButton: 'swal-cancel'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document
-                        .getElementById(`form-cancel-${reservationId}`)
-                        .submit();
-                }
-            });
-
-        }
-    </script>
+        @vite(['resources/js/pages/views/reservation.js'])
+    @endpush
 @endsection

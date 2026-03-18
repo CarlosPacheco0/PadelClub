@@ -251,11 +251,24 @@ class ReservationsController extends Controller
         return view('pages.admin.reservations', compact('reservations'));
     }
 
-    // Obtener las canchas disponibles
+    // Obtener las canchas y horarios disponibles
     public function fieldsFree(Request $request)
     {
+        // 1. VALIDACIÓN FRONTEND (Tu código optimizado)
+        if (!$request->field_id) {
+            return back()
+                ->with('info', 'No se especificó una cancha para la búsqueda.')
+                ->withInput();
+        }
+
+        if (!$request->date) {
+            return back()
+                ->with('info', 'Debes seleccionar una fecha válida.')
+                ->withInput();
+        }
+
         $validated = $request->validate([
-            // 'field_id'  => 'required|exists:fields,id',
+            'field_id'  => 'required|exists:fields,id',
             'date'      => 'required|date'
         ]);
 
@@ -267,14 +280,14 @@ class ReservationsController extends Controller
             ->get();
 
         // Obtener los horarios disponibles para la cancha y fecha actual
-        // $schedules = $this->getSchedulesFree(
-        //     // (int) $validated['field_id'],
-        //     $validated['date']
-        // );
+        $schedules = $this->getSchedulesFree(
+            (int) $validated['field_id'],
+            $validated['date']
+        );
 
         return [
-            'fields' => $fieldsFree
-            // 'schedules' => $schedules
+            'fields' => $fieldsFree,
+            'schedules' => $schedules
         ];
     }
 
@@ -282,25 +295,69 @@ class ReservationsController extends Controller
     public function update(Request $request)
     {
 
-        $request->validate([
+        // 1. Buscamos la reserva directamente. Si no existe, devuelve null.
+        $reservation = Reservation::find($request->reservation_id);
+
+        if (!$reservation) {
+            return back()->with('error', 'Error: La reserva que intentas editar no existe.')->withInput();
+        }
+
+        // 2. La fecha (en memoria, no toca la base de datos)
+        if (blank($request->date)) {
+            return back()->with('info', 'La fecha de la reserva es obligatoria.')->withInput();
+        }
+
+        // 3. Validar Cancha y Horario (Estos sí requieren exists porque no los vamos a editar)
+        if (!Field::where('id', $request->field_id)->exists()) {
+            return back()->with('error', 'La cancha seleccionada no existe.')->withInput();
+        }
+
+        if (!Schedule::where('id', $request->schedule_id)->exists()) {
+            return back()->with('error', 'El horario seleccionado no es válido o no existe.')->withInput();
+        }
+
+
+        // 1. Validaciones básicas y correcciones
+        $validated = $request->validate([
             'reservation_id' => 'required|exists:reservations,id',
             'date'           => 'required|date',
-            'field_id'       => 'required|exists:reservations,field_id',
+            // CORRECCIÓN: Antes validabas contra 'reservations', debe ser contra 'fields'
+            'field_id'       => 'required|exists:fields,id',
             'schedule_id'    => 'required|exists:schedules,id',
             'status'         => 'required|in:pendiente,confirmada,cancelada,completada',
         ]);
 
-        // Buscar la reserva para actualizar
-        $reservation = Reservation::findOrFail($request->reservation_id);
+        // 2. Regla de Negocio: Evitar "Choque de Horarios"
+        // Solo verificamos si la reserva NO se está cancelando
+        if (in_array($validated['status'], ['pendiente', 'confirmada'])) {
+            $horarioOcupado = Reservation::where('date', $validated['date'])
+                ->where('field_id', $validated['field_id'])
+                ->where('schedule_id', $validated['schedule_id'])
+                ->where('id', '!=', $validated['reservation_id']) // Excluimos esta misma reserva
+                ->whereIn('status_reservation', ['pendiente', 'confirmada']) // Ignoramos las canceladas
+                ->exists();
+
+            if ($horarioOcupado) {
+                // Si hay choque, devolvemos al usuario con un error rojo
+                return back()
+                    ->with('error', 'El horario seleccionado ya está ocupado para esta cancha en esa fecha.')
+                    ->withInput();
+            }
+        }
+
+        // 3. Proceso de Actualización
+        $reservation = Reservation::findOrFail($validated['reservation_id']);
 
         $reservation->update([
-            'date'               => $request->date,
-            'field_id'           => $request->field_id,
-            'schedule_id'        => $request->schedule_id,
-            'status_reservation' => $request->status,
+            'date'               => $validated['date'],
+            'field_id'           => $validated['field_id'],
+            'schedule_id'        => $validated['schedule_id'],
+            'status_reservation' => $validated['status'],
         ]);
 
-        return redirect(route('reservations'));
+        // 4. Redirección con Mensaje de Éxito
+        return redirect(route('reservations'))
+            ->with('success', 'Reserva actualizada correctamente.');
     }
 
     // Eliminar registro (Reserva)

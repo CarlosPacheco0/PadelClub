@@ -24,7 +24,7 @@ const statusInput = document.getElementById('status');
 
 // Elementos para el modal de confirmación de eliminación
 let formToDelete = null; // Guardará temporalmente el formulario de eliminación seleccionado
-const btnDelete = document.getElementById('btnAceptarEliminar');
+const btnDelete = document.getElementById('btn-confirm-delete');
 
 // Elementos para el filtrado de la tabla
 const filterStatusInput = document.getElementById('tipo');
@@ -135,13 +135,6 @@ function openEditModal(field) {
 /* =====================================================
    FUNCIONES DE UTILIDAD Y DISEÑO
 ===================================================== */
-
-// Formatea el texto: Capitaliza la primera letra y pone el resto en minúscula
-function textFormat(text) {
-    if (!text || typeof text !== 'string') return '';
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-}
-
 // Muestra/Oculta el panel modal principal con transición
 function togglePanel(isOpen) {
     if (isOpen) {
@@ -177,6 +170,8 @@ function confirmarEliminacion(event, field, name) {
     // Guarda el formulario exacto de la fila que el usuario quiere eliminar
     formToDelete = event.currentTarget;
 
+    // Muestra un parametro dinamico para la confirmación
+    document.getElementById('paramText').textContent = 'la cancha';
     // Muestra el nombre de la cancha en el modal de advertencia para dar contexto
     document.getElementById('fieldName').textContent = textFormat(name);
 

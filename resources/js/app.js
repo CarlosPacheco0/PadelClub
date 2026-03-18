@@ -79,7 +79,12 @@ function menuSelected(item) {
     item.classList.add('active');
 }
 
+// Formatea el texto: Capitaliza la primera letra y pone el resto en minúscula
+function textFormat(text) {
+    if (!text || typeof text !== 'string') return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
+
 // Inicializar
-// setupDropdown('userTrigger', 'userDropdown');
-// setupDropdown('scheduleTrigger', 'scheduleDropdown');
-// setupDropdown('reservationTrigger', 'reservationDropdown');
+window.textFormat = textFormat;

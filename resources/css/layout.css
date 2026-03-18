@@ -9,7 +9,7 @@
     --primary-glow: rgba(129, 140, 248, 0.4); /* Resplandor */
     --primary-soft: rgba(99, 102, 241, 0.15); /* Fondos translúcidos */
 
-    --panel-width: 420px;
+    --panel-width: 460px;
     --transition-speed: 0.4s;
     --accent-color: #6366f1;
     --bg-panel: #1e293b;
@@ -243,6 +243,10 @@ textarea.input-dark {
     background: #1f2937;
 }
 
+textarea {
+    resize: none;
+}
+
 select.input-dark {
     appearance: none;
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ca3af%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
@@ -258,9 +262,7 @@ label {
     margin-bottom: 8px;
     font-weight: 500;
 }
-.form-group {
-    margin-bottom: 20px;
-}
+
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -375,8 +377,9 @@ label {
     color: white;
 }
 
-/* SIDE PANEL LOGIC 
-*/
+/* =====================================================
+   SIDE PANEL LOGIC 
+   ===================================================== */
 .drawer-overlay {
     position: fixed;
     inset: 0;
@@ -450,6 +453,7 @@ label {
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: auto;
 }
 
 .panel-body {
@@ -466,7 +470,38 @@ label {
     background: rgba(15, 23, 42, 0.2);
 }
 
-/* Form Styles */
+/* =====================================================
+   Custom Scrollbar para el Panel Body
+   ===================================================== */
+
+/* Para navegadores Webkit (Chrome, Edge, Safari, Opera) */
+.panel-body::-webkit-scrollbar {
+    width: 6px; /* Hace el scroll mucho más delgado */
+}
+
+.panel-body::-webkit-scrollbar-track {
+    background: transparent; /* Fondo invisible o puedes usar rgba(255,255,255,0.05) */
+    border-radius: 10px;
+}
+
+.panel-body::-webkit-scrollbar-thumb {
+    background: #475569; /* Color gris azulado que combina con tu tema */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.panel-body::-webkit-scrollbar-thumb:hover {
+    background: #64748b; /* Un poco más claro al pasar el mouse */
+}
+
+/* Para Firefox */
+.panel-body {
+    scrollbar-width: thin; /* Estilo delgado */
+    scrollbar-color: #475569 transparent; /* thumb y track */
+}
+
+/* =====================================================
+   Form Styles 
+   ===================================================== */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -520,6 +555,46 @@ label {
 }
 .inline-form {
     display: inline;
+}
+
+/* =====================================================
+   Reseteo Extremo para los Selects (Caja cerrada)
+   ===================================================== */
+
+select.form-input {
+    /* 1. Matamos el estilo por defecto y la flecha fea del sistema */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+
+    /* 2. Forzamos tus colores del panel oscuro */
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.75rem !important;
+
+    /* 3. Inyectamos una flecha minimalista gris clara por SVG */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 1rem !important;
+
+    /* 4. Espacio para que el texto no se monte sobre la nueva flecha */
+    padding: 0.75rem 2.5rem 0.75rem 1rem !important;
+    cursor: pointer !important;
+}
+
+/* Estado Focus (Cuando haces clic en la caja) */
+select.form-input:focus {
+    border-color: #6366f1 !important; /* Tu color de acento morado */
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important; /* Resplandor morado suave */
+}
+
+/* (Opcional) Si alguna opción sale blanca al abrir, esto intenta forzar el color oscuro */
+select.form-input option {
+    background-color: #1e293b;
+    color: #ffffff;
 }
 
 /* =====================================================

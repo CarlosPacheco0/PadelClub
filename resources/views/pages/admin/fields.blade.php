@@ -119,23 +119,7 @@
         </div>
     </div>
 
-    <div id="customConfirm" class="confirm-overlay">
-        <div class="confirm-card">
-            <div class="confirm-icon">
-                <i class="fa-solid fa-trash-can"></i>
-            </div>
-            <h3 class="confirm-title">¿Eliminar cancha?</h3>
-            <p class="confirm-text">
-                Estás a punto de eliminar la cancha <strong id="fieldName" style="color: #fff;"></strong>.
-                Esta acción no se puede deshacer.
-            </p>
-            <div class="confirm-actions">
-                <button type="button" class="btn-confirm-cancel" onclick="cerrarConfirmacion()">Cancelar</button>
-                <button type="button" class="btn-confirm-delete" id="btnAceptarEliminar">Eliminar ahora</button>
-            </div>
-        </div>
-    </div>
-
+    <x-alert-delete-confirm></x-alert-delete-confirm>
 
     {{-- JS --}}
     @push('scripts')
