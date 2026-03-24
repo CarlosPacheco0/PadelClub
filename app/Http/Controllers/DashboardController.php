@@ -12,24 +12,27 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-
-        // Top 5 de reservas
-        $topReservations = $this->getTopReservations();
-
-        // Cantidad canchas activas
-        $amountFields = Field::where('status', 1)->count();
-
-        // Cantidad de usuarios registrados
-        $amountUsers = $this->countUserRegister();
-
-        // Total de reservas
-        $infoReservations = $this->countReservations();
-
-
         return view(
-            'pages.admin.dashboard',
-            compact('topReservations', 'amountFields', 'amountUsers', 'infoReservations')
+            'pages.super_admin.dashboard'
         );
+
+        // // Top 5 de reservas
+        // $topReservations = $this->getTopReservations();
+
+        // // Cantidad canchas activas
+        // $amountFields = Field::where('status', 1)->count();
+
+        // // Cantidad de usuarios registrados
+        // $amountUsers = $this->countUserRegister();
+
+        // // Total de reservas
+        // $infoReservations = $this->countReservations();
+
+
+        // return view(
+        //     'pages.admin.dashboard',
+        //     compact('topReservations', 'amountFields', 'amountUsers', 'infoReservations')
+        // );
     }
 
     public function getTopReservations()

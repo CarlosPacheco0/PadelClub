@@ -7,8 +7,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 
-use App\Models\Field;
-use App\Models\Schedule;
+// use App\Models\Field;
+// use App\Models\Schedule;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
 
         // Llamar más de un Seeder
         $this->call([
-            RoleSeeder::class,
             UserSeeder::class
         ]);
 

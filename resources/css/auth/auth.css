@@ -1,0 +1,237 @@
+/* =========================================
+   auth.css - Solo para Login y Registro
+   ========================================= */
+
+body {
+    min-height: 100vh;
+    display: flex; /* Convierte el body en un contenedor flex para la pantalla dividida */
+}
+
+/* --- Layout de Pantalla Dividida --- */
+.hero-section {
+    display: none; /* Oculto en móviles */
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 50%;
+}
+.form-section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+    .hero-section {
+        display: flex;
+    }
+    .form-section {
+        width: 50%;
+        padding: 3rem;
+    }
+}
+
+/* --- Lado Izquierdo (Imagen y Textos) --- */
+.hero-bg {
+    position: absolute;
+    inset: 0;
+}
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hero-overlay-color {
+    position: absolute;
+    inset: 0;
+    background-color: var(--brand-hover);
+    mix-blend-mode: multiply;
+    opacity: 0.8;
+}
+.hero-overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--dark-main), transparent);
+}
+.hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 3rem;
+    max-width: 32rem;
+    color: var(--text-main);
+}
+.logo-text {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+.hero-subtitle {
+    color: var(--text-indigo);
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* --- Elementos específicos del formulario de Login --- */
+.form-section .glass-panel {
+    width: 100%;
+    max-width: 28rem;
+    padding: 2.5rem;
+}
+.form-section .btn-primary,
+.form-section .btn-outline {
+    width: 100%; /* Obliga a los botones a ocupar todo el ancho en el login */
+}
+
+/* Divisor "¿No tienes cuenta?" */
+.divider {
+    position: relative;
+    margin-top: 2rem;
+    text-align: center;
+}
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #334155;
+    z-index: 1;
+}
+.divider-text {
+    position: relative;
+    z-index: 2;
+    background-color: var(--dark-card);
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* Grid para los botones inferiores */
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* Enlaces de navegación del Auth */
+.back-link {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.forgot-link {
+    color: var(--brand-light);
+    font-size: 0.875rem;
+}
+.back-link:hover,
+.forgot-link:hover {
+    color: var(--text-main);
+}
+
+
+/* --- Social Proof (Avatares superpuestos) --- */
+.social-proof {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+.avatar-group {
+    display: flex;
+}
+.avatar-group img, .avatar-counter {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 2px solid var(--brand-hover);
+    object-fit: cover;
+    margin-left: -1rem; /* Crea el efecto de superposición */
+}
+.avatar-group img:first-child {
+    margin-left: 0;
+}
+.avatar-counter {
+    background-color: var(--dark-main);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 1;
+}
+.social-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-indigo);
+}
+
+
+/* =========================================
+   Estilos exclusivos para el Registro
+   ========================================= */
+
+/* Panel con scroll interno (para el formulario largo del club) */
+.auth-scrollable {
+    max-height: 90vh;
+    overflow-y: auto;
+    /* Ocultar scrollbar estándar pero permitir el scroll */
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+.auth-scrollable::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari y Opera */
+}
+
+/* Contenedor del Toggle (Selector Jugador/Club) */
+.toggle-container {
+    display: flex;
+    background-color: rgba(30, 41, 59, 0.5); /* dark-card pero más transparente */
+    border: 1px solid var(--border-light);
+    border-radius: 0.75rem;
+    padding: 0.25rem;
+    margin-bottom: 2rem;
+}
+
+/* Botones del Toggle */
+.btn-toggle {
+    flex: 1;
+    padding: 0.625rem 0;
+    border-radius: 0.5rem;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Estado Activo del Toggle */
+.btn-toggle.active {
+    background-color: var(--brand);
+    color: var(--text-main);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-toggle:hover:not(.active) {
+    color: var(--text-main);
+}
+
+/* Ocultar formularios */
+.form-hidden {
+    display: none;
+}

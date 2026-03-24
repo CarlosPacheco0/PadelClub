@@ -16,7 +16,7 @@ class validateRole
             return redirect()->route('login');
         }
 
-        if (Auth::user()->role->name !== $role) {
+        if (Auth::user()->role !== $role) {
             abort(403);
         }
 

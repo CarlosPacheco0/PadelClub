@@ -23,20 +23,23 @@ class AuthController extends Controller
         ]);
 
         // Intento de autenticación
-        if (Auth::attempt($credentials)) {
-
+        if (Auth::attempt($credentials)) 
+        {
             $request->session()->regenerate(); // Regeneración de sesión
 
             // Redirección según rol
-            if (Auth::user()->role->name === 'admin') {
+            $rol = Auth::user()->role;
+            if ( $rol === 'superadmin' ) {
                 return redirect()->route('dashboard');
+            } else if ( $rol == 'admin_club' ) {
+                return redirect()->route('dashboard_admin');
             }
 
             return redirect()->route('reservation');
         }
 
 
-        // Si falla el login
+        // // Si falla el login
         return back()
             ->with('error', "Credenciales incorrectas.");
     }

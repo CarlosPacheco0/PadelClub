@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 // Controladores
 // ===============================
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClubAdminController;
 use App\Http\Controllers\RegisterController;
 
 use App\Http\Controllers\HomeController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FieldsController;
 use App\Http\Controllers\RateManagementController;
 use App\Http\Controllers\SchedulesController;
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UsersController;
 
 // ===============================
@@ -44,6 +46,33 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
+
+// ===============================
+// USUARIOS AUTENTICADOS (ROL USER)
+// ===============================
+
+Route::middleware(['auth', 'validate_role:superadmin'])->group(function () {
+
+    // Dashboard
+    Route::get('/superadmin/dashboard', SuperAdminController::class)
+        ->name('dashboard');
+
+});
+
+
+// ===============================
+// ADMINISTRADOR (ROL ADMIN)
+// ===============================
+
+Route::middleware(['auth', 'validate_role:admin_club'])->group(function () {
+
+    // Dashboard
+    Route::get('/admin/dashboard', ClubAdminController::class)
+        ->name('dashboard_admin');
+
+});
+
 
 // ===============================
 // USUARIOS AUTENTICADOS (ROL USER)
@@ -83,108 +112,6 @@ Route::middleware(['auth', 'validate_role:user'])->group(function () {
         ->name('user.dashboard');
 });
 
-// ===============================
-// ADMINISTRADOR (ROL ADMIN)
-// ===============================
-
-Route::middleware(['auth', 'validate_role:admin'])->group(function () {
-
-    // Dashboard
-    Route::get('/dashboard', DashboardController::class)
-        ->name('dashboard');
-
-
-
-    // Gestión de Canchas
-    Route::get('/fields', FieldsController::class)
-        ->name('fields');
-
-    Route::post('/field', [FieldsController::class, 'save'])
-        ->name('field.save');
-
-    Route::put('/field', [FieldsController::class, 'update'])
-        ->name('field.update');
-
-    Route::delete('/field', [FieldsController::class, 'delete'])
-        ->name('field.delete');
-
-
-
-    // Gestión de Reservas
-    Route::get('/reservations', [ReservationsController::class, 'managementReservation'])
-        ->name('reservations');
-
-    Route::put('/reservations', [ReservationsController::class, 'update'])
-        ->name('reservation.update');
-
-    Route::delete('/reservations', [ReservationsController::class, 'delete'])
-        ->name('reservation.delete');
-
-    Route::get('/fields-free', [ReservationsController::class, 'fieldsFree'])
-        ->name('fields.free');
-
-    Route::put('/reservations-cancel', [ReservationsController::class, 'cancel'])
-        ->name('res.cancel');
-
-
-
-
-    // Gestion de horarios
-    Route::get('/schedules', SchedulesController::class)->name('schedules');
-
-    Route::post('/schedule', [SchedulesController::class, 'create'])->name('schedule.create');
-
-    Route::put('/schedule', [SchedulesController::class, 'update'])->name('schedule.update');
-
-    Route::delete('schedule', [SchedulesController::class, 'delete'])->name('schedule.delete');
-
-    // Asignación de horarios
-    Route::get('/schedules-assignment', [SchedulesController::class, 'assignment'])
-        ->name('schedule.assignment');
-
-    // Guardar horarios seleccionados por fecha
-    Route::post('/schedules-assignment', [SchedulesController::class, 'store'])
-        ->name('assignment.store');
-
-    // Obtener info de la fecha seleccionada
-    Route::get('/getInfo-date', [SchedulesController::class, 'getInfoDate'])
-        ->name('assignment.info');
-
-    // Eliminar horarios asignados
-    Route::delete('/schedule-delete', [SchedulesController::class, 'assignmentDelete'])
-        ->name('assignment.delete');
-
-        
-
-    // Definir precio a los horarios
-    Route::get('/rates', RateManagementController::class)
-        ->name('rates');
-
-    Route::post('/rates/store', [RateManagementController::class, 'store'])
-        ->name('rate.store');
-
-    Route::put('/rates', [RateManagementController::class, 'edit'])
-        ->name('rate.edit');
-
-    Route::post('/rates/delete', [RateManagementController::class, 'delete'])
-        ->name('rate.delete');
-
-
-
-
-    // Gestión de Usuarios
-    Route::get('/users', UsersController::class)
-        ->name('users');
-
-    // Crear registro ( Usuario )
-    Route::post('/user', [UsersController::class, 'store'])->name('user.store');
-
-    // Edición de registro ( Usuario )
-    Route::put('/user', [UsersController::class, 'update'])->name('user.update');
-
-    // Eliminar registro ( Usuario )
-    Route::delete('/user', [UsersController::class, 'delete'])->name('user.delete');
-});
 
 
 // require __DIR__ . '/settings.php';

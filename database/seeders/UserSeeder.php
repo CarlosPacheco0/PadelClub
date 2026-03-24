@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -16,23 +14,31 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $roleAdmin = Role::where('name', 'admin')->firstOrFail();
-        $roleUser = Role::where('name', 'user')->firstOrFail();
-
-         $user = User::create([
-            'name'     => 'Carlos',
-            'email'    => 'carlangas@gmail.com',
-            'password' => Hash::make('12345'),
-            'role_id'  => $roleAdmin->id,
-            'phone'    => ''
+        // 1. Perfil Superadministrador (Tú)
+        User::create([
+            'name' => 'Super Admin Maestro',
+            'email' => 'admin@sportbook.com',
+            'password' => Hash::make('password123'), // Contraseña estándar para pruebas
+            'phone' => '3001234567',
+            'role' => 'superadmin',
         ]);
 
-        $user = User::create([
-            'name'     => 'Pepito',
-            'email'    => 'pepito@gmail.com',
-            'password' => Hash::make('12345'),
-            'role_id'  => $roleUser->id,
-            'phone'    => ''
+        // 2. Perfil Administrador de Club (Dueño de escenario)
+        User::create([
+            'name' => 'Carlos Dueño',
+            'email' => 'club@sportbook.com',
+            'password' => Hash::make('password123'),
+            'phone' => '3120000000',
+            'role' => 'admin_club',
+        ]);
+
+        // 3. Perfil Usuario Final (Deportista que va a reservar)
+        User::create([
+            'name' => 'Andrés Deportista',
+            'email' => 'andres@correo.com',
+            'password' => Hash::make('password123'),
+            'phone' => '3209876543',
+            'role' => 'usuario',
         ]);
     }
 }
