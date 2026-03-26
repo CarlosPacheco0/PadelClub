@@ -32,10 +32,10 @@ class AuthController extends Controller
             if ( $rol === 'superadmin' ) {
                 return redirect()->route('dashboard');
             } else if ( $rol == 'admin_club' ) {
-                return redirect()->route('dashboard_admin');
+                return redirect()->route('dashboard_club');
             }
 
-            return redirect()->route('reservation');
+            return redirect()->route('martketplace');
         }
 
 

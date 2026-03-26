@@ -8,6 +8,6 @@ class ClubAdminController extends Controller
 {
     public function __invoke()
     {
-        return view('pages.admin.dashboard');
+        return view('pages.club.dashboard');
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FieldsController;
+use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\RateManagementController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\SuperAdminController;
@@ -36,14 +37,17 @@ Route::get('/contact', ContactController::class)->name('contact');
 // ===============================
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/login', [AuthController::class, 'loginForm'])->name('login'); // Redireccionar al login
+    Route::post('/login', [AuthController::class, 'login']); // Realizar inicio de sesión
 
-    Route::get('/register', RegisterController::class)->name('register');
-    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+    Route::get('/register', RegisterController::class)->name('register'); // Redireccionar al registro
+
+    Route::post('/player/register', [ RegisterController::class, 'player_store' ])->name('player_register'); // Registro de un jugador o usuario
+    Route::post('/club/register', [ RegisterController::class, 'club_store' ])->name('club_register'); // Registro de un club
+
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])
+Route::post('/logout', [AuthController::class, 'logout']) // Cierre de sesión
     ->middleware('auth')
     ->name('logout');
 
@@ -57,7 +61,6 @@ Route::middleware(['auth', 'validate_role:superadmin'])->group(function () {
     // Dashboard
     Route::get('/superadmin/dashboard', SuperAdminController::class)
         ->name('dashboard');
-
 });
 
 
@@ -69,8 +72,7 @@ Route::middleware(['auth', 'validate_role:admin_club'])->group(function () {
 
     // Dashboard
     Route::get('/admin/dashboard', ClubAdminController::class)
-        ->name('dashboard_admin');
-
+        ->name('dashboard_club');
 });
 
 
@@ -78,7 +80,11 @@ Route::middleware(['auth', 'validate_role:admin_club'])->group(function () {
 // USUARIOS AUTENTICADOS (ROL USER)
 // ===============================
 
-Route::middleware(['auth', 'validate_role:user'])->group(function () {
+Route::middleware(['auth', 'validate_role:usuario'])->group(function () {
+
+    // Marketplace | Vista principal de canchas
+    Route::get('/martketplace', MarketplaceController::class)
+        ->name('martketplace');
 
     // Reservas (Usuario)
     Route::get('/reservation', [ReservationsController::class, 'index'])

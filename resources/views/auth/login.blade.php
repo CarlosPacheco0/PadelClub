@@ -7,7 +7,7 @@
     <title>Iniciar Sesión - SportBook</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    @vite(['resources/css/layout.css', 'resources/css/auth/auth.css'])
+    @vite(['resources/css/layout.css', 'resources/css/auth/auth.css', 'resources/js/app.js'])
 
 </head>
 

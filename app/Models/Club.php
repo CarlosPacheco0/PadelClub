@@ -15,8 +15,8 @@ class Club extends Model
     protected $fillable = [
         'name',
         'slug',
-        'address',
         'city',
+        'address',
         'contact_phone',
         'settings',
         'is_active',
