@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-section">
-        <a href="#" class="back-link"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+        <a href="{{ route('martketplace') }}" class="back-link"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
 
         <div class="glass-panel">
             <div style="text-align: center; margin-bottom: 2rem;">

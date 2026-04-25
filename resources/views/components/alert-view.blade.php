@@ -7,6 +7,14 @@
         </script>
     @endif
 
+    @if (session('login'))
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                showToast('success', 'Bienvenido', @json(session('login')));
+            });
+        </script>
+    @endif
+
 
     @if (session('error'))
         <script>

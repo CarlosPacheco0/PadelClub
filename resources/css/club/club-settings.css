@@ -1,0 +1,74 @@
+/* =========================================
+   settings.css - Estilos para la Configuración
+   ========================================= */
+
+/* Contenedor principal: 2 columnas (260px para la foto, el resto para el formulario) */
+.settings-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 1.5rem;
+    align-items: start; 
+}
+
+/* Panel izquierdo (Logo) */
+.settings-sidebar {
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Panel derecho (Formulario) */
+.settings-main {
+    padding: 2rem;
+}
+
+/* Círculo para subir el Logo */
+.avatar-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background-color: var(--dark-input);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.avatar-circle:hover {
+    border-color: var(--brand-light);
+    color: var(--brand-light);
+    background-color: rgba(129, 140, 248, 0.05);
+}
+
+/* Rejilla para los inputs (2 columnas dentro del formulario) */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 1.5rem; /* 0 espacio vertical (lo da el .form-group), 1.5rem horizontal */
+}
+
+/* Línea divisoria elegante */
+.divider {
+    height: 1px;
+    background-color: var(--border-glass);
+    margin: 2rem 0;
+    width: 100%;
+}
+
+/* Responsive: En pantallas pequeñas, todo se apila en una sola columna */
+@media (max-width: 900px) {
+    .settings-container {
+        grid-template-columns: 1fr;
+    }
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+}

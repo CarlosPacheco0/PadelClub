@@ -8,16 +8,6 @@
     <header class="topbar">
         <div style="color: var(--text-muted);"><i class="far fa-calendar-alt"></i> Hoy: 24 de Octubre</div>
         <div style="color: white; font-weight: bold;">Pádel Center Norte</div>
-        <div class="nav-menu">
-            {{-- <a href="">⚙️ Configuración</a> --}}
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="logout-btn">
-                    🚪 Cerrar sesión
-                </button>
-            </form>
-        </div>
     </header>
 
     <div class="content-area">

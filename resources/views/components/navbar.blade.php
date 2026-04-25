@@ -1,50 +1,34 @@
 <nav class="nav">
+    <ul class="nav-menu">
 
-    @auth
+        @auth
+            {{-- ================= USER ================= --}}
+            @if (auth()->check() && auth()->user()->role === 'usuario')
+                <x-nav-user></x-nav-user>
+            @endif
 
-        {{-- ================= USER ================= --}}
-        @if (auth()->user()->isUser())
+            {{-- ================= SUPERADMIN ================= --}}
+            @if (auth()->check() && auth()->user()->role === 'admin_club')
+                <x-nav-club></x-nav-club>
+            @endif
 
-            <x-nav-user></x-nav-user>
+            {{-- ================= ADMIN CLUB ================= --}}
+            @if (auth()->check() && auth()->user()->role === 'superadmin')
+                <x-nav-admin></x-nav-admin>
+            @endif
 
-        @endif
+            {{-- ================= PROFILE ================= --}}
+            <form method="POST" action="{{ route('logout') }}" style="width: 100%; margin: 0;">
+                @csrf
 
+                <button type="submit" class="nav-item" id="sesion-close">
+                    Cerrar sesión
+                </button>
+            </form>
 
-        {{-- ================= ADMIN ================= --}}
-        @if (auth()->user()->isAdmin())
+            {{-- </div> --}}
 
-            <x-nav-admin></x-nav-admin>
+        @endauth
 
-        @endif
-
-
-        {{-- ================= PROFILE ================= --}}
-        <div class="nav-dropdown user-dropdown">
-            <button class="nav-trigger">
-                <img src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png"
-                     class="avatar" width="36">
-                <span class="caret">▾</span>
-            </button>
-
-            <div class="nav-menu">
-                {{-- <a href="">⚙️ Configuración</a> --}}
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="logout-btn">
-                        🚪 Cerrar sesión
-                    </button>
-                </form>
-            </div>
-        </div>
-
-    @endauth
-
-
-    {{-- ================= GUEST ================= --}}
-    @guest
-        <x-nav-link route="login" label="Login" />
-        <x-nav-link route="register" label="Registro" />
-    @endguest
-
+    </ul>
 </nav>

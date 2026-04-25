@@ -9,16 +9,6 @@
         <div style="color: var(--text-muted);">Superadmin Dashboard</div>
         <div style="color: white; font-weight: bold;"><i class="fas fa-user-shield text-accent" style="margin-right: 8px;"></i>
             Tú (Admin)</div>
-        <div class="nav-menu">
-            {{-- <a href="">⚙️ Configuración</a> --}}
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="logout-btn">
-                    🚪 Cerrar sesión
-                </button>
-            </form>
-        </div>
     </header>
 
     <div class="content-area">

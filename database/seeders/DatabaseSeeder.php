@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
 
         // Llamar más de un Seeder
         $this->call([
-            UserSeeder::class
+            UserSeeder::class,
+            ClubSeeder::class
         ]);
 
 

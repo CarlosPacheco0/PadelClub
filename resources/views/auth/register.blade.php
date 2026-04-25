@@ -45,7 +45,7 @@
 
     <div class="form-section">
 
-        <a href="login.html" class="back-link">
+        <a href="{{ route('login') }}" class="back-link">
             ¿Ya tienes cuenta? <span style="color: var(--brand-light); font-weight: bold;">Inicia Sesión</span>
         </a>
 
@@ -67,6 +67,7 @@
             </div>
 
             <form id="form-jugador" action="{{ route('player_register') }}" method="POST">
+                @csrf
 
                 <div class="form-group">
                     <label class="form-label text-white">Nombre Completo</label>
@@ -74,6 +75,13 @@
                         <i class="fas fa-user input-icon"></i>
                         <input type="text" name="name" class="custom-input" placeholder="Ej. Juan Pérez" required>
                     </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label"
+                        style="display: block; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 500;">Teléfono</label>
+                    <input type="text" name="phone" class="custom-input" style="padding-left: 1rem; width: 100%;"
+                        placeholder="Ej. 320 123 4567" maxlength="20" required>
                 </div>
 
                 <div class="form-group">
@@ -91,6 +99,15 @@
                         <i class="fas fa-lock input-icon"></i>
                         <input type="password" name="password" class="custom-input" placeholder="Mínimo 8 caracteres"
                             required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label text-white">Confirmar Contraseña</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="password_confirmation" class="custom-input"
+                            placeholder="Repite tu contraseña" required>
                     </div>
                 </div>
 
@@ -121,6 +138,13 @@
                             style="width: 65%; padding-left: 1rem;" placeholder="Dirección exacta" maxlength="255"
                             required>
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Teléfono del Club</label>
+                        <input type="text" name="contact_phone" class="custom-input"
+                            placeholder="Ej. 320 123 4567" required>
+                    </div>
+
                 </div>
 
                 <div>

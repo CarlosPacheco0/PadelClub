@@ -1,275 +1,41 @@
-/* =========================================
-   NAVBAR STYLES (Midnight Neon Edition)
-   ========================================= */
-
-/* NAVBAR CONTAINER */
-.navbar {
-    /* Fondo oscuro translúcido (Slate 950 con alpha) */
-    background: rgba(11, 17, 32, 0.85);
-    backdrop-filter: blur(12px); /* Blur más fuerte para dark mode */
-    -webkit-backdrop-filter: blur(12px);
-
-    border-bottom: 1px solid var(--border); /* Borde sutil */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    padding: 0.75rem 0;
-    transition: all 0.3s ease;
-
-    /* Sombra oscura difusa */
-    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.navbar .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar nav a {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
-}
-
-/* Estado al hacer scroll */
-.navbar.scrolled {
-    background: rgba(11, 17, 32, 0.95); /* Más sólido al bajar */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
-    border-bottom-color: var(--primary-glow); /* Un toque de luz al bajar */
-}
-
-.container {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-}
-
-.nav-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-}
-
-.navbar nav a:hover,
-.navbar nav a.active {
-    color: var(--primary);
-    background: var(--primary-soft);
-    border-color: rgba(129, 140, 248, 0.2);
-    box-shadow: 0 0 15px rgba(129, 140, 248, 0.1);
-}
-
-/* LOGOTIPO */
-.logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-main);
-    text-decoration: none;
-    letter-spacing: -0.03em;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    transition: transform 0.2s;
-
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-
-    font-size: 1.5rem;
-    font-weight: 800;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo:hover {
-    transform: scale(1.02);
-    color: white;
-}
-
-/* ENLACES DE NAVEGACIÓN */
-.navbar nav {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.navbar a,
-.navbar button {
-    font-size: 0.9rem;
-    font-family: inherit;
-}
-
-/* Estilo moderno para los links (Pill shape) */
-nav a {
-    text-decoration: none;
-    color: var(--text-muted); /* Gris claro */
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
-    transition: all 0.2s ease;
-    border: 1px solid transparent; /* Reserva espacio para borde hover */
-}
-
-/* Hover & Active State (Neon Glow) */
-nav a:hover,
-nav a.active {
-    color: var(--primary); /* Indigo Neón */
-    background-color: rgba(129, 140, 248, 0.1); /* Fondo translúcido */
-    border-color: rgba(129, 140, 248, 0.2);
-    box-shadow: 0 0 15px rgba(129, 140, 248, 0.1); /* Glow suave */
-    transform: translateY(-1px);
-}
-
-/* USER MENU / DROPDOWN TRIGGER */
-.nav-trigger {
-    background: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 50px;
-    transition: all 0.2s;
-    color: var(--text-main);
-    font-weight: 600;
-}
-
-.nav-trigger:hover,
-.nav-dropdown.open .nav-trigger {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--border);
-}
-
-/* Avatar dentro del trigger (si tienes uno) */
-.nav-trigger img,
-.nav-trigger .avatar-placeholder {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--primary); /* Anillo de color */
-}
-
-/* Menú Desplegable (Tarjeta Oscura Flotante) */
-.nav-dropdown {
-    position: relative;
-}
-
 .nav-menu {
-    display: none;
-    position: absolute;
-    top: 130%; /* Un poco más separado */
-    right: 0;
-    width: 240px;
-
-    /* Estilo Dark Card */
-    background: var(--bg-card); /* #1e293b */
-    border-radius: 16px;
-    border: 1px solid var(--border);
-
-    /* Sombra flotante profunda */
-    box-shadow:
-        0 20px 25px -5px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
-
-    padding: 0.75rem;
-    z-index: 100;
-    flex-direction: column;
-    animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: top right;
-}
-
-/* Flechita decorativa del dropdown (opcional) */
-.nav-menu::before {
-    content: '';
-    position: absolute;
-    top: -6px;
-    right: 20px;
-    width: 12px;
-    height: 12px;
-    background: var(--bg-card);
-    transform: rotate(45deg);
-    border-left: 1px solid var(--border);
-    border-top: 1px solid var(--border);
-}
-
-.nav-dropdown.open .nav-menu {
+    padding: 1rem;
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
 }
-
-/* Items del menú desplegable */
-.nav-menu a,
-.nav-menu button {
+.nav-item {
     display: flex;
     align-items: center;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    text-align: left;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    font-weight: 500;
+}
+.nav-item:hover,
+#sesion-close:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+.nav-item.active {
+    background-color: var(--brand);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2);
+}
+
+#sesion-close {
     background: transparent;
     border: none;
-    border-radius: 10px;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--text-muted);
     cursor: pointer;
-    text-decoration: none;
-    color: var(--text-light); /* Gris claro */
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s;
-    gap: 10px; /* Espacio para iconos */
-}
-
-/* Hover en items del menú */
-.nav-menu a:hover,
-.nav-menu button:hover {
-    background: rgba(129, 140, 248, 0.1); /* Indigo translúcido */
-    color: var(--primary); /* Indigo Neón */
-}
-
-/* Iconos dentro del menú (si usas FontAwesome) */
-.nav-menu i {
-    width: 20px;
-    text-align: center;
-    opacity: 0.7;
-}
-.nav-menu a:hover i {
-    opacity: 1;
-}
-
-/* Separador */
-.nav-menu hr {
-    margin: 0.5rem 0;
-    border: none;
-    border-top: 1px solid var(--border);
-    opacity: 0.5;
-}
-
-/* Animación Suave */
-@keyframes slideDownFade {
-    from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* RESPONSIVE NAV */
-@media (max-width: 768px) {
-    .navbar nav {
-        display: none; /* Aquí iría tu lógica de menú móvil */
-    }
+    width: 100%;
+    outline: none;
+    padding: 1rem;
+    display: block;
 }

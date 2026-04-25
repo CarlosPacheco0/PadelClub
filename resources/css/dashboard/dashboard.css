@@ -1,3 +1,65 @@
+/* =========================================
+   7. TABLAS (Dashboard)
+   ========================================= */
+.table-container {
+    width: 100%;
+    border-collapse: collapse; /* Evita bordes dobles entre celdas */
+    text-align: left;
+}
+
+.table-container th {
+    padding: 1.2rem 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.table-container td {
+    padding: 1.2rem 1.5rem;
+    color: var(--text-main);
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03); /* Borde súper sutil entre filas */
+    font-size: 0.95rem;
+}
+
+/* Quitar el borde de la última fila para que no choque con el border-radius del panel */
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Efecto hover sutil al pasar el mouse por la fila */
+.table-container tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* =========================================
+   8. BADGES / ETIQUETAS
+   ========================================= */
+.badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px; /* Bordes totalmente redondeados */
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Puedes crear variantes de colores para los estados */
+.badge-success {
+    background: rgba(16, 185, 129, 0.15); 
+    color: var(--accent-light); 
+    border: 1px solid var(--accent);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15); 
+    color: #fcd34d; 
+    border: 1px solid #f59e0b;
+}
+
 /* Tarjetas de Métricas (Kpis) */
 .kpi-grid {
     display: grid;

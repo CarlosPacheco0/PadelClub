@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 // ===============================
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClubAdminController;
+use App\Http\Controllers\ClubSettingsController;
 use App\Http\Controllers\RegisterController;
 
 use App\Http\Controllers\HomeController;
@@ -26,7 +27,10 @@ use App\Http\Controllers\UsersController;
 // RUTAS PÚBLICAS
 // ===============================
 
-Route::get('/', HomeController::class)->name('home');
+// Route::get('/', HomeController::class)->name('home');
+
+Route::get('/', MarketplaceController::class)
+        ->name('martketplace');
 
 Route::get('/information', InformationController::class)->name('information');
 Route::get('/contact', ContactController::class)->name('contact');
@@ -37,10 +41,11 @@ Route::get('/contact', ContactController::class)->name('contact');
 // ===============================
 
 Route::middleware('guest')->group(function () {
+
     Route::get('/login', [AuthController::class, 'loginForm'])->name('login'); // Redireccionar al login
     Route::post('/login', [AuthController::class, 'login']); // Realizar inicio de sesión
 
-    Route::get('/register', RegisterController::class)->name('register'); // Redireccionar al registro
+    Route::get('/   ', RegisterController::class)->name('register'); // Redireccionar al registro
 
     Route::post('/player/register', [ RegisterController::class, 'player_store' ])->name('player_register'); // Registro de un jugador o usuario
     Route::post('/club/register', [ RegisterController::class, 'club_store' ])->name('club_register'); // Registro de un club
@@ -61,6 +66,7 @@ Route::middleware(['auth', 'validate_role:superadmin'])->group(function () {
     // Dashboard
     Route::get('/superadmin/dashboard', SuperAdminController::class)
         ->name('dashboard');
+        
 });
 
 
@@ -73,6 +79,12 @@ Route::middleware(['auth', 'validate_role:admin_club'])->group(function () {
     // Dashboard
     Route::get('/admin/dashboard', ClubAdminController::class)
         ->name('dashboard_club');
+
+    
+    // Configuración de sede
+    Route::get('/admin/club-settings', ClubSettingsController::class)
+        ->name('club_settings');
+
 });
 
 
