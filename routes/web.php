@@ -85,6 +85,9 @@ Route::middleware(['auth', 'validate_role:admin_club'])->group(function () {
     Route::get('/admin/club-settings', ClubSettingsController::class)
         ->name('club_settings');
 
+    Route::put('/admin/up-club-settings', [ClubSettingsController::class, 'update'])
+        ->name('update_club_settings');
+
 });
 
 

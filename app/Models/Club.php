@@ -14,12 +14,14 @@ class Club extends Model
      */
     protected $fillable = [
         'name',
+        'logo_path',
         'slug',
-        'city',
+        'city_id',
         'address',
         'contact_phone',
         'settings',
         'is_active',
+        'description'
     ];
 
     /**
@@ -42,8 +44,8 @@ class Club extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)
-                    ->withPivot('access_level')
-                    ->withTimestamps();
+            ->withPivot('access_level')
+            ->withTimestamps();
     }
 
     /**
@@ -60,5 +62,10 @@ class Club extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City ::class);
     }
 }

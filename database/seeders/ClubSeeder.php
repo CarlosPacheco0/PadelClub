@@ -31,7 +31,7 @@ class ClubSeeder extends Seeder
         $club = Club::create([
             'name'          => $clubName,
             'slug'          => \Illuminate\Support\Str::slug($clubName . '-' . rand(100, 999)),
-            'city'          => 'Ocaña',
+            'city_id'       => '1',
             'address'       => 'Sector El Bosque, Vía Principal',
             'contact_phone' => '3201234567',
             'is_active'     => true,

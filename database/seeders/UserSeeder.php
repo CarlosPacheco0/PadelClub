@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@sportbook.com',
             'password' => Hash::make('password123'), // Contraseña estándar para pruebas
             'phone' => '3001234567',
-            'role' => 'superadmin',
+            'role' => 'superadmin'
         ]);
 
         // 2. Perfil Administrador de Club (Dueño de escenario)

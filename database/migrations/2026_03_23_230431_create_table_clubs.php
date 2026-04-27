@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique(); // Para URLs limpias: misitio.com/padel-norte
             $table->string('address');
-            $table->string('city')->default('Ocaña');
             $table->string('contact_phone', 20);
+            $table->string('description', 255)->nullable(true);
 
             // Configuración dinámica en JSON (Horarios de apertura, reglas de cancelación, etc.)
             $table->json('settings')->nullable();
